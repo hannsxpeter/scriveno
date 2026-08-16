@@ -1,0 +1,273 @@
+{
+  "$schema": "https://godpowers.dev/schema/state.v1.json",
+  "version": "1.0.0",
+  "project": {
+    "name": "scriveno",
+    "started": "2026-08-14T12:42:25.176Z",
+    "detection-results": {
+      "product-form": "cli-or-sdk",
+      "requires-design": false,
+      "ui-frameworks": [],
+      "ui-signals": []
+    },
+    "context-prompt-answered": "no",
+    "suite-detection": {
+      "isMultiRepo": false,
+      "role": null,
+      "siblings": [],
+      "hubPath": null
+    }
+  },
+  "active-workstream": "main",
+  "tiers": {
+    "tier-0": {
+      "orchestration": {
+        "status": "in-flight",
+        "updated": "2026-08-14T12:42:25.177Z"
+      }
+    },
+    "tier-1": {
+      "prd": {
+        "status": "imported",
+        "artifact": "prd/PRD.mdx",
+        "artifact-hash": "sha256:b8806cacfa621f1a2607b3134e86b08a04734d8a60bdc14856984e333e8f59bd",
+        "updated": "2026-08-14T12:43:59.319Z",
+        "notes": "Imported from detected planning-system context."
+      },
+      "arch": {
+        "status": "imported",
+        "artifact": "arch/ARCH.mdx",
+        "artifact-hash": "sha256:773d9c8dbc52724fe9a43f2deab0bc71c862f1967522186b79b3685659107ac1",
+        "updated": "2026-08-14T12:43:59.319Z",
+        "notes": "Imported from detected planning-system context."
+      },
+      "roadmap": {
+        "status": "imported",
+        "artifact": "roadmap/ROADMAP.mdx",
+        "artifact-hash": "sha256:c36411dbe288c82e34b432d767fc91ee36592d03a4b6b9a01b2d055c2ac807df",
+        "updated": "2026-08-14T12:43:59.319Z",
+        "notes": "Imported from detected planning-system context."
+      },
+      "stack": {
+        "status": "imported",
+        "artifact": "stack/DECISION.mdx",
+        "artifact-hash": "sha256:e4bead5055f0b3b6d7571bd977db33288e241679be9725c73343a2f0370b7850",
+        "updated": "2026-08-14T12:43:59.319Z",
+        "notes": "Imported from detected planning-system context."
+      },
+      "design": {
+        "status": "pending"
+      },
+      "product": {
+        "status": "pending"
+      }
+    },
+    "tier-2": {
+      "repo": {
+        "status": "pending"
+      },
+      "build": {
+        "status": "imported",
+        "artifact": "prep/IMPORTED-BUILD-STATE.mdx",
+        "artifact-hash": "sha256:5973f05222e7eb994f983b7cc6ae64615b1166b184c5df61f5d954ed3d973ada",
+        "updated": "2026-08-14T12:43:59.319Z",
+        "notes": "Imported from detected planning-system context."
+      }
+    },
+    "tier-3": {
+      "deploy": {
+        "status": "pending"
+      },
+      "observe": {
+        "status": "pending"
+      },
+      "launch": {
+        "status": "pending"
+      },
+      "harden": {
+        "status": "pending"
+      }
+    }
+  },
+  "lifecycle-phase": "steady-state-active",
+  "linkage": {
+    "coverage-pct": 0,
+    "orphan-count": 0,
+    "drift-count": 0,
+    "review-required-items": 0
+  },
+  "deliverables": {
+    "requirements": {
+      "total": 0,
+      "done": 0,
+      "in-progress": 0,
+      "untouched": 0,
+      "percent": 0
+    },
+    "increments": [],
+    "gaps": 0
+  },
+  "yolo-decisions": [],
+  "mode": "B",
+  "mode-d-suite": false,
+  "mode-detected-from": [
+    "package-json-found",
+    "git-repo-found",
+    "existing-command-surface-found",
+    "existing-tests-found",
+    "no-org-context-found",
+    "no-suite-detected"
+  ],
+  "mode-announced-as": "existing codebase",
+  "scale": "small",
+  "lock": null,
+  "source-systems": [
+    {
+      "id": "legacy-planning",
+      "name": "legacy planning",
+      "confidence": "high",
+      "markers": [
+        ".planning"
+      ],
+      "files": [
+        ".planning/archive/01-12-historical-REVIEW-FIX.md",
+        ".planning/archive/HISTORICAL-VALIDATION-NOTES-01-08.md",
+        ".planning/archive/MILESTONE_SUMMARY-v1.0.md",
+        ".planning/archive/MILESTONE_SUMMARY-v1.1.md",
+        ".planning/archive/MILESTONE_SUMMARY-v1.2.md",
+        ".planning/archive/MILESTONE_SUMMARY-v1.3.md",
+        ".planning/archive/MILESTONE_SUMMARY-v1.4.md",
+        ".planning/archive/MILESTONE_SUMMARY-v1.5.md",
+        ".planning/archive/README.md",
+        ".planning/bridge-command-SPEC.md",
+        ".planning/codebase/ARCHITECTURE.md",
+        ".planning/codebase/INTEGRATIONS.md",
+        ".planning/codebase/STACK.md",
+        ".planning/codebase/STRUCTURE.md",
+        ".planning/config.json",
+        ".planning/craft-layer-PLAN.md",
+        ".planning/milestones/v1.3-REQUIREMENTS.md",
+        ".planning/milestones/v1.3-ROADMAP.md",
+        ".planning/milestones/v1.4-REQUIREMENTS.md",
+        ".planning/milestones/v1.4-ROADMAP.md",
+        ".planning/milestones/v1.6-REQUIREMENTS.md",
+        ".planning/milestones/v1.6-ROADMAP.md",
+        ".planning/milestones/v1.7-MILESTONE-AUDIT.md",
+        ".planning/milestones/v1.7-phases/29-architectural-foundation/29-01-PLAN.md",
+        ".planning/milestones/v1.7-phases/29-architectural-foundation/29-01-SUMMARY.md",
+        ".planning/milestones/v1.7-phases/29-architectural-foundation/29-02-PLAN.md",
+        ".planning/milestones/v1.7-phases/29-architectural-foundation/29-02-SUMMARY.md",
+        ".planning/milestones/v1.7-phases/29-architectural-foundation/29-03-PLAN.md",
+        ".planning/milestones/v1.7-phases/29-architectural-foundation/29-03-SUMMARY.md",
+        ".planning/milestones/v1.7-phases/29-architectural-foundation/29-04-PLAN.md",
+        ".planning/milestones/v1.7-phases/29-architectural-foundation/29-04-SUMMARY.md",
+        ".planning/milestones/v1.7-phases/29-architectural-foundation/29-CONTEXT.md",
+        ".planning/milestones/v1.7-phases/29-architectural-foundation/29-VERIFICATION.md",
+        ".planning/milestones/v1.7-phases/30-export-cleanup-validation-gate/30-01-PLAN.md",
+        ".planning/milestones/v1.7-phases/30-export-cleanup-validation-gate/30-01-SUMMARY.md",
+        ".planning/milestones/v1.7-phases/30-export-cleanup-validation-gate/30-02-PLAN.md",
+        ".planning/milestones/v1.7-phases/30-export-cleanup-validation-gate/30-02-SUMMARY.md",
+        ".planning/milestones/v1.7-phases/30-export-cleanup-validation-gate/30-03-PLAN.md",
+        ".planning/milestones/v1.7-phases/30-export-cleanup-validation-gate/30-03-SUMMARY.md",
+        ".planning/milestones/v1.7-phases/30-export-cleanup-validation-gate/30-CONTEXT.md",
+        ".planning/milestones/v1.7-phases/30-export-cleanup-validation-gate/30-PATTERNS.md",
+        ".planning/milestones/v1.7-phases/30-export-cleanup-validation-gate/30-RESEARCH.md",
+        ".planning/milestones/v1.7-phases/30-export-cleanup-validation-gate/30-VALIDATION.md",
+        ".planning/milestones/v1.7-phases/30-export-cleanup-validation-gate/REVIEW.md",
+        ".planning/milestones/v1.7-phases/30-export-cleanup-validation-gate/VERIFICATION.md",
+        ".planning/milestones/v1.7-phases/31-staged-front-matter-generation/31-01-PLAN.md",
+        ".planning/milestones/v1.7-phases/31-staged-front-matter-generation/31-01-SUMMARY.md",
+        ".planning/milestones/v1.7-phases/31-staged-front-matter-generation/31-02-PLAN.md",
+        ".planning/milestones/v1.7-phases/31-staged-front-matter-generation/31-02-SUMMARY.md",
+        ".planning/milestones/v1.7-phases/31-staged-front-matter-generation/31-03-PLAN.md",
+        ".planning/milestones/v1.7-phases/31-staged-front-matter-generation/31-03-SUMMARY.md",
+        ".planning/milestones/v1.7-phases/31-staged-front-matter-generation/31-CONTEXT.md",
+        ".planning/milestones/v1.7-phases/31-staged-front-matter-generation/31-PATTERNS.md",
+        ".planning/milestones/v1.7-phases/31-staged-front-matter-generation/31-RESEARCH.md",
+        ".planning/milestones/v1.7-phases/31-staged-front-matter-generation/31-VALIDATION.md",
+        ".planning/milestones/v1.7-phases/31-staged-front-matter-generation/REVIEW.md",
+        ".planning/milestones/v1.7-phases/31-staged-front-matter-generation/VERIFICATION.md",
+        ".planning/milestones/v1.7-phases/32-build-pipelines-platform-awareness/32-01-PLAN.md",
+        ".planning/milestones/v1.7-phases/32-build-pipelines-platform-awareness/32-01-SUMMARY.md",
+        ".planning/milestones/v1.7-phases/32-build-pipelines-platform-awareness/32-02-PLAN.md",
+        ".planning/milestones/v1.7-phases/32-build-pipelines-platform-awareness/32-02-SUMMARY.md",
+        ".planning/milestones/v1.7-phases/32-build-pipelines-platform-awareness/32-03-PLAN.md",
+        ".planning/milestones/v1.7-phases/32-build-pipelines-platform-awareness/32-03-SUMMARY.md",
+        ".planning/milestones/v1.7-phases/32-build-pipelines-platform-awareness/32-CONTEXT.md",
+        ".planning/milestones/v1.7-phases/32-build-pipelines-platform-awareness/32-HUMAN-UAT.md",
+        ".planning/milestones/v1.7-phases/32-build-pipelines-platform-awareness/32-PATTERNS.md",
+        ".planning/milestones/v1.7-phases/32-build-pipelines-platform-awareness/32-REVIEW-FIX.md",
+        ".planning/milestones/v1.7-phases/32-build-pipelines-platform-awareness/32-REVIEW.md",
+        ".planning/milestones/v1.7-phases/32-build-pipelines-platform-awareness/32-VERIFICATION.md",
+        ".planning/milestones/v1.7-phases/33-sacred-tradition-profiles/33-01-PLAN.md",
+        ".planning/milestones/v1.7-phases/33-sacred-tradition-profiles/33-01-SUMMARY.md",
+        ".planning/milestones/v1.7-phases/33-sacred-tradition-profiles/33-02-PLAN.md",
+        ".planning/milestones/v1.7-phases/33-sacred-tradition-profiles/33-02-SUMMARY.md",
+        ".planning/milestones/v1.7-phases/33-sacred-tradition-profiles/33-03-PLAN.md",
+        ".planning/milestones/v1.7-phases/33-sacred-tradition-profiles/33-03-SUMMARY.md",
+        ".planning/milestones/v1.7-phases/33-sacred-tradition-profiles/33-04-PLAN.md",
+        ".planning/milestones/v1.7-phases/33-sacred-tradition-profiles/33-04-SUMMARY.md",
+        ".planning/milestones/v1.7-phases/33-sacred-tradition-profiles/33-CONTEXT.md",
+        ".planning/milestones/v1.7-phases/33-sacred-tradition-profiles/33-PATTERNS.md",
+        ".planning/milestones/v1.7-phases/33-sacred-tradition-profiles/33-REVIEW-FIX.md"
+      ],
+      "import-hash": "sha256:93e1053f6df0635638f15f0f61c14d1078f24495a36e8cc24707e22f40019652",
+      "imported-at": "2026-08-14T12:43:59.319Z",
+      "sync-back-enabled": true,
+      "last-sync-back-hash": null,
+      "conflict-count": 0
+    },
+    {
+      "id": "bmad",
+      "name": "BMAD",
+      "confidence": "high",
+      "markers": [],
+      "files": [
+        "docs/architecture.md",
+        "docs/authenticity-and-detectors.md",
+        "docs/auto-invoke-policy.md",
+        "docs/command-reference.md",
+        "docs/configuration.md",
+        "docs/conflict-protocol.md",
+        "docs/context-protocol.md",
+        "docs/contributing.md",
+        "docs/creative-context.md",
+        "docs/development.md",
+        "docs/drafter-quality.md",
+        "docs/getting-started.md",
+        "docs/history-protocol.md",
+        "docs/model-adaptation.md",
+        "docs/naming-conventions.md",
+        "docs/people-dynamics-protocol.md",
+        "docs/progress-protocol.md",
+        "docs/proof-artifacts.md",
+        "docs/proof-badges.md",
+        "docs/publishing.md",
+        "docs/quick-proof.md",
+        "docs/relationships-protocol.md",
+        "docs/release-checklist.md",
+        "docs/release-notes.md",
+        "docs/research-protocol.md",
+        "docs/route-graph.md",
+        "docs/runtime-support.md",
+        "docs/sacred-texts.md",
+        "docs/shipped-assets.md",
+        "docs/starter-sets.md",
+        "docs/subagent-spawning-protocol.md",
+        "docs/surface-resolution-protocol.md",
+        "docs/testing.md",
+        "docs/translation.md",
+        "docs/versatility-paths.md",
+        "docs/voice-dna.md",
+        "docs/work-types.md",
+        "docs/workflow-optimization-audit.md",
+        "docs/world-layers-protocol.md"
+      ],
+      "import-hash": "sha256:f21b7021aefa9384a4444113ca3a5c4f57b051790f3a6e928ddb151600bea9f8",
+      "imported-at": "2026-08-14T12:43:59.319Z",
+      "sync-back-enabled": true,
+      "last-sync-back-hash": null,
+      "conflict-count": 0
+    }
+  ]
+}

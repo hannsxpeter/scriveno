@@ -42,6 +42,7 @@ Load:
 - `.manuscript/front-matter/04-copyright.md` and the rest of `.manuscript/front-matter/` if present
 - `.manuscript/back-matter/` for sources, permissions, appendices, and further-reading inventories
 - `.manuscript/reviews/` for the originality report, sensitivity review, and any prior compliance report; also read legacy root-level `*-ORIGINALITY-REPORT.md` and `*-SENSITIVITY-REVIEW.md` when present
+- `.manuscript/reviews/PROVENANCE-AUDIT.md` when present, as artifact evidence only
 - `.manuscript/marketing/` for blurb, keywords, series naming, and category notes
 - `.manuscript/build/` and `.manuscript/output/` for cover assets and export files
 - `.manuscript/illustrations/` to inventory how cover and interior art were produced (AI image tool, agent-built vector art, human designer, stock, licensed)
@@ -93,6 +94,7 @@ Check each lane against every target platform. Pull evidence from project files;
 
 **Lane 3 -- AI-content disclosure**
 
+- Treat the project creation record as the disclosure authority. Metadata removal or provenance cleaning does not change an asset's creation history, and a provenance audit is evidence only. If text or art was AI-generated under the current platform definition, it remains AI-generated after `/scr:provenance-clean`.
 - Determine, from the project record, which assets are AI-generated under each platform's current definition: drafted text, translations, cover art, interior illustrations. Note that platforms commonly define content "created by an AI-based tool" as AI-generated **even after substantial human edits**, while AI-assisted (writer-created, AI-refined) may be exempt; verify the live definitions in STEP 3.
 - Scriveno-drafted prose and agent-built vector covers (see `/scr:cover-art`) count as AI-generated for disclosure purposes. Say so without hedging.
 - Produce the exact upload-screen answers: which disclosure boxes to tick per platform, what the disclosure does and does not affect (typically reported to the platform, not shown to buyers), and what non-disclosure risks (content removal, account action).

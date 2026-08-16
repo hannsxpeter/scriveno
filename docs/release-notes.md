@@ -2,6 +2,20 @@
 
 This document is the public-facing summary of what changed between package releases. For package history, see the root [CHANGELOG](../CHANGELOG.md).
 
+## 3.7.0 - 2026-08-15
+
+### What changed
+
+- **Read-only provenance audits.** `/scr:provenance-check` inspects authorized text, documents, archives, images, and publishing outputs for suspicious Unicode controls, removable metadata, and hard-bound provenance evidence without changing the target.
+- **Dry-run-first cleaning.** `/scr:provenance-clean` shows the proposed cleanup before writing anything. Applied runs create verified cleaned copies by default, while in-place changes require explicit confirmation and a recoverable backup.
+- **Honest capability reporting.** Optional `c2patool`, ExifTool, `qpdf`, `zip`, and `unzip` lanes are detected without adding npm dependencies or installing tools automatically. Missing tools produce degraded coverage instead of a false clean result.
+- **Voice and disclosure stay intact.** Provenance hygiene never paraphrases prose, optimizes detector scores, or changes how an asset was created. Platform disclosure, copyright, licensing, and attribution remain based on the project record.
+- **Safer packaging.** Installer and package discovery now include only executable agents with explicit metadata, so project Pillar context files are not shipped as runtime agents.
+
+### Why it matters
+
+Writers can now inspect and prepare delivery copies without confusing file hygiene with authorship or disclosure. The workflow states what was checked, what was removed, what could remain, and which external capabilities were unavailable, while preserving the canonical manuscript by default.
+
 ## 3.6.0 - 2026-06-26
 
 ### What changed
@@ -570,7 +584,7 @@ This is most visible in technical, academic, sacred, series, and worldbuilding-h
 
 ### What changed
 
-- Integrated `authenticity-check` principles into Scriveno's Voice DNA diagnostic layer (the evaluative counterpart to the [`humanizer`](https://github.com/aihxp/humanizer) transform principles added in `2.0.2`).
+- Integrated `authenticity-check` principles into Scriveno's Voice DNA diagnostic layer (the evaluative counterpart to the [`humanizer`](https://github.com/hannsxpeter/humanizer) transform principles added in `2.0.2`).
 - The voice-checker agent now runs a scrutiny pre-check (matching scrutiny to evidence density), a mandatory false-positive audit with veto power that converts strong false positives into score-raising human markers, and an internal-consistency check for register or sophistication seams.
 - `/scr:voice-check` and `/scr:originality-check` now report an authenticity band (Reads human / Mixed signals / Reads AI-generated) first, then a 0-100 score, with required "Reads as human (deliberately not flagged)" and "Caveat" sections.
 - `/scr:originality-check` no longer suggests rewritten spans; the diagnostic is now strictly diagnose, decide, transform, re-verify, with the rewrite handed to `/scr:line-edit` or `/scr:polish`.

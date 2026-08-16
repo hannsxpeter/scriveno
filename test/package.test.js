@@ -92,6 +92,16 @@ describe('npm pack dry-run', () => {
     );
   });
 
+  it('packages executable agents without project context pillars', () => {
+    for (const name of ['continuity-checker', 'drafter', 'plan-checker', 'researcher', 'translator', 'voice-checker']) {
+      assert.ok(packFiles.has(`agents/${name}.md`), `npm pack should include agents/${name}.md`);
+    }
+    for (const name of ['api', 'arch', 'auth', 'context', 'data', 'deploy', 'development', 'observe', 'quality', 'release', 'repo', 'stack', 'ui']) {
+      assert.ok(!packFiles.has(`agents/${name}.md`), `npm pack should exclude project pillar agents/${name}.md`);
+    }
+    assert.ok(!packFiles.has('agents/catalog.yaml'), 'npm pack should exclude the project pillar catalog');
+  });
+
   it('includes demo manuscript files', () => {
     assert.ok(
       packFiles.has('data/demo/.manuscript/STYLE-GUIDE.md'),

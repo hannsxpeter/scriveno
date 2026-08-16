@@ -17,7 +17,7 @@ const {
 const PKG_ROOT = path.join(__dirname, '..');
 const PKG = require('../package.json');
 const VERSION = PKG.version;
-const DOCS_URL = PKG.homepage || PKG.repository?.url || 'https://github.com/aihxp/scriveno';
+const DOCS_URL = PKG.homepage || PKG.repository?.url || 'https://github.com/hannsxpeter/scriveno';
 const MIN_NODE_MAJOR = 20;
 
 const COLORS = {
@@ -459,8 +459,9 @@ function collectAgentEntries(agentsRoot = path.join(PKG_ROOT, 'agents')) {
     const content = fs.readFileSync(filePath, 'utf8');
     const stem = entry.name.replace(/\.md$/, '');
     const frontmatter = readFrontmatterValues(content);
-    const name = frontmatter.name || stem;
-    const description = frontmatter.description || `${stem.replace(/-/g, ' ')} agent`;
+    if (!frontmatter.name || !frontmatter.description) continue;
+    const name = frontmatter.name;
+    const description = frontmatter.description;
     entries.push({
       name,
       description,

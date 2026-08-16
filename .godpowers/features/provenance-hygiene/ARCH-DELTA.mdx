@@ -1,0 +1,164 @@
+# Provenance Hygiene Architecture Delta
+
+## Scope
+
+This delta extends Scriveno with read-only provenance inspection and an explicitly separate cleaning transform. It does not change Scriveno's product form, dependency model, data model, or Voice DNA pipeline.
+
+## Context
+
+Scriveno commands are executable markdown contracts. The host agent reads those contracts, inspects local files, invokes optional external CLI tools, writes reports, and applies writer-approved edits. This feature fits that architecture without a new service, package dependency, or model integration.
+
+## Decisions
+
+### ADR-PROV-001: Two command surfaces
+
+Decision: ship `/scr:provenance-check` and `/scr:provenance-clean` as separate commands.
+
+Rationale:
+
+- Inspection is read-only and can run safely during review or publishing preflight.
+- Cleaning can lose metadata and therefore needs its own dry-run, confirmation, copy, backup, and verification contract.
+- The split matches Scriveno's diagnose, decide, transform, re-verify pattern.
+
+### ADR-PROV-002: Command-first implementation
+
+Decision: implement the feature in command markdown, registry metadata, documentation, and regression tests. Do not vendor the upstream Python scripts and do not add an npm dependency.
+
+Rationale:
+
+- Scriveno's host agent already performs file inspection and shell orchestration from command instructions.
+- The guaranteed package runtime remains Node.js for installation and shared helpers.
+- Binary container support varies by host and is more credible when routed through detected external tools than through an incomplete new parser.
+
+### ADR-PROV-003: Capability ladder
+
+Decision: resolve each file through the following capability ladder and report the selected lane:
+
+1. Safe host-native text inspection for Markdown, plain text, HTML, and SVG.
+2. `c2patool` for read-only C2PA manifest inspection when installed.
+3. `exiftool` for metadata inventory and cleaned-copy writes when installed.
+4. `qpdf` after PDF metadata edits when permanent removal of incremental PDF history is required.
+5. Conservative manual or host-native container inspection only when its limitations can be stated precisely.
+6. `unsupported` or `degraded` when none of the credible lanes is available.
+
+The command must never convert a missing tool into a false `clean` result and must never install a tool automatically.
+
+### ADR-PROV-004: Evidence model
+
+Decision: every audit finding carries:
+
+- file or URL target
+- channel: Unicode, C2PA, EXIF, XMP, document properties, generator metadata, or residual signal
+- confidence: `confirmed`, `probable`, `informational`, or `likely_false_positive`
+- inspection lane and tool availability
+- proposed action
+- verification status
+
+Raw byte-string collisions in compressed payloads cannot become confirmed findings.
+
+### ADR-PROV-005: Safe output boundary
+
+Decision: cleaning is dry-run by default and writes `*.cleaned.*` copies when applied. In-place operation requires `--apply`, `--in-place`, explicit confirmation, a non-symlink destination, and a recoverable backup.
+
+Canonical draft files remain outside the mutation boundary unless the writer deliberately selects in-place cleaning. Remote targets are always read-only.
+
+### ADR-PROV-006: Voice boundary
+
+Decision: provenance commands do not perform statistical watermark attacks or generic humanization.
+
+If prose needs revision, route the writer to an existing unit-scoped revision command. That command loads `STYLE-GUIDE.md`, works from visible craft findings, and preserves meaning. Detector scores remain context only.
+
+### ADR-PROV-007: Disclosure independence
+
+Decision: metadata state and authorship or generation history are separate facts. Cleaning metadata does not update or erase the project record used by `/scr:compliance-check`.
+
+### ADR-PROV-008: External pixel tooling remains optional and manual
+
+Decision: do not bundle, bootstrap, or automatically run CtrlRegen, reverse-SynthID, or similar model-heavy tooling. If a writer has independently installed such a tool, Scriveno may report it as an external manual path, but the v1 commands do not claim verification or removal.
+
+## Data Flow
+
+```text
+writer target
+  -> resolve scope and ownership boundary
+  -> inventory files and available tools
+  -> inspect with the strongest credible lane per format
+  -> classify evidence and write PROVENANCE-AUDIT.md
+  -> writer decides whether to clean
+  -> dry-run action plan
+  -> cleaned copy or explicitly confirmed in-place backup
+  -> post-clean inspection
+  -> before and after report with residual risks
+```
+
+## Trust Boundaries
+
+### TB-PROV-01: Writer-owned input
+
+The command operates only on content the writer owns or is authorized to process. It does not mutate remote assets or third-party files outside the selected target.
+
+### TB-PROV-02: Binary versus text routing
+
+Magic bytes, extensions, and tool support determine the lane. A ZIP, PDF, image, or other binary container must never be decoded and rewritten as text.
+
+### TB-PROV-03: External process execution
+
+Pass file paths as quoted arguments. Do not place API keys or secrets in arguments. Do not follow output symlinks. Record tool name and outcome without logging sensitive metadata values unnecessarily.
+
+### TB-PROV-04: Metadata versus visible content
+
+Only recognized metadata fields or structures may be removed. Visible prose, image pixels, ICC color profiles, accessibility text, navigation, and document body content are protected content.
+
+### TB-PROV-05: Provenance versus disclosure
+
+A successful metadata clean cannot be used as evidence that a file was not AI-assisted or AI-generated. Publishing disclosure remains derived from project creation history.
+
+## Failure And Degraded Modes
+
+- Missing target: stop before inspection and suggest a valid manuscript scope or file path.
+- Unsupported scheme: stop and permit only local paths plus HTTP or HTTPS read-only audits.
+- Binary misroute: stop that lane and report the required file or container path.
+- Missing optional tool: continue other lanes and mark affected coverage `degraded`.
+- Encrypted or malformed container: leave unchanged and report `unsupported`.
+- PDF without `qpdf`: state that ExifTool metadata edits may remain recoverable in incremental history.
+- Output collision: choose a new cleaned-copy name or ask before overwrite.
+- Symlinked destination: refuse the write.
+- Post-clean finding remains: keep the cleaned copy, report the residual signal, and do not claim success for that channel.
+- Remote fetch failure: record the URL and failure without retrying a mutation path.
+
+## File Touchpoints
+
+### New
+
+- `commands/scr/provenance-check.md`
+- `commands/scr/provenance-clean.md`
+- `docs/provenance-hygiene.md`
+- `test/provenance-hygiene.test.js`
+
+### Updated
+
+- `data/CONSTRAINTS.json`
+- `docs/command-reference.md`
+- `docs/authenticity-and-detectors.md`
+- `docs/publishing.md`
+- `commands/scr/help.md`
+- `commands/scr/publish.md`
+- `commands/scr/prepublish-review.md`
+- `commands/scr/compliance-check.md`
+- `README.md`
+- `CHANGELOG.md`
+
+Installer code should not require a feature-specific branch because command discovery is file-backed. Tests must verify that both commands flow through every supported runtime install surface.
+
+## Verification Strategy
+
+- Command structure tests for frontmatter and response contracts.
+- Registry tests for availability, intent or family membership, and prerequisites.
+- Feature tests that assert dry-run defaults, cleaned-copy naming, in-place gates, tool capability reporting, binary safeguards, confidence labels, Voice DNA routing, and disclosure independence.
+- Command reference integrity and command-count checks.
+- Installer tests confirming new commands are discovered without a hard-coded manifest edit.
+- Full `npm test` and `npm run policy:check`.
+
+## Rollout
+
+No runtime feature flag is required because both commands are opt-in and inspection is read-only by default. The cleaning command remains inert until the writer passes `--apply`.

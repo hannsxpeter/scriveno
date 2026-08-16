@@ -1,6 +1,6 @@
 # Command Reference
 
-Scriveno has **125 commands** organized into **14 categories**. Commands adapt automatically to your work type -- for example, `/scr:draft` talks about drafting a surah for Quranic commentary, an act for screenplays, and a section for research papers.
+Scriveno has **127 commands** organized into **14 categories**. Commands adapt automatically to your work type -- for example, `/scr:draft` talks about drafting a surah for Quranic commentary, an act for screenplays, and a section for research papers.
 
 Commands marked with **adaptive terminology** change how Scriveno talks about your work type's `command_unit` in `.manuscript/config.json`, while keeping the runnable command id stable. Commands marked with **group adaptation** have different labels for specific work type groups (academic, sacred, etc.).
 
@@ -1578,6 +1578,52 @@ Fetch the current official platform policies, map them against the project (copy
 
 ---
 
+### `/scr:provenance-check`
+
+**Description:** Inspect writer-owned text and publishing files for invisible Unicode, metadata, and hard-bound provenance signals without modifying them.
+
+**Usage:** `/scr:provenance-check [target] [--scope <source|build|output|all>] [--strict]`
+
+**Prerequisites:** None
+
+**Flags:**
+- `--scope <scope>` -- Inspect manuscript source, build assets, output files, or all three scopes
+- `--strict` -- Treat degraded or unsupported inspection lanes as unresolved findings
+
+**Available for:** All work types
+
+**Example:**
+```text
+/scr:provenance-check --scope output
+```
+Inspect export files without changing them and write `.manuscript/reviews/PROVENANCE-AUDIT.md` with confidence labels, capability coverage, and residual risks.
+
+---
+
+### `/scr:provenance-clean`
+
+**Description:** Create verified cleaned copies of writer-owned files by removing confirmed Unicode carriers and removable provenance metadata. Dry-run by default.
+
+**Usage:** `/scr:provenance-clean [target] [--scope <source|build|output|all>] [--apply] [--in-place]`
+
+**Prerequisites:** None
+
+**Flags:**
+- `--scope <scope>` -- Resolve manuscript source, build assets, output files, or all three scopes
+- `--apply` -- Create cleaned copies and verify them
+- `--in-place` -- Replace originals only after explicit confirmation and recoverable backups
+
+**Available for:** All work types
+
+**Example:**
+```text
+/scr:provenance-clean --scope output
+/scr:provenance-clean --scope output --apply
+```
+Preview removable findings first, then create `*.cleaned.*` copies and compare before and after evidence when the writer applies the plan.
+
+---
+
 Publishing boundary:
 
 - `/scr:publish`: destination wizard and sequencing.
@@ -1586,6 +1632,8 @@ Publishing boundary:
 - `/scr:front-matter` and `/scr:back-matter`: content creation before packaging.
 - `/scr:prepublish-review`: final editorial gate.
 - `/scr:compliance-check`: platform-policy, copyright, and AI-disclosure gate.
+- `/scr:provenance-check`: read-only Unicode, metadata, and hard-bound provenance audit.
+- `/scr:provenance-clean`: dry-run-first cleaned-copy transform for confirmed findings.
 
 ---
 

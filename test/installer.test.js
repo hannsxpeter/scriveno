@@ -74,6 +74,17 @@ describe('Installer copyDir', () => {
   });
 });
 
+describe('agent inventory', () => {
+  it('installs only executable agent prompts with explicit metadata', () => {
+    const entries = collectAgentEntries(path.join(ROOT, 'agents'));
+    assert.deepStrictEqual(
+      entries.map((entry) => entry.name),
+      ['continuity-checker', 'drafter', 'plan-checker', 'researcher', 'translator', 'voice-checker']
+    );
+    assert.ok(entries.every((entry) => entry.description));
+  });
+});
+
 describe('Installer RUNTIMES', () => {
   it('has entries for all supported runtimes', () => {
     assert.ok('claude-code' in RUNTIMES, 'missing claude-code runtime');

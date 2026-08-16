@@ -1,0 +1,64 @@
+# Initial Findings
+
+> This artifact records what Godpowers observed during `/god-init`. It is
+> preparation documentation for planning, routing, and migration. Godpowers
+> state and completed artifacts remain authoritative after they exist.
+
+## Codebase Shape
+
+- [DECISION] Project type: existing codebase with a mature command, agent, documentation, and test surface.
+- [DECISION] Feature scale: small. The requested provenance hygiene capability is one bounded feature in the existing Scriveno product.
+- [DECISION] Primary runtime: dependency-free Node.js package with markdown command and skill assets.
+- [DECISION] Product form: CLI or SDK style package installed into AI coding agents.
+- [DECISION] Package and build tool: npm with Node's built-in test runner.
+
+## Repo Signals
+
+- [DECISION] Source surfaces found: `commands/scr/`, `agents/`, `data/`, `templates/`, `bin/`, and `scripts/`.
+- [DECISION] Command surface found: 125 markdown command files.
+- [DECISION] Test signals found: 77 files under `test/`; `npm test` uses `node --test test/*.test.js`.
+- [DECISION] CI and release signals found: `.github/workflows/ci.yml`, `npm run policy:check`, `npm run pack:check`, and `npm run release:check`.
+- [DECISION] Documentation signals found: `README.md`, `docs/architecture.md`, `docs/testing.md`, `docs/publishing.md`, `docs/voice-dna.md`, and `docs/shipped-assets.md`.
+- [DECISION] UI signals found: none. The feature is command-driven and does not require a product design tier.
+
+## Methodology And AI Tool Signals
+
+- [DECISION] AI instruction file found: `AGENTS.md`.
+- [DECISION] Legacy planning context found: `.planning/`, including product, architecture, stack, roadmap, state, milestone, and verification records.
+- [HYPOTHESIS] BMAD-compatible documentation signals found because conventional files under `docs/` match the runtime detector. No BMAD runtime directory was found.
+- [DECISION] Superpowers context found: none.
+- [DECISION] Godplans master plan contract found: none.
+- [DECISION] godaudits audit found: none.
+- [DECISION] Pillars context health before initialization: absent.
+- [DECISION] Imported context artifact: `.godpowers/prep/IMPORTED-CONTEXT.mdx`.
+- [DECISION] Source-system sync-back is restricted to Godpowers-managed companion paths and fences.
+- [HYPOTHESIS] Host capability guarantee: degraded because the active host identity and fresh-context spawn guarantee were not detected by the local runtime probe.
+- [DECISION] Dogfood scenario relevance: migration and sync-back only.
+
+## Planning Implications
+
+- [DECISION] The feature PRD must define inspection, dry-run reporting, cleaned-copy behavior, explicit confirmation for in-place changes, and honest unsupported-path reporting.
+- [DECISION] Voice DNA remains the primary trust boundary. Any text rewrite must load `STYLE-GUIDE.md` first and preserve fresh context per atomic unit.
+- [DECISION] Architecture must preserve the dependency-free package and use optional external CLIs only through capability detection and explicit command instructions.
+- [DECISION] The implementation must not claim that cleaned content is human-written, undetectable, or free of all provenance signals.
+- [DECISION] Verification should include targeted Node tests, `npm test`, and `npm run policy:check` once the feature is implemented.
+
+## Risks And Unknowns
+
+- [HYPOTHESIS] Unicode provenance inspection and metadata cleaning create new trust boundaries around data loss, disclosure truth, and destructive in-place edits.
+- [HYPOTHESIS] Statistical watermark reduction can alter writer voice unless rewrite behavior is opt-in and routed through Voice DNA.
+- [HYPOTHESIS] Container metadata, C2PA, EXIF, and image watermark capabilities vary by installed external tools and file type.
+- [OPEN QUESTION] Which file formats should be first-class in the initial feature release? Owner: user. Due: during the feature PRD.
+
+## Suggested Next
+
+- [DECISION] Suggested next command: `/god-feature provenance hygiene`.
+- [DECISION] Reason: the repository is already a mature product with no active milestone, and the request needs a feature-scoped PRD before architecture and implementation.
+
+## Use Rules
+
+- [DECISION] Downstream agents may use this artifact as preparation context only.
+- [DECISION] If this artifact conflicts with `.godpowers/intent.yaml`, `.godpowers/state.json`, `PROGRESS.mdx`, or a completed Godpowers artifact, the Godpowers artifact wins.
+- [DECISION] Pillars files under `agents/*.md` are the native project context layer for Godpowers commands.
+- [DECISION] Imported legacy planning and conventional documentation signals must become Godpowers-native decisions before implementation.
+- [DECISION] Managed sync-back files may be written only by Godpowers-owned fences or companion paths.

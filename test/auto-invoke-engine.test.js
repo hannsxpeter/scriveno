@@ -18,6 +18,7 @@ const {
   formatRuntimeSmokeReport,
   formatSafeApplyReport,
   getCommandAutomationPolicy,
+  getExpectedAgentNames,
   inspectAgentAvailability,
   inspectRuntimeSmoke,
   getRuntimeAgentSupport,
@@ -28,6 +29,13 @@ const {
 } = require('../lib/auto-invoke-engine.js');
 
 const ROOT = path.resolve(__dirname, '..');
+
+it('discovers only executable agent prompts from the package agent directory', () => {
+  assert.deepStrictEqual(
+    getExpectedAgentNames({ agentsRoot: path.join(ROOT, 'agents') }),
+    ['continuity-checker', 'drafter', 'plan-checker', 'researcher', 'translator', 'voice-checker']
+  );
+});
 
 function mkProject(label) {
   return fs.mkdtempSync(path.join(os.tmpdir(), `scriveno-auto-${label}-`));

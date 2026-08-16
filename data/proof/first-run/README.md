@@ -44,7 +44,7 @@ Proof artifacts:
 > npx scriveno@latest smoke --json
 {
   "ok": true,
-  "expectedCommands": 125,
+  "expectedCommands": 127,
   "expectedAgents": [
     "continuity-checker",
     "drafter",

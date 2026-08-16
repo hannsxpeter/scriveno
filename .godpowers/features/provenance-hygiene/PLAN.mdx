@@ -1,0 +1,132 @@
+# Provenance Hygiene Feature Plan
+
+## Delivery Strategy
+
+Implement three vertical slices. Each slice starts with a failing focused test, adds the smallest source changes that satisfy it, then runs targeted verification before the next slice.
+
+## Slice 1: Native Command Surface
+
+Status: complete
+
+### Requirements
+
+P-MUST-01 through P-MUST-12, P-MUST-14 through P-MUST-16, P-MUST-18.
+
+### Files
+
+- Add `test/provenance-hygiene.test.js`.
+- Add `commands/scr/provenance-check.md`.
+- Add `commands/scr/provenance-clean.md`.
+- Update `data/CONSTRAINTS.json`.
+- Update `docs/command-reference.md`.
+- Update `commands/scr/help.md`.
+
+### Test First
+
+1. Assert both command files exist with frontmatter, usage, response contracts, and automation status blocks.
+2. Assert the audit is read-only and the cleaner is dry-run by default.
+3. Assert cleaned-copy naming, explicit in-place gates, before and after verification, binary routing, confidence labels, optional-tool detection, and degraded results.
+4. Assert statistical rewriting is not automatic and routes to Voice DNA commands without detector targets.
+5. Assert both commands are registered, available for all work types, and discoverable through publish and repair surfaces.
+6. Assert command reference entries and the headline command count match the live tree.
+
+### Implementation
+
+1. Write the read-only provenance audit contract.
+2. Write the separate cleaning contract with safe output and confirmation behavior.
+3. Register both commands and add them to command intents or families.
+4. Document both commands in the canonical command reference.
+5. Add them to compact help routing.
+
+### Verify
+
+```bash
+node --test test/provenance-hygiene.test.js test/commands.test.js test/command-reference-integrity.test.js test/command-surface-coherence.test.js
+```
+
+## Slice 2: Publishing And Trust Integration
+
+Status: complete
+
+### Requirements
+
+P-MUST-13, P-MUST-16, P-MUST-17, P-AC-05, P-AC-06.
+
+### Files
+
+- Extend `test/provenance-hygiene.test.js`.
+- Update `commands/scr/publish.md`.
+- Update `commands/scr/prepublish-review.md`.
+- Update `commands/scr/compliance-check.md`.
+- Add `docs/provenance-hygiene.md`.
+- Update `docs/authenticity-and-detectors.md`.
+- Update `docs/publishing.md`.
+- Update `README.md` without reverting the user's repository URL edit.
+- Update `CHANGELOG.md` without reverting the user's attribution URL edit.
+
+### Test First
+
+1. Assert publish preflight recognizes a current provenance audit as optional hygiene evidence.
+2. Assert prepublish review reports missing or stale provenance evidence without turning it into a policy violation.
+3. Assert compliance review keeps AI disclosure derived from creation history after metadata cleaning.
+4. Assert provenance documentation credits the upstream MIT repository and states all major limitations.
+5. Assert authenticity documentation preserves the no-humanizer and detector-context-only policy.
+
+### Implementation
+
+1. Wire the audit report into publishing evidence inventories and suggested routes.
+2. Preserve the separation between provenance metadata and disclosure history.
+3. Add a user guide for supported formats, capability lanes, safety defaults, and residual risk.
+4. Add concise feature discovery to README and CHANGELOG.
+
+### Verify
+
+```bash
+node --test test/provenance-hygiene.test.js test/command-reference-integrity.test.js test/command-surface-coherence.test.js
+npm run policy:check
+```
+
+## Slice 3: Installer And Regression Hardening
+
+Status: complete
+
+### Requirements
+
+P-MUST-14, P-MUST-15, P-MUST-18.
+
+### Files
+
+- Extend `test/provenance-hygiene.test.js` only if a discovered gap needs coverage.
+- Update installer or runtime tests only if file-backed discovery does not already install both commands.
+- Update `.godpowers/features/provenance-hygiene/` review artifacts.
+
+### Test First
+
+1. Confirm installer command discovery includes both command files without a hard-coded manifest branch.
+2. Confirm `package.json` has no dependencies and the Node floor remains unchanged.
+3. Confirm the full command tree, docs, package contents, and writing policy remain coherent.
+
+### Implementation
+
+1. Fix only concrete failures found by the targeted and full suites.
+2. Do not change unrelated repository metadata edits.
+3. Record residual limitations and any deferred external-tool work.
+
+### Verify
+
+```bash
+npm test
+npm run policy:check
+npm pack --dry-run
+```
+
+## Completion Gate
+
+- Both commands are installed through the existing file-backed runtime pipeline.
+- Default behavior is non-mutating.
+- Applied cleaning creates verified copies unless the writer explicitly confirms in-place operation.
+- Reports distinguish confirmed evidence from uncertain or unsupported signals.
+- Voice DNA and disclosure truth are unchanged.
+- Targeted tests, the full suite, policy checks, and package dry-run pass.
+
+Completion gate: passed on 2026-08-14.

@@ -1,0 +1,196 @@
+# Provenance Hygiene Feature PRD
+
+## Status
+
+- Feature: provenance hygiene
+- Product: Scriveno
+- Scope: feature addition to an existing product
+- Source inspiration: `guillaumemeyer/watermarks-remover`
+- Product boundary: privacy and publishing hygiene for content the writer owns or is authorized to process
+
+## Problem
+
+Writers can export text, images, and publication files that contain invisible Unicode controls, generator metadata, EXIF or XMP fields, document properties, or hard-bound C2PA manifests. Scriveno currently has no dedicated way to inspect those channels, explain what can be verified, or create a cleaned delivery copy.
+
+The adjacent problem of statistical text watermarking cannot be solved deterministically. Rewriting prose solely to influence a detector would conflict with Scriveno's Voice DNA and detector policy. The feature must therefore separate verifiable hygiene from uncertain signals and preserve truthful AI disclosure.
+
+## Outcome
+
+Writers can run a read-only provenance audit, review evidence by file and signal class, and deliberately create cleaned copies without changing the canonical manuscript by default. Reports state exactly what was inspected, what was removed, what could remain, and which optional tools were unavailable.
+
+## Users
+
+- Writers preparing review, submission, retail, print, or archive files.
+- Editors receiving files from multiple tools or collaborators.
+- Technical and academic authors who need Unicode hygiene without changing valid script or notation.
+- Publishers who need a reproducible metadata inventory before delivery.
+
+## In Scope
+
+- A read-only `/scr:provenance-check` command.
+- A separate `/scr:provenance-clean` command that is dry-run by default.
+- Text, manuscript, build, output, directory, and read-only URL targets.
+- Unicode, frontmatter, HTML or SVG metadata, image metadata, document properties, and hard-bound C2PA inspection.
+- Cleaned-copy output, explicit in-place confirmation, backups, and post-clean verification.
+- Capability detection for optional external tools such as `exiftool`, `c2patool`, and `qpdf`.
+- Honest confidence and residual-risk reporting.
+- Publishing, compliance, help, installer, and command-registry integration.
+
+## Out Of Scope
+
+- Claims that content is human-written, undetectable, or free of every provenance signal.
+- Optimizing text against an AI detector score or providing a generic humanizer.
+- Automatically downloading models, Python environments, Docker images, or external repositories.
+- Automatic pixel-domain image watermark removal.
+- Audio or video watermark removal.
+- C2PA soft-binding removal.
+- Secret-key vendor detection or certification.
+- Remote website mutation.
+- Removing disclosure duties after metadata cleaning.
+
+## Requirements
+
+### Audit
+
+#### P-MUST-01: Read-only command
+
+Scriveno MUST ship `/scr:provenance-check [target] [--scope <scope>] [--strict]`. It MUST inspect without modifying the target. If `target` is omitted, it MUST resolve the active manuscript and use the requested scope.
+
+Supported scopes MUST include `source`, `build`, `output`, and `all`. A file or directory target MUST override scope discovery. An HTTP or HTTPS target MUST remain read-only.
+
+#### P-MUST-02: Target safety
+
+The audit MUST reject unsupported schemes, unresolved targets, and binary input accidentally routed through a text path. It MUST name the correct supported path or optional tool instead of decoding compressed bytes as prose.
+
+#### P-MUST-03: Unicode inspection
+
+The audit MUST identify suspicious invisible or exotic Unicode by code point, class, count, and file. Classes MUST cover zero-width carriers, bidi controls, tag characters, variation selectors, exotic spaces, and optional confusables.
+
+The default classification MUST preserve load-bearing script joiners, emoji joiners or variation selectors, flag sequences, and legitimate orthographic controls. Aggressive stripping MUST never be the default.
+
+#### P-MUST-04: File inspection coverage
+
+The audit MUST describe credible inspection paths for Markdown, plain text, HTML, SVG, PNG, JPEG, PDF, DOCX, ODT, and EPUB. Unsupported or degraded formats MUST be reported, not silently treated as clean.
+
+#### P-MUST-05: Metadata and C2PA evidence
+
+The audit MUST distinguish:
+
+- hard-bound C2PA or embedded manifest evidence
+- EXIF, XMP, generator, software, author, and document-property metadata
+- visible content
+- soft-bound or pixel-domain signals that may survive metadata stripping
+
+When `c2patool` or `exiftool` is installed, the command MUST use the tool only for documented, read-only inspection. When absent, the report MUST identify the affected coverage as unavailable or degraded.
+
+#### P-MUST-06: Finding confidence
+
+Every finding MUST use one of four confidence labels: `confirmed`, `probable`, `informational`, or `likely_false_positive`. Raw byte-string matches outside a parsed metadata structure MUST NOT be reported as confirmed.
+
+#### P-MUST-07: Audit report
+
+The command MUST write `.manuscript/reviews/PROVENANCE-AUDIT.md` for manuscript-scoped runs. The report MUST include target inventory, tool availability, findings, unsupported paths, residual risks, and suggested next commands.
+
+### Cleaning
+
+#### P-MUST-08: Separate dry-run transform
+
+Scriveno MUST ship `/scr:provenance-clean [target] [--scope <scope>] [--apply] [--in-place]`.
+
+Without `--apply`, the command MUST show proposed actions and write no cleaned file. With `--apply`, it MUST write cleaned copies by default. `--in-place` MUST require `--apply`, an explicit writer confirmation, and a recoverable backup before any change.
+
+#### P-MUST-09: Deterministic text cleaning
+
+For supported text, the cleaner MUST normalize suspicious spaces to plain spaces where safe and remove confirmed carrier controls while preserving legitimate script and emoji behavior. It MUST report counts by code point and re-run inspection on the result.
+
+#### P-MUST-10: Container cleaning
+
+For supported files, the cleaner MUST remove only documented provenance or generator metadata. It MUST preserve visible content, image pixels, color profiles needed for correct rendering, document body text, accessibility data, and publication structure.
+
+PDF cleaning MUST be reported as degraded unless a rewrite path such as `qpdf` makes removed incremental metadata unrecoverable. The command MUST never claim permanent PDF removal from an ExifTool incremental update alone.
+
+#### P-MUST-11: Output naming and verification
+
+Cleaned outputs MUST use an adjacent `*.cleaned.*` name or a clearly reported cleaned-output directory. Canonical files under `.manuscript/drafts/body/` MUST remain unchanged unless the writer explicitly requests in-place cleaning.
+
+Every applied clean MUST be inspected again. The final response MUST compare before and after findings and name any remaining or unverified channels.
+
+### Voice And Authorship Integrity
+
+#### P-MUST-12: Voice DNA boundary
+
+The provenance commands MUST NOT paraphrase prose automatically. Statistical text watermarks MUST be described as unverifiable without the relevant vendor detector and key.
+
+If the writer wants prose revised, the command MUST route to `/scr:line-edit`, `/scr:polish`, or a scoped re-draft. Those commands MUST load `STYLE-GUIDE.md`, preserve meaning, work at atomic-unit scope, and improve visible craft rather than optimize a detector score.
+
+#### P-MUST-13: Disclosure truth
+
+Cleaning metadata MUST NOT change Scriveno's record of AI-generated or AI-assisted content. The report and next-command routing MUST state that platform disclosure obligations remain and route retail work to `/scr:compliance-check`.
+
+### Operations And Integration
+
+#### P-MUST-14: No new runtime dependency
+
+The implementation MUST add no npm dependency and MUST preserve Node.js `>=20.0.0`. Optional external tools MAY be detected and invoked through shell instructions. Missing tools MUST produce installation guidance or a degraded-coverage result, not automatic installation.
+
+#### P-MUST-15: Resource and path safety
+
+The commands MUST avoid following output symlinks, MUST not overwrite a different file through a pre-placed link, MUST cap or warn on unusually large inputs, and MUST keep remote targets read-only. Credentials MUST never be passed on a command line.
+
+#### P-MUST-16: Product surface integration
+
+Both commands MUST be registered in `data/CONSTRAINTS.json`, assigned to discoverability intents or families, installed across supported runtimes, documented in `docs/command-reference.md`, and linked from relevant publishing and authenticity guidance.
+
+`/scr:publish --preflight`, `/scr:prepublish-review`, and `/scr:compliance-check` MUST recognize a current provenance audit as evidence. They MUST treat a missing audit as an optional hygiene gap, not as proof of non-compliance.
+
+#### P-MUST-17: Attribution
+
+User-facing provenance documentation MUST credit `guillaumemeyer/watermarks-remover` as the feature inspiration and link to its MIT-licensed repository. Scriveno MUST not claim that the upstream project certifies any Scriveno result.
+
+#### P-MUST-18: Regression coverage
+
+Tests MUST lock:
+
+- both command files and their response contracts
+- command registry and discoverability membership
+- command-reference coverage and count
+- dry-run and cleaned-copy requirements
+- Voice DNA and detector-policy guardrails
+- disclosure preservation
+- optional-tool and degraded-path reporting
+- package inclusion across runtime installers
+- absence of new npm dependencies
+
+## Acceptance Scenarios
+
+### P-AC-01: Safe text audit
+
+Given a Markdown draft with zero-width carriers and a legitimate emoji joiner, when the writer runs `/scr:provenance-check`, the report identifies the carriers and preserves the emoji sequence as legitimate context.
+
+### P-AC-02: Dry-run clean
+
+Given a supported file with confirmed metadata, when the writer runs `/scr:provenance-clean` without `--apply`, no file changes and the proposed removal is reported.
+
+### P-AC-03: Cleaned copy
+
+Given a writer-owned JPEG with removable EXIF and XMP, when the writer confirms `/scr:provenance-clean --apply`, Scriveno creates a cleaned copy, preserves necessary color information, and reports before and after evidence.
+
+### P-AC-04: Missing optional tools
+
+Given a PDF and no `exiftool`, `c2patool`, or `qpdf`, when the writer runs an audit, the result is `degraded`, names the missing capabilities, and does not claim the PDF is clean.
+
+### P-AC-05: Disclosure preserved
+
+Given an AI-generated cover that has had metadata removed, when the writer runs `/scr:compliance-check`, the cover remains classified according to how it was created, not according to its current metadata.
+
+### P-AC-06: Detector request boundary
+
+Given a request to rewrite a manuscript until a detector score falls below a threshold, the provenance command refuses that target and offers voice-led craft review through existing Scriveno revision commands.
+
+## Success Measures
+
+- Writers can distinguish verifiable metadata or Unicode findings from uncertain watermark claims.
+- Default runs do not mutate canonical manuscript files.
+- Applied runs produce cleaned copies and a before or after evidence trail.
+- Voice DNA and platform disclosure behavior remain unchanged.
+- Existing command, installer, and full regression suites continue to pass.

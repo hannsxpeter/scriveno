@@ -1,0 +1,49 @@
+# Godpowers initialization handoff
+
+## User request
+
+Add a Scriveno-native feature set inspired by `guillaumemeyer/watermarks-remover` so writers can inspect and clean content they own before publishing.
+
+## Detected mode
+
+- Existing brownfield product with a mature command and test surface.
+- Feature-sized request within the current Scriveno repository.
+- No existing `.godpowers/` state was present.
+
+## Detected context
+
+- Scriveno is a markdown-first skill and command system installed into multiple AI coding agents.
+- Runtime dependencies are prohibited. The Node.js installer remains dependency-free.
+- External CLI tools may be detected and invoked by command instructions.
+- Voice DNA is the core trust boundary. Any text rewrite must load `STYLE-GUIDE.md` first and must preserve the fresh-context-per-atomic-unit pipeline.
+- Existing `.planning/` artifacts provide legacy product, architecture, roadmap, and release context. Import them as preparation evidence without treating them as canonical Godpowers truth.
+- The worktree already contains unrelated user changes in `CHANGELOG.md`, `README.md`, `bin/install.js`, `docs/release-notes.md`, and `package.json`. Preserve them and do not revert or overwrite them.
+
+## Initial findings summary
+
+- The repository has more than 100 command markdown files, agent prompts, templates, a dependency-free installer, and a large Node test suite.
+- No current Scriveno command or documented workflow covers Unicode provenance inspection, C2PA or metadata hygiene, statistical watermark reduction, directory audits, or website audits.
+- Existing adjacent surfaces include `scr:cleanup`, `scr:originality-check`, `scr:compliance-check`, `scr:export`, `scr:publish`, `scr:prepublish-review`, and illustration commands.
+- The upstream reference offers deterministic Unicode cleaning, supported-container metadata cleaning, optional rewrites, aggregate audits, optional external C2PA and EXIF tools, and optional heavy image watermark tooling.
+- Scriveno must not vendor Python libraries or add npm dependencies. A native implementation should be command-driven, use host capabilities where available, detect optional external CLIs, and report unsupported paths honestly.
+
+## Imported context summary
+
+- `.planning/PROJECT.md` records the shipped product baseline and architecture constraints.
+- `.planning/codebase/ARCHITECTURE.md` and `.planning/codebase/STACK.md` describe the file-backed command system and installer conventions.
+- `.planning/ROADMAP.md` and `.planning/STATE.md` show no active milestone and allow a new feature scope.
+- Existing test guidance requires targeted Node tests, full `npm test`, and `npm run policy:check` for command and documentation changes.
+
+## Pillars status
+
+- Pillars have not yet been initialized.
+- Initialize `agents/context.md`, `agents/repo.md`, and the core pillar stubs from repository evidence.
+- For the generic feature trigger, do not add optional AI-tool pointer fences beyond the mandatory native Pillars protocol.
+
+## Routing notes
+
+1. Initialize Godpowers state and import the legacy `.planning/` context.
+2. Return to `/god-feature` for a feature-scoped PRD.
+3. Treat this feature as new architectural ground because it adds content-provenance inspection and cleaning boundaries.
+4. Preserve writer intent and disclosure truth. Do not claim cleaned content is human-written or undetectable.
+5. Prefer cleaned copies and explicit dry-run inspection. Require deliberate confirmation for in-place changes and behavior-adjacent code rewrites.

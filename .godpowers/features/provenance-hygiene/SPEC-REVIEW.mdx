@@ -1,0 +1,29 @@
+# Provenance Hygiene Specification Review
+
+## Verdict
+
+PASS
+
+## Evidence
+
+- `/scr:provenance-check` is explicitly read-only, supports manuscript scopes plus file, directory, HTTP, and HTTPS targets, rejects unsupported schemes, classifies by magic bytes, and writes `PROVENANCE-AUDIT.md`.
+- `/scr:provenance-clean` is dry-run by default, writes cleaned copies after `--apply`, requires confirmation and a recoverable backup for `--in-place`, and performs post-clean verification.
+- Unicode handling distinguishes removable carriers from script joiners, emoji sequences, flag tags, variation selectors, and orthographic controls.
+- Format lanes cover Markdown, text, HTML, SVG, PNG, JPEG, PDF, DOCX, ODT, and EPUB. Optional `c2patool`, ExifTool, `qpdf`, `zip`, and `unzip` capabilities degrade honestly when unavailable.
+- File safety includes path quoting, symlink rejection, atomic output replacement, large-input warnings, archive traversal and expansion checks, credential protection, and read-only remote targets.
+- Voice DNA remains authoritative. Neither command paraphrases prose, runs a humanizer, or optimizes detector scores.
+- Publishing, prepublish review, and compliance consume current provenance evidence without making a missing audit a blocker. Metadata cleanup does not change creation history or disclosure duties.
+- Both commands are registered, documented, discoverable, installed across command profiles, and included in the package.
+- Runtime agent discovery now ignores project Pillar context files, and npm packaging includes only the six executable agent prompts.
+- The package remains dependency-free with Node.js `>=20.0.0`.
+
+## Verification
+
+- Full repository test suite: PASS
+- Writing policy scan: PASS
+- npm package dry run: PASS
+- Targeted provenance, command, installer, agent-discovery, package, and publishing surface tests: PASS
+
+## Findings
+
+No blocking or non-blocking specification gaps remain.

@@ -1,0 +1,31 @@
+# Documentation Update Log
+
+## 2026-08-15: Scriveno 3.7.0
+
+### Verified Claims
+
+- The command tree contains 127 commands, including `/scr:provenance-check` and `/scr:provenance-clean`.
+- The audit command is read-only and the cleaning command is dry-run by default.
+- Applied cleaning creates cleaned copies unless the writer explicitly confirms in-place replacement with a backup.
+- Supported lanes cover Markdown, text, HTML, SVG, PNG, JPEG, PDF, DOCX, ODT, and EPUB.
+- Optional metadata and provenance tools remain external CLI prerequisites, with no new npm dependency.
+- Voice DNA, detector policy, and platform disclosure are not changed by metadata cleaning.
+- Package discovery includes only the six executable agent prompts with explicit metadata.
+
+### Updated Documents
+
+- `README.md`: version badge, release status, publishing feature summary, command count, and provenance guide link.
+- `CHANGELOG.md`: finalized the `3.7.0` release entry.
+- `docs/release-notes.md`: added the public `3.7.0` summary.
+- `docs/provenance-hygiene.md`: documented commands, formats, optional tools, safety defaults, residual risk, and upstream attribution.
+- `docs/publishing.md`, `docs/authenticity-and-detectors.md`, `docs/configuration.md`, `docs/command-reference.md`, `docs/architecture.md`, and `docs/voice-dna.md`: aligned integration and current release claims.
+
+### Drift Corrected
+
+- Replaced active `3.6.0` version claims with `3.7.0` while preserving historical release entries.
+- Aligned active command-count claims to 127.
+- Aligned package-lock metadata with the package version.
+
+### New Documents
+
+- `docs/provenance-hygiene.md`.

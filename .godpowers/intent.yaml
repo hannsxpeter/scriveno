@@ -1,0 +1,14 @@
+apiVersion: godpowers/v1
+kind: Project
+metadata:
+  name: scriveno
+  description: "Add a Scriveno-native provenance hygiene feature so writers can inspect and clean content they own before publishing."
+mode: B
+scale: small
+workflow: feature-addition
+config:
+  yolo: false
+  conservative: false
+budgets:
+  cache: true
+  model-profile: standard

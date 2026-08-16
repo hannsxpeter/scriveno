@@ -41,6 +41,7 @@ Load:
 - `.manuscript/RECORD.md` if it exists
 - Drafted prose from `.manuscript/drafts/body/`
 - Review reports from `.manuscript/reviews/`
+- `.manuscript/reviews/PROVENANCE-AUDIT.md` when present, as optional artifact-hygiene evidence
 - Voice, continuity, beta-reader, originality, sensitivity, line-edit, copy-edit, and polish reports when present, including legacy root-level originality or sensitivity reports from older projects
 - `.manuscript/front-matter/` and `.manuscript/back-matter/` inventories
 - `.manuscript/output/`, `.manuscript/build/`, and `.manuscript/marketing/` inventories for blurb, synopsis, query letter, cover assets, and prior exports
@@ -69,7 +70,8 @@ Review the whole manuscript at manuscript scale, not as isolated units:
 4. **Continuity and record**: Check contradictions against RECORD.md, prior reviews, PLACES.md, GEOGRAPHY.md, character or adapted cast surfaces, and relevant world/subject surfaces.
 5. **Line and copy readiness**: Look for repeated prose tics, typo clusters, punctuation problems, inconsistent names, and unresolved copy-edit findings.
 6. **Publication matter**: Inventory front matter, back matter, blurb, synopsis, query letter, cover handoff assets, and prior export files. Report missing matter as a publishing-readiness issue, not as work this command will generate. For retail destinations, also check whether `.manuscript/reviews/PLATFORM-COMPLIANCE.md` exists and is current; if not, report the platform-policy gate as unchecked and route it to `/scr:compliance-check` rather than running policy checks here.
-7. **Open reports**: Scan prior review and diagnostic reports for unresolved high-severity items.
+7. **Provenance hygiene**: Inventory `.manuscript/reviews/PROVENANCE-AUDIT.md`. If it is missing or older than the files it covered, report an optional hygiene gap and suggest `/scr:provenance-check`. A missing or stale provenance audit is not a compliance violation and must not change the editorial verdict by itself. If the audit names safe cleanup opportunities, suggest `/scr:provenance-clean` without running it.
+8. **Open reports**: Scan prior review and diagnostic reports for unresolved high-severity items.
 
 When issues are bounded by type, follow `docs/subagent-spawning-protocol.md` and spawn focused diagnostic workers only for the issue groups that need them:
 

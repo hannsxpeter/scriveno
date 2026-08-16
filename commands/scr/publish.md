@@ -40,6 +40,7 @@ Load these project files:
 - `.manuscript/config.json` -- to get `work_type`, title, author, language
 - Scriveno's installed/shared `CONSTRAINTS.json` (global `~/.scriveno/data/CONSTRAINTS.json` or project `.scriveno/data/CONSTRAINTS.json`) -- to check `publishing_prerequisites`, `exports` section, and work type group
 - `.manuscript/OUTLINE.md` -- to verify draft completeness
+- `.manuscript/reviews/PROVENANCE-AUDIT.md` when it exists -- optional hygiene evidence for generated or imported deliverables
 
 Determine the work type group from CONSTRAINTS.json `work_type_groups` so you can check which presets and commands are available.
 
@@ -140,7 +141,8 @@ Preflight must include:
 3. The publishing prerequisite checklist from STEP 3a.
 4. Preset availability against `CONSTRAINTS.json`.
 5. A policy-gate check: if `.manuscript/reviews/PLATFORM-COMPLIANCE.md` does not exist or predates the newest draft, report `[WARN] platform compliance ..... not checked` and suggest `/scr:compliance-check` for the chosen destination (platform policies, copyright diligence, AI-disclosure answers).
-6. External tool checks by calling the matching export checks:
+6. A provenance-hygiene check: if `.manuscript/reviews/PROVENANCE-AUDIT.md` exists and is newer than the newest audited file, report `[PASS] provenance hygiene ..... current optional hygiene evidence`. If it is missing or stale, report `[INFO] provenance hygiene ..... optional check not current` and suggest `/scr:provenance-check`. Its absence must not block publishing. If the audit recommends safe cleanup, suggest `/scr:provenance-clean` and let the writer decide whether to apply it.
+7. External tool checks by calling the matching export checks:
    - `share-pdf`: `/scr:export --format pdf --review --check`
    - `share-docx`: `/scr:export --format docx --check`
    - `share-epub`: `/scr:export --format epub --check`
@@ -213,6 +215,9 @@ Missing 3 items. Generate non-matter prerequisites now? (yes/no)
 | Synopsis | Any `.manuscript/marketing/SYNOPSIS-*.md` file exists | `/scr:synopsis` |
 | Cover art | `.manuscript/build/ebook-cover.jpg` or `.png`, plus `.manuscript/build/paperback-cover.pdf` for print presets | `/scr:cover-art` |
 | Platform compliance | `.manuscript/reviews/PLATFORM-COMPLIANCE.md` exists and is newer than the newest draft for retail, wide, print, and distributor presets | `/scr:compliance-check` |
+| Provenance hygiene | `.manuscript/reviews/PROVENANCE-AUDIT.md` exists and is newer than the newest audited file | `/scr:provenance-check`, then optionally `/scr:provenance-clean` |
+
+Provenance hygiene is optional evidence, not a platform-policy gate. A missing or stale audit must not block packaging or change the compliance verdict.
 
 **Canonical cover build surface:** Scriveno's cover handoff contract lives under `.manuscript/build/`:
 - Ebook front cover: `.manuscript/build/ebook-cover.jpg` (or `.png`)

@@ -1,0 +1,30 @@
+# Provenance Hygiene Verification
+
+## Result
+
+PASS
+
+## Release Gate
+
+`npm run release:check` passed on 2026-08-14.
+
+- Tests: 2,171 passed, 0 failed.
+- Writing policy: passed.
+- npm package dry run: passed with 315 files.
+- Packaged agents: six executable Scriveno prompts only.
+- Packaged commands: `/scr:provenance-check` and `/scr:provenance-clean` present.
+
+## Focused Coverage
+
+- Read-only audit and dry-run cleaning defaults.
+- Cleaned-copy naming, in-place confirmation, backups, and post-clean verification.
+- Unicode safety, binary routing, optional tools, degraded lanes, and residual risk.
+- Voice DNA, detector policy, and disclosure preservation.
+- Publishing, compliance, help, command registry, reference docs, and package discovery.
+- Runtime agent discovery and package exclusion of project Pillar context files.
+
+## Review Gates
+
+- Specification review: PASS.
+- Quality review: PASS.
+- Hardening review: PASS.

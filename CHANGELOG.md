@@ -2,6 +2,17 @@
 
 All notable package-level changes to `scriveno` are documented here.
 
+## 3.7.0 - 2026-08-15
+
+Provenance hygiene for text, documents, archives, and publishing assets.
+
+- Added `/scr:provenance-check`, a read-only audit for invisible Unicode markers, document metadata, C2PA manifests, archive entries, and supported image metadata.
+- Added `/scr:provenance-clean`, a dry-run-first cleanup workflow that defaults to verified cleaned copies and requires confirmation plus backup for in-place changes.
+- Added optional capability lanes for `c2patool`, ExifTool, `qpdf`, and archive tools without adding npm dependencies or installing tools automatically.
+- Kept artifact cleanup separate from Voice DNA, detector scores, authorship claims, and platform disclosure duties. Command count 125 -> 127.
+- Hardened installer and package agent discovery so project Pillar context files cannot be installed or published as executable Scriveno agents.
+- Updated package, template, constraint, configuration, proof, and release metadata to `3.7.0`.
+
 ## 3.6.0 - 2026-06-26
 
 Multi-book identity, slug-based naming, and a first-class series store.
@@ -441,7 +452,7 @@ Patch release focused on integrating Domain Grilling principles into Scriveno's 
 
 ## 2.0.3 - 2026-05-15
 
-Patch release focused on integrating `authenticity-check` principles into Scriveno's Voice DNA diagnostic layer. This is the evaluative counterpart to the [`humanizer`](https://github.com/aihxp/humanizer) transform principles added in `2.0.2`: it diagnoses how authentically prose reads as the writer's own work and never rewrites.
+Patch release focused on integrating `authenticity-check` principles into Scriveno's Voice DNA diagnostic layer. This is the evaluative counterpart to the [`humanizer`](https://github.com/hannsxpeter/humanizer) transform principles added in `2.0.2`: it diagnoses how authentically prose reads as the writer's own work and never rewrites.
 
 **Authenticity-check principle integration**
 

@@ -220,6 +220,8 @@ Publishing boundary:
 - `/scr:build-ebook`, `/scr:build-print`, `/scr:build-smashwords`, and `/scr:build-poetry-submission`: final package builders for a specific channel or format.
 - `/scr:front-matter` and `/scr:back-matter`: content creation before packaging.
 - `/scr:prepublish-review`: final editorial gate.
+- `/scr:provenance-check`: optional read-only audit of invisible markers, metadata, and provenance manifests.
+- `/scr:provenance-clean`: optional dry-run cleanup plan that writes cleaned copies only after `--apply`.
 
 ```
 /scr:publish
@@ -283,6 +285,15 @@ Before exporting, run these commands to make sure your manuscript is ready:
 
 Use `--preset <preset>` when you already know the target destination, and `--strict` when you want major issues treated as stop conditions.
 
+**Provenance hygiene** -- Optional artifact audit before upload or distribution:
+
+```
+/scr:provenance-check output
+/scr:provenance-clean output
+```
+
+The first command writes a read-only evidence report. The second previews cleanup and requires `--apply` before writing cleaned copies. Missing provenance evidence does not block publishing, and removing metadata does not change creation history or any AI-content disclosure, copyright, licensing, or attribution duty.
+
 **Platform compliance** -- Policy, copyright, and AI-disclosure gate for retail destinations:
 
 ```
@@ -327,4 +338,5 @@ Export commands resolve templates from `.scriveno/data/export-templates/` for pr
 
 - [Getting Started](getting-started.md) -- Installation and first project
 - [Command Reference](command-reference.md) -- Full list of export and publish commands
+- [Provenance Hygiene](provenance-hygiene.md) -- Read-only audits, safe cleaned copies, optional tools, and residual risk
 - [Translation Guide](translation.md) -- Translating your manuscript for international publication

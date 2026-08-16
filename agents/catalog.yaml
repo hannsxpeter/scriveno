@@ -1,0 +1,35 @@
+version: 1
+absent:
+  - identity: a11y
+    covers: [accessibility, wcag, assistive technology]
+    triggers: [a11y, accessibility, wcag, screen reader]
+  - identity: analytics
+    covers: [product events, user telemetry, key metrics]
+    triggers: [analytics, product event, telemetry, kpi]
+  - identity: async
+    covers: [background jobs, queues, schedules, events]
+    triggers: [background job, queue, scheduler, cron, async]
+  - identity: cache
+    covers: [caching, invalidation, time to live]
+    triggers: [cache, caching, invalidation, ttl]
+  - identity: compliance
+    covers: [regulatory requirements, audit controls, control mappings]
+    triggers: [compliance, soc2, hipaa, gdpr, pci, audit]
+  - identity: config
+    covers: [configuration, environment variables, feature flags, secrets]
+    triggers: [config, configuration, environment variable, feature flag, secret]
+  - identity: i18n
+    covers: [translation, locale, right-to-left layout, localization]
+    triggers: [i18n, translation, locale, rtl, localization]
+  - identity: integrations
+    covers: [third-party services, outbound contracts, webhooks]
+    triggers: [integration, third party, webhook, external api]
+  - identity: notifications
+    covers: [transactional email, sms, push notifications]
+    triggers: [notification, transactional email, sms, push]
+  - identity: privacy
+    covers: [personal data, consent, retention, deletion, subject rights]
+    triggers: [privacy, personal data, pii, consent, retention, deletion]
+  - identity: security
+    covers: [input validation, threat model, dependency risk, adversarial concerns]
+    triggers: [security, threat, vulnerability, owasp, cve, validation]

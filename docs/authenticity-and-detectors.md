@@ -60,6 +60,8 @@ When a manuscript or chapter receives a high external detector score:
 5. Re-run the diagnostic as a fresh read.
 6. Preserve process evidence instead of chasing a vendor score.
 
+For invisible markers or file metadata, use `/scr:provenance-check` for a read-only audit and `/scr:provenance-clean` for a dry-run cleanup plan. These commands operate on artifact hygiene, not prose style. They do not improve or validate detector scores, which remain context, not proof.
+
 If a detector report flags the whole manuscript, do not rewrite the whole manuscript by default. Scope the review by chapter or by highlighted span. Whole-manuscript rewrites are where a new, mechanical humanizer signature is most likely to appear.
 
 ## What Not To Do
@@ -92,3 +94,4 @@ That evidence does not guarantee how an external tool will score the text. It do
 - [Voice DNA](voice-dna.md)
 - [Proof Artifacts](proof-artifacts.md)
 - [Runtime Support](runtime-support.md)
+- [Provenance Hygiene](provenance-hygiene.md)

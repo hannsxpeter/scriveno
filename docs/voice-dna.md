@@ -305,5 +305,5 @@ This is not a fake objective prose score. It is a regression guard for Scriveno'
 - [Drafter Quality](drafter-quality.md) -- the three rule layers, the `draft` config block, and model-tier recommendations
 - [Authenticity And AI Detectors](authenticity-and-detectors.md) -- external detector scores, process evidence, and detector-aware authenticity
 - [Proof Badges](proof-badges.md) -- evidence levels for major product claims
-- [Command Reference](command-reference.md) -- Full list of all 125 commands with usage and examples
+- [Command Reference](command-reference.md) -- Full list of all 127 commands with usage and examples
 - [Work Types Guide](work-types.md) -- How work types adapt Scriveno's vocabulary and commands

@@ -1,6 +1,6 @@
 {
   "name": "scriveno",
-  "version": "3.6.0",
+  "version": "3.7.0",
   "description": "Spec-driven creative writing, publishing, and translation pipeline for AI coding agents. From blank page to published book.",
   "bin": {
     "scriveno": "bin/install.js"
@@ -32,11 +32,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/aihxp/scriveno.git"
+    "url": "git+https://github.com/hannsxpeter/scriveno.git"
   },
-  "homepage": "https://github.com/aihxp/scriveno#readme",
+  "homepage": "https://github.com/hannsxpeter/scriveno#readme",
   "bugs": {
-    "url": "https://github.com/aihxp/scriveno/issues"
+    "url": "https://github.com/hannsxpeter/scriveno/issues"
   },
   "engines": {
     "node": ">=20.0.0"
@@ -46,7 +46,12 @@
     "lib/",
     "data/",
     "commands/",
-    "agents/",
+    "agents/continuity-checker.md",
+    "agents/drafter.md",
+    "agents/plan-checker.md",
+    "agents/researcher.md",
+    "agents/translator.md",
+    "agents/voice-checker.md",
     "templates/",
     "scripts/",
     "docs/",

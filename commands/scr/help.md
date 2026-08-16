@@ -37,7 +37,7 @@ You are helping the user navigate Scriveno commands. Load Scriveno's installed/s
 
 ## The "getting started" view (no project yet)
 
-Ask the user what they want to do. Don't list all 125 commands -- show them this:
+Ask the user what they want to do. Don't list all 127 commands -- show them this:
 
 ```
 Scriveno -- ready to start.
@@ -86,7 +86,7 @@ When the writer asks for a specialist area, show the family hub first, then 2-5 
 - Session: `/scr:save` first, then `/scr:history`, `/scr:versions`, `/scr:compare`, `/scr:pause-work`, `/scr:resume-work`, or `/scr:session-report`.
 - Sacred: `/scr:sacred:source-tracking` first, then the dedicated sacred commands that apply to the active tradition and work type.
 - Submission: `/scr:publish` first, then `/scr:synopsis`, `/scr:query-letter`, `/scr:book-proposal`, `/scr:discussion-questions`, `/scr:prepublish-review`, or `/scr:export --format submission-package`.
-- Publishing: `/scr:publish` first, `/scr:export` for one-off output, and `/scr:build-ebook`, `/scr:build-print`, `/scr:build-smashwords`, or `/scr:build-poetry-submission` for final packages.
+- Publishing: `/scr:publish` first, `/scr:export` for one-off output, `/scr:provenance-check` and `/scr:provenance-clean` for delivery-file hygiene, and `/scr:build-ebook`, `/scr:build-print`, `/scr:build-smashwords`, or `/scr:build-poetry-submission` for final packages.
 - World: `/scr:build-world` first, then `/scr:new-place`, `/scr:place-touch`, `/scr:geography-map`, `/scr:new-character`, `/scr:new-people`, `/scr:relationship-map`, or `/scr:research`.
 - Collaboration: `/scr:track` first, then its subcommands plus `/scr:editor-review`, `/scr:compare`, `/scr:history`, `/scr:versions`, and `/scr:save`.
 - Command surface: `/scr:surface` first, especially `/scr:surface status` and `/scr:surface profile writing --dry-run`.
@@ -103,13 +103,15 @@ Use this wording wherever publishing choices appear:
 - `/scr:front-matter` and `/scr:back-matter`: content creation before packaging.
 - `/scr:prepublish-review`: final editorial gate.
 - `/scr:compliance-check`: platform-policy, copyright, and AI-disclosure gate.
+- `/scr:provenance-check`: read-only Unicode, metadata, and hard-bound provenance audit.
+- `/scr:provenance-clean`: dry-run-first cleaned-copy transform for confirmed findings.
 
 Group by stage:
 - **Create** -- new-work, profile-writer, series-bible
 - **Write** -- discuss, plan, draft, climax, quick-write, autopilot, plant-seed, plus any profile-building commands actually available for the current work type
 - **Revise** -- editor-review, subject-touch, line-edit, copy-edit, continuity-check, beta-reader, voice-check, originality-check, sensitivity-review, pacing-analysis, dialogue-audit, proof-unit
 - **Character & World** -- build-world, new-character, new-people, new-place, place-touch, geography-map, relationship-map, cast-list, research
-- **Publish** -- front-matter, back-matter, blurb, cover-art, publish, export
+- **Publish** -- front-matter, back-matter, blurb, cover-art, prepublish-review, compliance-check, provenance-check, provenance-clean, publish, export
 - **Collaborate** -- track
   Present `/scr:track` as the entrypoint for revision-track workflows, and describe its subcommands in prose: create, list, switch, compare, merge, propose.
 - **Versions** -- save, history, versions, compare, undo

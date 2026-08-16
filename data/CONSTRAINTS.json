@@ -1,6 +1,6 @@
 {
   "$schema": "./constraints.schema.json",
-  "version": "3.6.0",
+  "version": "3.7.0",
   "description": "Scriveno constraint system: work types, command availability, exports, and dependencies. Every command checks this file at runtime.",
   "_notes": {
     "sacred_keys": "Sacred subcommands live at commands/scr/sacred/<name>.md and run as /scr:sacred:<name>. Their CONSTRAINTS keys use the sacred:<name> form so /scr:help can render the runnable slash-command path directly. The sacred-numbering-format entry is a separate flat command (commands/scr/sacred-numbering-format.md) that surfaces the active tradition's numbering format. It used to be named sacred-verse-numbering, which collided with sacred:verse-numbering at install time -- both flattened to scr-sacred-verse-numbering. Renamed in v1.6.x; the installer now refuses to install when two sources share a flat skill name."
@@ -92,6 +92,8 @@
       "query-letter",
       "prepublish-review",
       "compliance-check",
+      "provenance-check",
+      "provenance-clean",
       "publish",
       "export",
       "build-ebook",
@@ -123,6 +125,8 @@
       "sync",
       "validate",
       "cleanup",
+      "provenance-check",
+      "provenance-clean",
       "check-notes",
       "troubleshoot",
       "undo"
@@ -227,6 +231,8 @@
         "cover-art",
         "prepublish-review",
         "compliance-check",
+        "provenance-check",
+        "provenance-clean",
         "build-ebook",
         "build-print",
         "build-smashwords",
@@ -3119,6 +3125,20 @@
       "requires": [
         "complete-draft"
       ]
+    },
+    "provenance-check": {
+      "category": "publishing",
+      "available": [
+        "all"
+      ],
+      "description": "Inspect writer-owned text and publishing files for invisible Unicode, metadata, and hard-bound provenance signals without modifying them"
+    },
+    "provenance-clean": {
+      "category": "publishing",
+      "available": [
+        "all"
+      ],
+      "description": "Create verified cleaned copies by removing confirmed Unicode carriers and removable provenance metadata; dry-run by default"
     },
     "publish": {
       "category": "publishing",
