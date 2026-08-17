@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Scriveno 3.8.0 provenance release card</title>
+  <style>
+    /* goddesign | seed 2357432367 | Bento Anchor | Terminal Core | bg #0A0E0A | surface #101710 | text #D2E8D2 | muted #6E8A6E | accent #33FF66 h+1 | radius 2px */
+    /* goddesign-allow: mono-body row 3 Terminal Core requires IBM Plex Mono as the display and UI face */
+    @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400&display=swap");
+
+    :root {
+      --bg: #0A0E0A;
+      --surface: #101710;
+      --text: #D2E8D2;
+      --muted: #6E8A6E;
+      --accent-source: #33FF66;
+      --accent: oklch(from var(--accent-source) l c calc(h + 1));
+      --border: #1E2A1E;
+      --display: "IBM Plex Mono", "Courier New", monospace;
+      --body: "IBM Plex Sans", sans-serif;
+      --radius: 2px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    body {
+      display: grid;
+      padding: 48px;
+      font-family: var(--body);
+      background-image: repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 5px,
+        color-mix(in oklch, var(--accent) 3%, transparent) 6px
+      );
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: minmax(0, 2.05fr) minmax(0, 1fr);
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      grid-template-areas:
+        "meta meta"
+        "anchor facts"
+        "command command";
+      min-width: 0;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: color-mix(in oklch, var(--bg) 94%, transparent);
+    }
+
+    .meta {
+      grid-area: meta;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      min-width: 0;
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--border);
+      font-family: var(--display);
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .version {
+      color: var(--accent);
+    }
+
+    .anchor {
+      grid-area: anchor;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 24px;
+      min-width: 0;
+      padding: 48px;
+      border-right: 1px solid var(--border);
+    }
+
+    h1 {
+      max-width: 13ch;
+      margin: 0;
+      font-family: var(--display);
+      font-size: clamp(50px, 5.2vw, 74px);
+      font-weight: 600;
+      line-height: 1.08;
+      letter-spacing: -0.035em;
+      text-wrap: balance;
+    }
+
+    .prompt {
+      color: var(--accent);
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 0.62em;
+      height: 0.94em;
+      margin-left: 0.14em;
+      vertical-align: -0.08em;
+      background: var(--accent);
+    }
+
+    .support {
+      max-width: 56ch;
+      margin: 0;
+      color: var(--muted);
+      font-size: 21px;
+      line-height: 1.52;
+      text-wrap: pretty;
+    }
+
+    .facts {
+      grid-area: facts;
+      display: grid;
+      grid-template-rows: repeat(3, minmax(0, 1fr));
+      min-width: 0;
+    }
+
+    .fact {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
+      min-width: 0;
+      padding: 24px 32px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .fact:last-child {
+      border-bottom: 0;
+    }
+
+    .fact strong {
+      color: var(--accent);
+      font-family: var(--display);
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .fact span {
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.35;
+    }
+
+    .command {
+      grid-area: command;
+      min-width: 0;
+      padding: 24px;
+      border-top: 1px solid var(--border);
+      overflow-wrap: anywhere;
+      color: var(--text);
+      background: var(--surface);
+      font-family: var(--display);
+      font-size: 19px;
+      letter-spacing: -0.01em;
+    }
+
+    .command b {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .cursor {
+        animation: blink 1s steps(1) infinite;
+      }
+
+      @keyframes blink {
+        50% {
+          opacity: 0;
+        }
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main aria-label="Scriveno 3.8.0 release card">
+    <header class="meta">
+      <span>Scriveno</span>
+      <span class="version">Release 3.8.0</span>
+    </header>
+
+    <section class="anchor">
+      <h1><span class="prompt">$</span> CHECK PROVENANCE. KEEP VOICE DNA.<span class="cursor" aria-hidden="true"></span></h1>
+      <p class="support">Audit and clean delivery files locally by default, with normalized reports and dry-run-first changes.</p>
+    </section>
+
+    <section class="facts" aria-label="Release properties">
+      <div class="fact">
+        <strong>LOCAL</strong>
+        <span>Private processing is the default.</span>
+      </div>
+      <div class="fact">
+        <strong>VERIFIED</strong>
+        <span>Protected content is checked before output.</span>
+      </div>
+      <div class="fact">
+        <strong>0 DEPS</strong>
+        <span>The npm package remains dependency-free.</span>
+      </div>
+    </section>
+
+    <div class="command"><b>$</b> npx scriveno@3.8.0 provenance-check manuscript.epub --format sarif</div>
+  </main>
+</body>
+</html>

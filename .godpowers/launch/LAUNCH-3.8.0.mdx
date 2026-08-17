@@ -1,0 +1,121 @@
+# Scriveno 3.8.0 Launch
+
+Date: 2026-08-17
+Owner: Scriveno release maintainer
+Scope: npm package publication and GitHub release activation
+State: local-ready; public activation pending
+
+## Gate Evidence
+
+- [DECISION] `.godpowers/harden/FINDINGS.mdx` reports 0 Critical, 0 High, 3 Medium, and `Launch gate: PASSED`.
+- [DECISION] `.godpowers/state.json` records no tracked product requirements, so no incomplete P-MUST requirement exists.
+- [DECISION] `.godpowers/sync/RECONCILIATION-3.8.0.mdx` records safe-sync clear and identifies npm plus GitHub as the remaining activation targets.
+- [DECISION] The three Medium hardening findings remain owned follow-up work. They do not block this launch.
+
+## Release Surface Copy
+
+### Hero
+
+**Scriveno checks provenance without rewriting your Voice DNA.**
+
+Audit and clean delivery files locally by default. Get normalized Markdown, JSON, or SARIF reports, dry-run-first changes, and explicit outcomes for findings, degraded coverage, unsafe input, and provider failure.
+
+Primary action: install `scriveno@3.8.0` from npm.
+
+### What 3.8.0 Adds
+
+- Audit one file or a bounded batch across text, web, raster, PDF, Office, ODT, and EPUB formats.
+- Keep processing local unless the optional watermarks-remover provider is explicitly selected.
+- Preview every clean before writing, publish a checked adjacent copy by default, and require confirmation plus backup for in-place work.
+- Use exit codes `0`, `1`, `2`, `64`, and `70` in automation without parsing human prose.
+
+### Why Scriveno Is Different
+
+Scriveno treats provenance hygiene as file preparation, not an authorship verdict. It does not rewrite prose for detectors, request pixel removal, or treat stylometry as authoritative. Provider cleaning must match the exact locally proven safe result, while protected prose, pixels, frames, navigation, accessibility data, and disclosure history remain outside the mutation boundary.
+
+Substitution test: replacing Scriveno with another writing CLI breaks the Voice DNA boundary, exact provenance exit contract, and locally proven provider-result requirement. The headline and differentiator are specific to this release.
+
+## Release Cards
+
+- [DECISION] Source: `.godpowers/launch/og-card.html`.
+- [DECISION] X/Twitter card: `.godpowers/launch/og-twitter-1200x675.png`, 1200x675.
+- [DECISION] GitHub, Facebook, and LinkedIn card: `.godpowers/launch/og-linkedin-1200x630.png`, 1200x630.
+- [DECISION] The static render uses the release command, local-default boundary, verification claim, and zero-dependency package property. No metric, testimonial, or logo was invented.
+
+## Channel Copy
+
+### npm Registry
+
+Release line:
+
+> Scriveno 3.8.0 adds executable provenance auditing, optional private provider integration, and verified dry-run-first cleaning while preserving Voice DNA and the zero-dependency package boundary.
+
+Target: `https://www.npmjs.com/package/scriveno/v/3.8.0`
+
+Attribution: npm version and download telemetry identify registry discovery. A GitHub link included in any npm-facing announcement uses `utm_source=npm`, `utm_medium=registry`, and `utm_campaign=scriveno_3_8_0`.
+
+### GitHub Release
+
+Title: `Scriveno 3.8.0`
+
+Body:
+
+> Scriveno 3.8.0 turns provenance hygiene into an executable package workflow. Run bounded audits across common writing and publishing formats, choose local processing by default or explicitly opt into the watermarks-remover provider, and clean through a dry-run-first path that verifies protected content before publication.
+>
+> Reports are available as Markdown, JSON, or SARIF 2.1.0. Automation receives distinct exits for clear, findings, degraded coverage, unsafe input, and unrecovered failure. The release remains dependency-free and does not rewrite prose for detectors, remove pixel-domain marks, or change creation history and disclosure duties.
+>
+> Install: `npx scriveno@3.8.0 --help`
+>
+> Full details: `CHANGELOG.md` and `docs/release-notes.md`.
+
+Target: `https://github.com/hannsxpeter/scriveno/releases/tag/v3.8.0`
+
+Attribution: GitHub release traffic and asset downloads identify repository discovery. The npm link in the release body uses `utm_source=github`, `utm_medium=release`, and `utm_campaign=scriveno_3_8_0`.
+
+## Measurement And Success Criteria
+
+This package has no account or signup flow, so a signup dashboard and source-attributed signup requirement are not applicable. The release funnel is GitHub release view to npm package view to registry install to successful CLI invocation. No user tracking is added to the CLI.
+
+Launch succeeds when all of the following are true:
+
+1. `npm view scriveno@3.8.0 version` returns `3.8.0`.
+2. GitHub shows `v3.8.0` at the exact release commit with the checked tarball attached.
+3. A fresh temporary consumer installs `scriveno@3.8.0` from the registry and completes version, routes, provenance audit, dry-run clean, JSON, and SARIF smoke checks.
+4. `main`, `origin/main`, and the release tag agree on the release commit, except for a later explicit launch-evidence commit if one is required.
+5. The final main worktree is clean.
+
+At D+1 and D+7, record npm downloads, GitHub release views or asset downloads when available, install failures, and provenance-related issues. Compare sources through native npm and GitHub telemetry plus the channel-specific UTM links. Do not invent conversion numbers when a provider does not expose them.
+
+## Release Verification And Rollback
+
+Before the first public write:
+
+1. Confirm the worktree is clean and the candidate version is `3.8.0`.
+2. Run `npm run release:check` against the exact release commit.
+3. Record and check the hash-bound prepublication gate:
+   - `node /Users/hprincivil/.codex/godpowers-runtime/lib/prepublication-gate.js --record --project=.`
+   - `node /Users/hprincivil/.codex/godpowers-runtime/lib/prepublication-gate.js --check --project=.`
+4. Push the candidate branch, fast-forward `main`, push `main`, create the annotated `v3.8.0` tag, and push the tag.
+5. Pack one explicit tarball from the release commit and publish that file to npm.
+6. If `npm publish` returns an uncertain result, inspect `npm view scriveno@3.8.0 version` before any retry.
+7. Create the GitHub release from the same tag, attach the same tarball, and use the GitHub copy above.
+8. Run the success checks above, then remove the merged feature branch locally and remotely.
+
+Rollback trigger: deprecate `scriveno@3.8.0` and direct users to `3.7.0` if the fresh registry consumer fails a release-critical flow, the published bytes do not match the checked artifact, or a new Critical security issue appears. Do not rewrite or reuse `v3.8.0`. Preserve the failed release evidence and prepare a new patch version.
+
+## D-7 To D+7 Runbook
+
+| Date | Window | Owner | Action |
+|---|---|---|---|
+| 2026-08-10 | D-7 | Release maintainer | Prepare release notes, package proof, card source, and success criteria. Candidate evidence was finalized during the compressed release cycle on D-Day. |
+| 2026-08-14 | D-3 | Release maintainer | Confirm channel copy, upstream attribution, hardening ownership, and safe-sync state. |
+| 2026-08-16 | D-1 | Release maintainer | Run final smoke checks, confirm npm and GitHub authentication, and keep rollback commands ready. |
+| 2026-08-17 | D-Day | Release maintainer | Run the fresh prepublication gate, merge, tag, publish the exact tarball, create the GitHub release, then verify registry and fresh-consumer behavior. |
+| 2026-08-18 to 2026-08-20 | D+1 to D+3 | Release maintainer | Respond to release comments and issues, inspect install failures, and record native channel telemetry. |
+| 2026-08-24 | D+7 | Release maintainer | Compare npm and GitHub uptake, review the three Medium findings, and record a post-launch retrospective. |
+
+## Activation Boundary
+
+- [DECISION] No hosted application or staging origin exists for this npm package release. Live verification means npm registry state, GitHub release state, and a fresh installed consumer.
+- [DECISION] Public activation remains pending until the prepublication gate passes immediately before the external write.
+- [DECISION] This artifact does not authorize a stale gate, a guessed URL, an automatic retry after an uncertain publish, or mutation of the user's existing global runtime installs.
