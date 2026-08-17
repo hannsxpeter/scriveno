@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-// Implements: P-MUST-01, P-MUST-07, P-MUST-15
+// Implements: P-MUST-01, P-MUST-02, P-MUST-03, P-MUST-04, P-MUST-07, P-MUST-08, P-MUST-09, P-MUST-10, P-MUST-11, P-MUST-12, P-MUST-13, P-MUST-14, P-MUST-15, P-MUST-18
 
 const fs = require('fs');
 const path = require('path');
@@ -11,6 +11,7 @@ const architecturalProfiles = require('../lib/architectural-profiles.js');
 const autoInvokeEngine = require('../lib/auto-invoke-engine.js');
 const commandContracts = require('../lib/command-contracts.js');
 const provenanceAudit = require('../lib/provenance-audit.js');
+const provenanceClean = require('../lib/provenance-clean.js');
 const {
   RUNTIMES,
   SURFACE_PROFILES,
@@ -625,7 +626,7 @@ function removePathIfExists(targetPath) {
   return true;
 }
 
-function atomicWriteFileSync(targetPath, content) {
+function atomicWriteFileSync(targetPath, content, options = {}) {
   const dir = path.dirname(targetPath);
   fs.mkdirSync(dir, { recursive: true });
   const tmpPath = `${targetPath}.tmp.${crypto.randomUUID()}`;
@@ -637,7 +638,13 @@ function atomicWriteFileSync(targetPath, content) {
     fs.fsyncSync(fd);
     fs.closeSync(fd);
     fd = undefined;
-    fs.renameSync(tmpPath, targetPath);
+    if (options.beforePublish) options.beforePublish();
+    if (options.noClobber) {
+      fs.linkSync(tmpPath, targetPath);
+      fs.unlinkSync(tmpPath);
+    } else {
+      fs.renameSync(tmpPath, targetPath);
+    }
     // H-01: fsync the parent directory so the rename is durable on crash.
     // Best effort -- Windows rejects dir fsync with EISDIR/EPERM; some network
     // filesystems also reject it. Swallow any error to preserve existing
@@ -879,6 +886,9 @@ function printHelp() {
   scriveno routes --json
   scriveno provenance-check <target...> [--provider <local|auto|watermarks-remover>] [--require-provider]
                               [--jobs <1-8>] [--format <markdown|json|sarif>]
+  scriveno provenance-clean <target...> [--apply] [--in-place --confirm-in-place]
+                              [--provider <local|auto|watermarks-remover>] [--require-provider]
+                              [--jobs <1-8>] [--format <markdown|json|sarif>] [--output <report>]
   scriveno surface list
   scriveno surface status
   scriveno surface profile core --runtimes codex --project
@@ -909,6 +919,7 @@ Status options:
 
 Audit commands:
   provenance-check    Audit local files or directories without modifying inputs
+  provenance-clean    Plan or apply verified provenance cleaning to isolated copies
   sync --check        Check shared sync, runtime, and agent surfaces
   smoke               Smoke-test installed runtime surfaces
   agents              Inspect installed agent prompts and metadata
@@ -950,10 +961,13 @@ function parseArgs(argv) {
     provenanceProvider: 'local',
     provenanceRequireProvider: false,
     provenanceScope: 'all',
+    provenanceApply: false,
+    provenanceInPlace: false,
+    provenanceConfirmInPlace: false,
   };
 
-  if (argv[0] === 'provenance-check') {
-    options.command = 'provenance-check';
+  if (argv[0] === 'provenance-check' || argv[0] === 'provenance-clean') {
+    options.command = argv[0];
     function valueAfter(index, option) {
       const value = argv[index + 1];
       if (!value || value.startsWith('--')) {
@@ -994,6 +1008,12 @@ function parseArgs(argv) {
         options.showVersion = true;
       } else if (arg === '--strict') {
         options.provenanceStrict = true;
+      } else if (arg === '--apply' && options.command === 'provenance-clean') {
+        options.provenanceApply = true;
+      } else if (arg === '--in-place' && options.command === 'provenance-clean') {
+        options.provenanceInPlace = true;
+      } else if (arg === '--confirm-in-place' && options.command === 'provenance-clean') {
+        options.provenanceConfirmInPlace = true;
       } else if (arg === '--require-provider') {
         options.provenanceRequireProvider = true;
       } else if (arg === '--jobs') {
@@ -1023,13 +1043,19 @@ function parseArgs(argv) {
       } else if (arg.startsWith('--scope=')) {
         options.provenanceScope = parseScope(arg.slice('--scope='.length));
       } else if (arg.startsWith('-')) {
-        throw new provenanceAudit.ProvenanceInputError(`Unknown provenance-check argument ${JSON.stringify(arg)}.`, 'invalid_argument');
+        throw new provenanceAudit.ProvenanceInputError(`Unknown ${options.command} argument ${JSON.stringify(arg)}.`, 'invalid_argument');
       } else {
         options.provenanceTargets.push(arg);
       }
     }
     if (options.provenanceRequireProvider && options.provenanceProvider === 'local') {
       throw new provenanceAudit.ProvenanceInputError('--require-provider cannot be combined with --provider local.', 'invalid_argument');
+    }
+    if (options.provenanceInPlace && !options.provenanceApply) {
+      throw new provenanceAudit.ProvenanceInputError('--in-place requires --apply.', 'invalid_argument');
+    }
+    if (options.provenanceInPlace && !options.provenanceConfirmInPlace) {
+      throw new provenanceAudit.ProvenanceInputError('--in-place requires --confirm-in-place.', 'invalid_argument');
     }
     return options;
   }
@@ -1592,6 +1618,77 @@ function validateProvenanceOutput(outputPath, auditedTargets) {
   return resolved;
 }
 
+function canonicalizeProvenanceOutput(outputPath) {
+  const resolved = path.resolve(outputPath);
+  let cursor = resolved;
+  const suffix = [];
+  while (!fs.existsSync(cursor)) {
+    const parent = path.dirname(cursor);
+    if (parent === cursor) break;
+    suffix.unshift(path.basename(cursor));
+    cursor = parent;
+  }
+  let stat = fs.lstatSync(cursor);
+  if (stat.isSymbolicLink()) {
+    throw new provenanceAudit.ProvenanceInputError(`Refusing report output through a symlink: ${cursor}.`, 'unsafe_output');
+  }
+  const canonical = cursor === resolved && stat.isFile()
+    ? fs.realpathSync(resolved)
+    : path.join(fs.realpathSync(cursor), ...suffix);
+  if (cursor === resolved && stat.isFile()) {
+    cursor = path.dirname(resolved);
+    stat = fs.lstatSync(cursor);
+  }
+  if (!stat.isDirectory()) {
+    throw new provenanceAudit.ProvenanceInputError(`The report output parent is not a directory: ${cursor}.`, 'unsafe_output');
+  }
+  return { canonical, anchorPath: cursor, anchorStat: stat };
+}
+
+function captureProvenanceOutputGuard(outputPath, auditedTargets) {
+  const resolved = validateProvenanceOutput(outputPath, auditedTargets);
+  const planned = canonicalizeProvenanceOutput(resolved);
+  const existing = fs.existsSync(resolved) ? fs.lstatSync(resolved) : null;
+  if (existing && (existing.isSymbolicLink() || !existing.isFile())) {
+    throw new provenanceAudit.ProvenanceInputError('The report output must be a regular file.', 'unsafe_output');
+  }
+  return {
+    path: resolved,
+    canonical: planned.canonical,
+    anchorPath: planned.anchorPath,
+    anchorCanonical: fs.realpathSync(planned.anchorPath),
+    anchorDev: planned.anchorStat.dev,
+    anchorIno: planned.anchorStat.ino,
+    existing: existing ? { dev: existing.dev, ino: existing.ino } : null,
+  };
+}
+
+function revalidateProvenanceOutputGuard(guard, auditedTargets) {
+  validateProvenanceOutput(guard.path, auditedTargets);
+  const anchor = fs.lstatSync(guard.anchorPath);
+  if (anchor.isSymbolicLink() || !anchor.isDirectory()
+    || anchor.dev !== guard.anchorDev || anchor.ino !== guard.anchorIno
+    || fs.realpathSync(guard.anchorPath) !== guard.anchorCanonical) {
+    throw new provenanceAudit.ProvenanceInputError('The report output boundary identity changed.', 'unsafe_output');
+  }
+  if (canonicalizeProvenanceOutput(guard.path).canonical !== guard.canonical) {
+    throw new provenanceAudit.ProvenanceInputError('The report output canonical path changed.', 'unsafe_output');
+  }
+  if (guard.existing) {
+    if (!fs.existsSync(guard.path)) {
+      throw new provenanceAudit.ProvenanceInputError('The report output disappeared before publication.', 'unsafe_output');
+    }
+    const current = fs.lstatSync(guard.path);
+    if (current.isSymbolicLink() || !current.isFile()
+      || current.dev !== guard.existing.dev || current.ino !== guard.existing.ino) {
+      throw new provenanceAudit.ProvenanceInputError('The report output identity changed before publication.', 'unsafe_output');
+    }
+  } else if (fs.existsSync(guard.path)) {
+    throw new provenanceAudit.ProvenanceInputError('The report output appeared before publication.', 'unsafe_output');
+  }
+  return guard.path;
+}
+
 async function runProvenanceCheck(parsed) {
   const manuscriptScoped = parsed.provenanceTargets.length === 0;
   const targets = manuscriptScoped
@@ -1610,6 +1707,45 @@ async function runProvenanceCheck(parsed) {
     validateProvenanceOutput(outputPath, targets);
     report.outputs.push({ path: outputPath, format: parsed.provenanceFormat });
     atomicWriteFileSync(outputPath, provenanceAudit.serializeReport(report, parsed.provenanceFormat));
+  } else {
+    process.stdout.write(provenanceAudit.serializeReport(report, parsed.provenanceFormat));
+  }
+  process.exitCode = report.recommendedExitCode;
+  return report;
+}
+
+async function runProvenanceClean(parsed) {
+  const manuscriptScoped = parsed.provenanceTargets.length === 0;
+  const targets = manuscriptScoped
+    ? resolveProvenanceScopeTargets(parsed.provenanceScope)
+    : parsed.provenanceTargets;
+  const reportGuard = parsed.provenanceOutput
+    ? captureProvenanceOutputGuard(parsed.provenanceOutput, targets)
+    : null;
+  const reportOutput = reportGuard?.path || null;
+  const report = await provenanceClean.cleanTargets(targets, {
+    jobs: parsed.provenanceJobs,
+    apply: parsed.provenanceApply,
+    inPlace: parsed.provenanceInPlace,
+    confirmInPlace: parsed.provenanceConfirmInPlace,
+    provider: parsed.provenanceProvider,
+    requireProvider: parsed.provenanceRequireProvider,
+    reportOutput,
+    beforeCommit: reportGuard
+      ? () => revalidateProvenanceOutputGuard(reportGuard, targets)
+      : null,
+  });
+  const unsafeReportPlan = report.errors.some((error) => error.code === 'unsafe_output'
+    && /Planned report|artifacts alias|report output/i.test(error.message));
+  if (reportOutput && !unsafeReportPlan) {
+    const aliases = [
+      ...targets,
+      ...report.outputs.flatMap((output) => [output.path, output.backup].filter(Boolean)),
+    ];
+    atomicWriteFileSync(reportOutput, provenanceAudit.serializeReport(report, parsed.provenanceFormat), {
+      noClobber: !reportGuard.existing,
+      beforePublish: () => revalidateProvenanceOutputGuard(reportGuard, aliases),
+    });
   } else {
     process.stdout.write(provenanceAudit.serializeReport(report, parsed.provenanceFormat));
   }
@@ -2095,6 +2231,11 @@ async function main() {
 
   if (parsed.command === 'provenance-check') {
     await runProvenanceCheck(parsed);
+    return;
+  }
+
+  if (parsed.command === 'provenance-clean') {
+    await runProvenanceClean(parsed);
     return;
   }
 
@@ -2620,7 +2761,7 @@ if (require.main === module) {
   requireSupportedNode();
   main().catch((err) => {
     console.error(c('red', '\nInstallation failed:'), err.message);
-    process.exitCode = err.exitCode || (process.argv[2] === 'provenance-check' ? provenanceAudit.EXIT_CODES.INTERNAL : 1);
+    process.exitCode = err.exitCode || (['provenance-check', 'provenance-clean'].includes(process.argv[2]) ? provenanceAudit.EXIT_CODES.INTERNAL : 1);
   });
 }
 
@@ -2638,6 +2779,7 @@ module.exports = {
   runAgentAvailability,
   runRouteAudit,
   runProvenanceCheck,
+  runProvenanceClean,
   collectCommandEntries,
   collectCommandEntriesForProfile,
   collectInstallCommandEntries,

@@ -27,6 +27,11 @@ describe('provenance hygiene command surface', () => {
     assert.match(clean, /\*\.cleaned\.\*/);
     assert.match(clean, /recoverable backup/i);
     assert.match(clean, /post-clean/i);
+    assert.match(clean, /--confirm-in-place/);
+    assert.match(clean, /WebP.*AVIF.*HEIC.*BMP.*GIF.*TIFF.*BigTIFF.*XLSX.*PPTX/s);
+    assert.match(clean, /declared.*HTML.*XHTML/is);
+    assert.match(clean, /temporary sibling.*re-audit/is);
+    assert.match(clean, /compression semantics/i);
   });
 
   it('documents supported evidence classes and degraded capability lanes', () => {
@@ -57,6 +62,9 @@ describe('provenance hygiene command surface', () => {
     assert.match(clean, /symlink/i);
     assert.match(clean, /canonical.*draft/is);
     assert.match(clean, /ICC color profile/i);
+    assert.match(clean, /ideographic variation selector|U\+E0100/i);
+    assert.match(clean, /Mongolian vowel separator|U\+180E/i);
+    assert.match(clean, /confirmed.*pre-audit/is);
   });
 
   it('preserves Voice DNA and rejects detector optimization', () => {
@@ -147,6 +155,8 @@ describe('provenance hygiene command surface', () => {
     assert.match(guide + proof, /summary booleans.*normalized summary findings/is);
     assert.match(guide, /stylometry.*ignored.*authoritative/is);
     assert.match(guide + combinedCommands, /fallback.*local/is);
+    assert.match(guide + combinedCommands, /provider.*protected-content invariant/is);
+    assert.match(guide + combinedCommands, /visible prose.*pixels.*frames.*loop.*ICC/is);
     assert.match(clean, /never.*pixel removal/is);
     assert.match(clean, /keep_non_ai_metadata.*true/is);
     assert.match(clean, /also_layer_a_text.*true/is);
@@ -166,6 +176,30 @@ describe('provenance hygiene command surface', () => {
     assert.match(guide, /c2patool.*ExifTool.*qpdf/is);
     assert.match(guide, /residual risk/i);
     assert.match(guide, /cleaned cop(?:y|ies)/i);
+    assert.match(guide, /scriveno provenance-clean/);
+    assert.match(guide, /--confirm-in-place/);
+    assert.match(guide, /declared.*HTML.*XHTML/is);
+    assert.match(guide, /pixels.*frames.*loop.*ICC/is);
+    assert.match(guide, /relationships.*styles.*media.*navigation.*accessibility/is);
+    assert.match(guide, /MIME.*signature/is);
+    assert.match(guide, /fresh.*archive/is);
+    assert.match(guide, /duplicate.*name.*reject/is);
+    assert.match(guide, /preAudit.*postAudit.*findingComparison/is);
+    assert.match(guide, /code point.*remov.*replacement.*count/is);
+    assert.match(guide, /BMP V5.*ICC/is);
+    assert.match(guide, /nested.*AVIF.*HEIC.*residual/is);
+    assert.match(guide, /peakWorkers|peak worker/i);
+    assert.match(guide, /no_safe_change.*non-actionable/is);
+    assert.match(guide + clean, /Exif.*Orientation.*preserv/is);
+    assert.match(guide + clean, /JPEG XMP.*preserv.*alt text.*rights.*copyright.*accessibility/is);
+    assert.match(guide + clean, /generator XMP.*residual.*field-level/is);
+    assert.match(guide + clean, /COM.*exact.*remov/is);
+    assert.match(guide + clean, /TIFF.*BigTIFF.*every.*IFD.*cycle.*count.*bounds/is);
+    assert.match(guide + clean, /strip.*tile.*overlap.*residual/is);
+    assert.match(guide, /findingComparison.*absolute location.*semantic identity/is);
+    assert.match(guide, /occurrence-aware multiset/i);
+    assert.match(guide, /Markdown.*preAudit.*postAudit.*schema.*status.*removed.*remaining.*added/is);
+    assert.match(guide, /degraded pre-audit.*exit.*2/is);
     assert.match(guide, /does not.*humanizer/is);
     assert.match(authenticity, /\/scr:provenance-check/);
     assert.match(authenticity, /\/scr:provenance-clean/);
@@ -174,5 +208,40 @@ describe('provenance hygiene command surface', () => {
     assert.match(readme, /All 127 commands/);
     assert.match(changelog, /provenance-check/);
     assert.match(changelog, /provenance-clean/);
+  });
+
+  it('keeps repair safety fixtures explicit', () => {
+    const fixtures = JSON.parse(read('test/fixtures/provenance/cases.json'));
+    assert.deepStrictEqual(fixtures.protectedUnicodeCodePoints, ['U+180E', 'U+E0100']);
+    assert.deepStrictEqual(fixtures.cleanReportFields, ['preAudit', 'postAudit', 'findingComparison']);
+    assert.ok(fixtures.archiveApplyRefusals.includes('identical-duplicate'));
+    assert.ok(fixtures.archiveApplyRefusals.includes('expansion'));
+    assert.ok(fixtures.archiveApplyRefusals.includes('compression-ratio'));
+    assert.ok(fixtures.archiveApplyRefusals.includes('unsupported-compression'));
+  });
+
+  it('documents conservative Stage 2 publication and parser boundaries', () => {
+    const guide = read('docs/provenance-hygiene.md');
+    const clean = read('commands/scr/provenance-clean.md');
+    const combined = `${guide}\n${clean}`;
+
+    assert.match(combined, /provider.*exact.*locally proven safe.*result/is);
+    assert.match(combined, /PNG eXIf.*WebP XMP.*EXIF.*AVIF.*HEIC.*Exif.*XML.*GIF comment.*APP13.*mixed COM/is);
+    assert.match(combined, /byte-for-byte.*residual/is);
+    assert.match(combined, /local header.*central.*flags.*method.*CRC.*sizes.*offset.*data descriptor.*overlap.*normalized alias/is);
+    assert.match(combined, /UTF-16.*BOM.*unchanged.*degraded/is);
+    assert.match(combined, /script.*style.*byte-identical/is);
+    assert.match(combined, /stable.*source.*device.*inode.*size.*hash/is);
+    assert.match(combined, /whole batch.*rollback.*no partial outputs/is);
+    assert.match(combined, /no-clobber.*report.*boundary.*revalidat/is);
+    assert.match(combined, /data URI.*aggregate decoded bytes.*match count/is);
+    assert.match(combined, /directory depth.*directory count/is);
+    assert.match(combined, /Markdown.*escape.*external field/is);
+    assert.match(combined, /rollback fail.*retain.*backup.*recovery path/is);
+    assert.match(combined, /ISO BMFF.*c2pa.*jumb.*iloc.*unchanged/is);
+    assert.match(combined, /fatal UTF-8.*ISO-8859-1.*unchanged.*degraded/is);
+    assert.match(combined, /temporary.*final extension.*logical final path/is);
+    assert.match(combined, /PNG.*exact whole-key.*protected.*residual/is);
+    assert.match(combined, /GIF.*trailer.*JPEG.*EOI.*preserv/is);
   });
 });

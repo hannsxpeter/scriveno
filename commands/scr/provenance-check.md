@@ -3,7 +3,7 @@ description: Inspect writer-owned text and publishing files for invisible Unicod
 argument-hint: "[target] [--scope <source|build|output|all>] [--strict]"
 ---
 
-<!-- Implements: P-MUST-01, P-MUST-02, P-MUST-04, P-MUST-05, P-MUST-06, P-MUST-07, P-MUST-12, P-MUST-13, P-MUST-14, P-MUST-15, P-MUST-17 -->
+<!-- Implements: P-MUST-01, P-MUST-02, P-MUST-03, P-MUST-04, P-MUST-05, P-MUST-06, P-MUST-07, P-MUST-08, P-MUST-09, P-MUST-10, P-MUST-11, P-MUST-12, P-MUST-13, P-MUST-14, P-MUST-15, P-MUST-17, P-MUST-18 -->
 
 # /scr:provenance-check - Provenance Audit
 
@@ -111,9 +111,11 @@ Magic bytes override a misleading extension. ZIP containers, PDF files, images, 
 
 Warn before reading unusually large files. Do not load an entire large binary into model context when a metadata tool can inspect it directly.
 
-For ZIP-based containers, reject absolute paths, parent-directory traversal, symlink entries, duplicate conflicting entries, encryption, excessive archive entries, excessive total expansion, and unsafe compression ratios. Stop the lane and report the archive as unsafe instead of extracting it.
+For ZIP-based containers, reject absolute paths, parent-directory traversal, symlink entries, every duplicate entry and normalized alias, encryption, excessive archive entries, excessive total expansion, and unsafe compression ratios. Validate that each local header agrees with its central entry on raw and decoded name, flags, method, CRC, sizes, offset, and data descriptor semantics. Reject overlapping local ranges. Stop the lane and report the archive as unsafe instead of extracting it.
 
-Enforce fixed caps for file count, aggregate input bytes, embedded data URI bytes, archive entries, archive expansion, compression ratio, and concurrency. A breached cap is unsafe input and must not be partially treated as clear.
+The cleaning command reuses these archive and signature decisions. A post-clean result is never published when this audit classifies the temporary sibling as unsafe, invalid, or a different format.
+
+Enforce fixed caps for file count, directory depth and count, aggregate stable-read input bytes, embedded data URI per-item and aggregate decoded bytes and match count, archive entries, archive expansion, compression ratio, and concurrency. A breached cap is unsafe input and must not be partially treated as clear.
 
 ### STEP 4: INSPECT TEXT AND UNICODE
 

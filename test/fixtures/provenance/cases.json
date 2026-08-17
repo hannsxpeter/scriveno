@@ -112,5 +112,27 @@
       "entries": [["word/document.xml", "secret", 1]]
     }
   ],
-  "dataUri": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAAAAAAAA"
+  "dataUri": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAAAAAAAA",
+  "cleaningFormats": [
+    "webp",
+    "avif",
+    "heic",
+    "bmp",
+    "gif",
+    "tiff",
+    "bigtiff",
+    "xlsx",
+    "pptx",
+    "docx",
+    "odt",
+    "epub"
+  ],
+  "protectedUnicodeCodePoints": ["U+180E", "U+E0100"],
+  "cleanReportFields": ["preAudit", "postAudit", "findingComparison"],
+  "archiveApplyRefusals": [
+    "identical-duplicate",
+    "expansion",
+    "compression-ratio",
+    "unsupported-compression"
+  ]
 }
