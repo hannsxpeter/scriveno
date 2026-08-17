@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+// Implements: P-MUST-01, P-MUST-02, P-MUST-03, P-MUST-04, P-MUST-05, P-MUST-06, P-MUST-07, P-MUST-12, P-MUST-14, P-MUST-15, P-MUST-18
+
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
@@ -8,6 +10,7 @@ const crypto = require('crypto');
 const architecturalProfiles = require('../lib/architectural-profiles.js');
 const autoInvokeEngine = require('../lib/auto-invoke-engine.js');
 const commandContracts = require('../lib/command-contracts.js');
+const provenanceAudit = require('../lib/provenance-audit.js');
 const {
   RUNTIMES,
   SURFACE_PROFILES,
@@ -874,6 +877,7 @@ function printHelp() {
   scriveno smoke --json
   scriveno agents --json
   scriveno routes --json
+  scriveno provenance-check <target...> [--jobs <1-8>] [--format <markdown|json|sarif>]
   scriveno surface list
   scriveno surface status
   scriveno surface profile core --runtimes codex --project
@@ -903,6 +907,7 @@ Status options:
   --json              Print machine-readable status JSON
 
 Audit commands:
+  provenance-check    Audit local files or directories without modifying inputs
   sync --check        Check shared sync, runtime, and agent surfaces
   smoke               Smoke-test installed runtime surfaces
   agents              Inspect installed agent prompts and metadata
@@ -936,7 +941,91 @@ function parseArgs(argv) {
     installJson: false,
     surfaceAction: 'status',
     surfaceProfile: DEFAULT_SURFACE_PROFILE,
+    provenanceTargets: [],
+    provenanceJobs: 4,
+    provenanceFormat: 'markdown',
+    provenanceOutput: null,
+    provenanceStrict: false,
+    provenanceProvider: 'local',
+    provenanceScope: 'all',
   };
+
+  if (argv[0] === 'provenance-check') {
+    options.command = 'provenance-check';
+    function valueAfter(index, option) {
+      const value = argv[index + 1];
+      if (!value || value.startsWith('--')) {
+        throw new provenanceAudit.ProvenanceInputError(`${option} requires a value.`, 'invalid_argument');
+      }
+      return value;
+    }
+    function parseJobs(value) {
+      const jobs = Number(value);
+      if (!Number.isInteger(jobs) || jobs < 1 || jobs > provenanceAudit.LIMITS.maxJobs) {
+        throw new provenanceAudit.ProvenanceInputError(`--jobs must be an integer from 1 to ${provenanceAudit.LIMITS.maxJobs}.`, 'invalid_argument');
+      }
+      return jobs;
+    }
+    function parseFormat(value) {
+      if (!['markdown', 'json', 'sarif'].includes(value)) {
+        throw new provenanceAudit.ProvenanceInputError('--format must be markdown, json, or sarif.', 'invalid_argument');
+      }
+      return value;
+    }
+    function parseProvider(value) {
+      if (value !== 'local') {
+        throw new provenanceAudit.ProvenanceInputError('Only the reserved local provider is available in this release slice.', 'invalid_argument');
+      }
+      return value;
+    }
+    function parseScope(value) {
+      if (!['source', 'build', 'output', 'all'].includes(value)) {
+        throw new provenanceAudit.ProvenanceInputError('--scope must be source, build, output, or all.', 'invalid_argument');
+      }
+      return value;
+    }
+    for (let i = 1; i < argv.length; i++) {
+      const arg = argv[i];
+      if (arg === '--help' || arg === '-h') {
+        options.showHelp = true;
+      } else if (arg === '--version' || arg === '-v') {
+        options.showVersion = true;
+      } else if (arg === '--strict') {
+        options.provenanceStrict = true;
+      } else if (arg === '--jobs') {
+        options.provenanceJobs = parseJobs(valueAfter(i, '--jobs'));
+        i++;
+      } else if (arg.startsWith('--jobs=')) {
+        options.provenanceJobs = parseJobs(arg.slice('--jobs='.length));
+      } else if (arg === '--format') {
+        options.provenanceFormat = parseFormat(valueAfter(i, '--format'));
+        i++;
+      } else if (arg.startsWith('--format=')) {
+        options.provenanceFormat = parseFormat(arg.slice('--format='.length));
+      } else if (arg === '--output') {
+        options.provenanceOutput = valueAfter(i, '--output');
+        i++;
+      } else if (arg.startsWith('--output=')) {
+        options.provenanceOutput = arg.slice('--output='.length);
+        if (!options.provenanceOutput) throw new provenanceAudit.ProvenanceInputError('--output requires a value.', 'invalid_argument');
+      } else if (arg === '--provider') {
+        options.provenanceProvider = parseProvider(valueAfter(i, '--provider'));
+        i++;
+      } else if (arg.startsWith('--provider=')) {
+        options.provenanceProvider = parseProvider(arg.slice('--provider='.length));
+      } else if (arg === '--scope') {
+        options.provenanceScope = parseScope(valueAfter(i, '--scope'));
+        i++;
+      } else if (arg.startsWith('--scope=')) {
+        options.provenanceScope = parseScope(arg.slice('--scope='.length));
+      } else if (arg.startsWith('-')) {
+        throw new provenanceAudit.ProvenanceInputError(`Unknown provenance-check argument ${JSON.stringify(arg)}.`, 'invalid_argument');
+      } else {
+        options.provenanceTargets.push(arg);
+      }
+    }
+    return options;
+  }
 
   if (argv[0] === 'status' || argv[0] === 'first-run') {
     options.command = argv[0];
@@ -1425,6 +1514,100 @@ function runSurface(parsed, detectedRuntimeKeys) {
   });
 }
 
+function resolveProvenanceScopeTargets(scope, projectRoot = process.cwd()) {
+  const manuscriptRoot = path.join(path.resolve(projectRoot), '.manuscript');
+  const sourceCandidates = [
+    'drafts',
+    'front-matter',
+    'back-matter',
+    'marketing',
+  ].map((name) => path.join(manuscriptRoot, name));
+  const selected = scope === 'source'
+    ? sourceCandidates
+    : scope === 'build'
+      ? [path.join(manuscriptRoot, 'build')]
+      : scope === 'output'
+        ? [path.join(manuscriptRoot, 'output')]
+        : [...sourceCandidates, path.join(manuscriptRoot, 'build'), path.join(manuscriptRoot, 'output')];
+  const targets = selected.filter((target) => fs.existsSync(target));
+  if (targets.length === 0) {
+    throw new provenanceAudit.ProvenanceInputError(`No files exist for manuscript scope ${JSON.stringify(scope)}.`, 'missing_target');
+  }
+  return targets;
+}
+
+function canonicalizeProvenancePath(targetPath) {
+  const resolved = path.resolve(targetPath);
+  const suffix = [];
+  let cursor = resolved;
+  while (!fs.existsSync(cursor)) {
+    const parent = path.dirname(cursor);
+    if (parent === cursor) break;
+    suffix.unshift(path.basename(cursor));
+    cursor = parent;
+  }
+  const canonicalBase = fs.realpathSync(cursor);
+  return path.join(canonicalBase, ...suffix);
+}
+
+function pathsShareIdentity(left, right) {
+  if (!fs.existsSync(left) || !fs.existsSync(right)) return false;
+  const leftStat = fs.statSync(left);
+  const rightStat = fs.statSync(right);
+  return leftStat.dev === rightStat.dev && leftStat.ino === rightStat.ino;
+}
+
+function validateProvenanceOutput(outputPath, auditedTargets) {
+  const resolved = path.resolve(outputPath);
+  const canonicalOutput = canonicalizeProvenancePath(resolved);
+  for (const target of auditedTargets) {
+    if (/^[a-z][a-z0-9+.-]*:/i.test(String(target))) continue;
+    const resolvedTarget = path.resolve(target);
+    const canonicalTarget = canonicalizeProvenancePath(resolvedTarget);
+    if (resolvedTarget === resolved || canonicalTarget === canonicalOutput
+      || pathsShareIdentity(resolvedTarget, resolved)) {
+      throw new provenanceAudit.ProvenanceInputError('The report output must not overwrite an audited input.', 'unsafe_output');
+    }
+    if (fs.existsSync(canonicalTarget) && fs.statSync(canonicalTarget).isDirectory()
+      && (resolved.startsWith(`${resolvedTarget}${path.sep}`)
+        || canonicalOutput.startsWith(`${canonicalTarget}${path.sep}`))) {
+      throw new provenanceAudit.ProvenanceInputError('The report output must not be written inside an audited directory root.', 'unsafe_output');
+    }
+  }
+  const root = path.parse(resolved).root;
+  let cursor = root;
+  for (const part of resolved.slice(root.length).split(path.sep).filter(Boolean)) {
+    cursor = path.join(cursor, part);
+    if (fs.existsSync(cursor) && fs.lstatSync(cursor).isSymbolicLink()) {
+      throw new provenanceAudit.ProvenanceInputError(`Refusing report output through a symlink: ${cursor}.`, 'unsafe_output');
+    }
+  }
+  return resolved;
+}
+
+async function runProvenanceCheck(parsed) {
+  const manuscriptScoped = parsed.provenanceTargets.length === 0;
+  const targets = manuscriptScoped
+    ? resolveProvenanceScopeTargets(parsed.provenanceScope)
+    : parsed.provenanceTargets;
+  const requestedOutput = parsed.provenanceOutput
+    || (manuscriptScoped ? path.join(process.cwd(), '.manuscript', 'reviews', 'PROVENANCE-AUDIT.md') : null);
+  const outputPath = requestedOutput ? validateProvenanceOutput(requestedOutput, targets) : null;
+  const report = await provenanceAudit.auditTargets(targets, {
+    jobs: parsed.provenanceJobs,
+    strict: parsed.provenanceStrict,
+  });
+  if (outputPath) {
+    validateProvenanceOutput(outputPath, targets);
+    report.outputs.push({ path: outputPath, format: parsed.provenanceFormat });
+    atomicWriteFileSync(outputPath, provenanceAudit.serializeReport(report, parsed.provenanceFormat));
+  } else {
+    process.stdout.write(provenanceAudit.serializeReport(report, parsed.provenanceFormat));
+  }
+  process.exitCode = report.recommendedExitCode;
+  return report;
+}
+
 function resolveInstallRequest(parsed, detectedRuntimeKeys, { isTTY }) {
   const hasRuntimeDirective = parsed.runtimeKeys.length > 0 || parsed.installDetected;
   const hasModifierOverrides = parsed.isGlobal !== null || parsed.developerMode !== null;
@@ -1898,6 +2081,11 @@ async function main() {
 
   if (parsed.command === 'routes') {
     runRouteAudit({ json: parsed.auditJson });
+    return;
+  }
+
+  if (parsed.command === 'provenance-check') {
+    await runProvenanceCheck(parsed);
     return;
   }
 
@@ -2423,7 +2611,7 @@ if (require.main === module) {
   requireSupportedNode();
   main().catch((err) => {
     console.error(c('red', '\nInstallation failed:'), err.message);
-    process.exit(1);
+    process.exitCode = err.exitCode || (process.argv[2] === 'provenance-check' ? provenanceAudit.EXIT_CODES.INTERNAL : 1);
   });
 }
 
@@ -2440,6 +2628,7 @@ module.exports = {
   runRuntimeSmoke,
   runAgentAvailability,
   runRouteAudit,
+  runProvenanceCheck,
   collectCommandEntries,
   collectCommandEntriesForProfile,
   collectInstallCommandEntries,

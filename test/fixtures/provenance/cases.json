@@ -1,0 +1,116 @@
+{
+  "signatureCases": [
+    {
+      "name": "sample.webp",
+      "format": "webp",
+      "hex": "524946461800000057454250584d50200b00000061692d67656e65726174656400"
+    },
+    {
+      "name": "sample.avif",
+      "format": "avif",
+      "hex": "00000018667479706176696600000000617669666d696631"
+    },
+    {
+      "name": "sample.heic",
+      "format": "heic",
+      "hex": "00000018667479706865696300000000686569636d696631"
+    },
+    {
+      "name": "sample.bmp",
+      "format": "bmp",
+      "hex": "424d1a000000000000001a0000000c0000000100010001001800000000"
+    },
+    {
+      "name": "sample.gif",
+      "format": "gif",
+      "hex": "47494638396101000100800000000000ffffff21fe0c41492d67656e657261746564003b"
+    },
+    {
+      "name": "sample.tiff",
+      "format": "tiff",
+      "hex": "49492a000800000000000000"
+    },
+    {
+      "name": "sample-bigtiff.tif",
+      "format": "bigtiff",
+      "hex": "49492b00080000001000000000000000"
+    },
+    {
+      "name": "sample.png",
+      "format": "png",
+      "hex": "89504e470d0a1a0a0000000d494844520000000100000001080200000000000000"
+    },
+    {
+      "name": "sample.jpg",
+      "format": "jpeg",
+      "hex": "ffd8ffe1001045786966000041492d746f6f6cffd9"
+    },
+    {
+      "name": "sample.pdf",
+      "format": "pdf",
+      "hex": "255044462d312e340a2525454f460a"
+    }
+  ],
+  "archiveCases": [
+    {
+      "name": "workbook.xlsx",
+      "format": "xlsx",
+      "entries": [
+        ["[Content_Types].xml", "<Types/>", 0],
+        ["xl/workbook.xml", "<workbook><sheet name=\"Draft\"/></workbook>", 0],
+        ["docProps/core.xml", "<cp:coreProperties><dc:creator>AI tool</dc:creator></cp:coreProperties>", 0]
+      ]
+    },
+    {
+      "name": "slides.pptx",
+      "format": "pptx",
+      "entries": [
+        ["[Content_Types].xml", "<Types/>", 0],
+        ["ppt/presentation.xml", "<p:presentation/>", 0],
+        ["docProps/app.xml", "<Properties><Application>AI slides</Application></Properties>", 0]
+      ]
+    },
+    {
+      "name": "book.docx",
+      "format": "docx",
+      "entries": [
+        ["[Content_Types].xml", "<Types/>", 0],
+        ["word/document.xml", "<w:document><w:t>Visible prose</w:t></w:document>", 0],
+        ["docProps/core.xml", "<cp:coreProperties/>", 0]
+      ]
+    },
+    {
+      "name": "book.epub",
+      "format": "epub",
+      "entries": [
+        ["mimetype", "application/epub+zip", 0],
+        ["META-INF/container.xml", "<container/>", 0],
+        ["OEBPS/content.opf", "<package><metadata/></package>", 0]
+      ]
+    },
+    {
+      "name": "document.odt",
+      "format": "odt",
+      "entries": [
+        ["mimetype", "application/vnd.oasis.opendocument.text", 0],
+        ["content.xml", "<office:document-content/>", 0],
+        ["meta.xml", "<office:document-meta/>", 0]
+      ]
+    }
+  ],
+  "unsafeArchiveCases": [
+    {
+      "name": "traversal.docx",
+      "entries": [["../outside.xml", "bad", 0]]
+    },
+    {
+      "name": "absolute.docx",
+      "entries": [["/outside.xml", "bad", 0]]
+    },
+    {
+      "name": "encrypted.docx",
+      "entries": [["word/document.xml", "secret", 1]]
+    }
+  ],
+  "dataUri": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAAAAAAAA"
+}

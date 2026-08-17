@@ -1,3 +1,4 @@
+// Implements: P-MUST-01, P-MUST-02, P-MUST-03, P-MUST-04, P-MUST-05, P-MUST-06, P-MUST-07, P-MUST-12, P-MUST-14, P-MUST-15, P-MUST-18
 const { describe, it } = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
@@ -40,6 +41,12 @@ describe('provenance hygiene command surface', () => {
     assert.match(audit, /soft binding/i);
     assert.match(audit, /pixel-domain/i);
     assert.match(audit, /HTTP.*HTTPS.*read-only/s);
+    assert.match(audit, /WebP.*AVIF.*HEIC.*BMP.*GIF.*TIFF.*BigTIFF.*XLSX.*PPTX/s);
+    assert.match(audit, /--format <markdown\|json\|sarif>/);
+    assert.match(audit, /--jobs/);
+    assert.match(audit, /--output/);
+    assert.match(audit, /--provider local/);
+    assert.match(audit, /exit.*0.*1.*2.*64.*70/is);
   });
 
   it('protects binary files, canonical drafts, valid Unicode, and output paths', () => {
@@ -115,6 +122,9 @@ describe('provenance hygiene command surface', () => {
 
     assert.match(guide, /github\.com\/guillaumemeyer\/watermarks-remover/);
     assert.match(guide, /Markdown.*HTML.*SVG.*PNG.*JPEG.*PDF.*DOCX.*ODT.*EPUB/s);
+    assert.match(guide, /WebP.*AVIF.*HEIC.*BMP.*GIF.*TIFF.*BigTIFF.*XLSX.*PPTX/s);
+    assert.match(guide, /SARIF 2\.1\.0/);
+    assert.match(guide, /compression ratio/i);
     assert.match(guide, /c2patool.*ExifTool.*qpdf/is);
     assert.match(guide, /residual risk/i);
     assert.match(guide, /cleaned cop(?:y|ies)/i);

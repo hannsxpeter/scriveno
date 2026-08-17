@@ -3,6 +3,8 @@ description: Inspect writer-owned text and publishing files for invisible Unicod
 argument-hint: "[target] [--scope <source|build|output|all>] [--strict]"
 ---
 
+<!-- Implements: P-MUST-01, P-MUST-02, P-MUST-03, P-MUST-04, P-MUST-05, P-MUST-06, P-MUST-07, P-MUST-12, P-MUST-14, P-MUST-15, P-MUST-18 -->
+
 # /scr:provenance-check - Provenance Audit
 
 Inspect text, manuscript assets, publication files, directories, or a read-only website target for machine-readable provenance and hygiene findings. This command is read-only. It must not modify the target.
@@ -12,15 +14,26 @@ This is a privacy and publishing-hygiene tool for content the writer owns or is 
 ## Usage
 
 ```text
-/scr:provenance-check [target] [--scope <source|build|output|all>] [--strict]
+/scr:provenance-check [target...] [--scope <source|build|output|all>] [--jobs <1-8>] [--format <markdown|json|sarif>] [--output <path>] [--strict] [--provider local]
 ```
 
-- `target`: A local file, directory, or HTTP or HTTPS URL. A supplied target overrides manuscript scope discovery.
+- `target...`: One or more local files or directories, or an HTTP or HTTPS URL for the agent-guided read-only lane. Supplied targets override manuscript scope discovery. The packaged local CLI reports remote URLs as degraded rather than uploading or mutating content.
 - `--scope source`: Inspect `.manuscript/drafts/`, front matter, back matter, marketing text, and other authored text.
 - `--scope build`: Inspect `.manuscript/build/`.
 - `--scope output`: Inspect `.manuscript/output/`.
 - `--scope all`: Inspect all three manuscript scopes. This is the default when no target or scope is supplied.
+- `--jobs <1-8>`: Bound concurrent local reads. The default is 4 and the hard maximum is 8.
+- `--format <markdown|json|sarif>`: Render the same normalized findings as writer-facing Markdown, schema-versioned JSON, or SARIF 2.1.0.
+- `--output <path>`: Write the selected report format to a local non-symlink path that is not an audited input.
 - `--strict`: Treat unsupported or degraded inspection lanes as unresolved findings instead of informational limitations.
+- `--provider local`: Select the dependency-free local provider. Other provider values are reserved for a later integration and are invalid in this command version.
+
+The installed CLI uses the same contract:
+
+```bash
+scriveno provenance-check ./drafts ./assets --jobs 4 --format json --provider local
+scriveno provenance-check ./release --format sarif --output provenance.sarif --provider local
+```
 
 ## Instruction
 
@@ -78,13 +91,15 @@ Do not pass credentials on a command line. Quote every path.
 
 ### STEP 3: CLASSIFY BEFORE READING
 
-Classify each local file by extension and magic bytes. Markdown, plain text, HTML, SVG, PNG, JPEG, PDF, DOCX, ODT, and EPUB have explicit lanes. Anything else is `unsupported` unless a credible installed tool recognizes it.
+Classify each local file by extension, magic bytes, and container structure. Markdown, plain text, HTML, SVG, PNG, JPEG, PDF, DOCX, ODT, EPUB, WebP, AVIF, HEIC, BMP, GIF, TIFF, BigTIFF, XLSX, and PPTX have explicit lanes. Inspect embedded raster data URIs through the matching media lane. Anything else is `unsupported` unless a credible installed tool recognizes it.
 
 Magic bytes override a misleading extension. ZIP containers, PDF files, images, executables, databases, fonts, compressed archives, audio, and video must never be decoded or rewritten as text. If a text path receives binary input, stop that lane and name the correct container or media path.
 
 Warn before reading unusually large files. Do not load an entire large binary into model context when a metadata tool can inspect it directly.
 
-For ZIP-based containers, reject absolute paths, parent-directory traversal, symlink entries, duplicate conflicting entries, and declared expansion sizes that exceed the available workspace or a reasonable inspection limit. Stop the lane and report the archive as unsafe instead of extracting it.
+For ZIP-based containers, reject absolute paths, parent-directory traversal, symlink entries, duplicate conflicting entries, encryption, excessive archive entries, excessive total expansion, and unsafe compression ratios. Stop the lane and report the archive as unsafe instead of extracting it.
+
+Enforce fixed caps for file count, aggregate input bytes, embedded data URI bytes, archive entries, archive expansion, compression ratio, and concurrency. A breached cap is unsafe input and must not be partially treated as clear.
 
 ### STEP 4: INSPECT TEXT AND UNICODE
 
@@ -120,6 +135,9 @@ Use the strongest credible lane per format:
 - DOCX: inspect only `docProps/` and `customXml/` container members for document properties or provenance. Do not scan visible body text as compressed raw bytes.
 - ODT: inspect `meta.xml` and relevant manifest metadata.
 - EPUB: inspect package metadata, declared generator fields, and text resources through their correct lanes. Preserve navigation, accessibility metadata, and visible content.
+- WebP, AVIF, HEIC, BMP, GIF, TIFF, and BigTIFF: classify from signatures and parse recognized metadata containers without changing image bytes, frames, animation state, or color data.
+- XLSX and PPTX: inspect document properties separately from visible workbook strings and presentation text. Do not treat visible content as metadata.
+- Embedded raster data URIs: bound decoded size, require the declared MIME type to match the decoded signature, and inspect the decoded bytes without rewriting the parent text.
 
 Distinguish hard-bound C2PA embedded in the file from soft binding or pixel-domain signals that may survive metadata removal. Audio and video watermark detection is unsupported by this command.
 
@@ -136,6 +154,8 @@ For each file, also report lane status: `complete`, `degraded`, `unsupported`, o
 
 In strict mode, any `degraded` or `unsupported` lane becomes an unresolved finding. Strict mode does not raise the confidence of weak evidence.
 
+The CLI exit contract is `0` for clear, `1` for findings or actionable residuals, `2` for degraded or unsupported coverage, `64` for invalid or unsafe input, and `70` for an unrecovered internal failure.
+
 ### STEP 7: PRESERVE VOICE AND DISCLOSURE TRUTH
 
 This command must not paraphrase prose or run a statistical watermark attack. Statistical text watermark claims are unverifiable without the relevant vendor detector and key. Do not claim a text is unmarked.
@@ -146,7 +166,7 @@ Metadata state does not determine how content was created. AI-generated or AI-as
 
 ### STEP 8: WRITE THE REPORT
 
-For manuscript-scoped runs, write `.manuscript/reviews/PROVENANCE-AUDIT.md`. For an external target without a manuscript, present the report and offer to save it beside the target only with permission.
+For manuscript-scoped runs, write `.manuscript/reviews/PROVENANCE-AUDIT.md`. For an explicit external target without a manuscript, print the report unless `--output` names a safe report path. Markdown is the default. JSON and SARIF 2.1.0 must serialize the same normalized findings, confidence, channel, rule id, and artifact location.
 
 Use this structure:
 
