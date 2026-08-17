@@ -1,6 +1,6 @@
 # Contributing to Scriveno
 
-Scriveno is a pure skill system -- markdown files that AI agents read and execute. There is no compiled code, no build step, no runtime dependencies. Contributing means adding or editing markdown files and updating the central constraint registry.
+Scriveno is a markdown-first skill system with a dependency-free Node.js support layer. Most behavior lives in files that AI agents read and execute. Deterministic installer, status, safety, and provenance behavior lives in `bin/` and `lib/`. There is no compilation or bundling step and no npm runtime dependency graph.
 
 This guide walks you through extending Scriveno: adding commands, agents, work types, templates, and export formats. Each section is self-contained -- jump to what you need. For release operations, use [Release Checklist](release-checklist.md).
 
@@ -19,10 +19,11 @@ templates/             Base project templates + technical/ and sacred/ variants
 templates/technical/   6 technical-writing context variants
 templates/sacred/      Sacred-specific context templates and tradition manifests
 bin/install.js         Multi-platform installer (Node.js)
+lib/                   Dependency-free Node.js status, safety, and provenance helpers
 docs/                  Documentation suite (25 guides)
 ```
 
-Key principle: the AI agent reads these files at runtime. There is no compilation, no bundling, no transpilation. If you can write markdown, you can contribute.
+Key principle: the AI agent reads command and agent files at runtime, while deterministic CLI behavior is implemented with Node.js built-ins and covered by tests. There is no compilation, bundling, or transpilation. Markdown contributions remain welcome, and helper changes should include focused `node --test` coverage.
 
 ## Adding a Command
 

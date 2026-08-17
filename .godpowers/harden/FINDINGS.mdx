@@ -1,0 +1,222 @@
+# Security Findings
+
+Date: 2026-08-17T19:55:46Z
+Reviewer: god-harden-auditor
+Scope: Scriveno 3.8.0 dependency-free Node CLI and SDK at commit `cbec5cfa8508f012b4da41b9623ea4ce158f0022`, including provenance audit, optional provider transport, cleaning transactions, parsers, archive handling, package contents, release checks, and CI configuration.
+
+## Summary
+
+| Severity | Count |
+|----------|-------|
+| Critical | 0 |
+| High | 0 |
+| Medium | 3 |
+| Low | 0 |
+
+**Launch gate**: PASSED
+
+No Critical or High finding blocks launch. The three Medium findings are defense-in-depth and recoverability gaps that should be fixed in the first sprint after release.
+
+## Review Boundary And Threat Model
+
+Scriveno is a local CLI and package, not a hosted web service. The reviewed trust boundaries were local filesystem inputs, output and backup paths, archive members, optional executables resolved from `PATH`, the opt-in watermarks-remover HTTP client, environment-backed provider credentials, npm package creation and publication, Git tags, and GitHub Actions. There are no inbound application accounts, sessions, tenants, administrative endpoints, database queries, CORS settings, cloud roles, webhooks, or server-side authorization objects in this product form.
+
+Named adversaries considered:
+
+- A malicious file or archive supplied for audit or cleaning.
+- A local filesystem race attempting to redirect a read or write.
+- A malicious or compromised optional provider attempting redirects, malformed replies, oversized replies, secret reflection, or protected-content changes.
+- A compromised CI action tag or npm publishing identity attempting package substitution.
+- An abnormal process termination during multi-file in-place publication.
+
+## OWASP Web Top 10:2025 Coverage
+
+| Category | Manual procedure | Result | Evidence or finding |
+|----------|------------------|--------|---------------------|
+| A01:2025 Broken Access Control | Called `validateServiceUrl` with cloud metadata, private, loopback HTTPS, and alternate numeric loopback forms. Then ran optional and required provider CLI probes against `https://127.0.0.1:8765`. | Pass | Metadata, private, and HTTPS loopback destinations were refused. Numeric `2130706433` canonicalized to the intentionally allowed HTTP loopback. Optional audit exited `2` with `provider_address_refused`; required cleaning exited `70`, wrote no cleaned file, and exposed no token. See `lib/provenance-provider.js:182-335`. Object, tenant, role, and admin authorization are not applicable because the package has no inbound identity or multi-tenant service boundary. |
+| A02:2025 Security Misconfiguration | Inspected package, CLI, and workflow configuration and ran a local provider request under `NODE_DEBUG=http` with a sentinel bearer token. Also forced an unsafe provider URL through the real CLI. | Pass | On Node `v22.23.1`, the debug trace warned about sensitive logging but did not contain the sentinel. CLI errors and reports were generic and token-free. The CLI has no CORS, cloud, framework debug endpoint, sample account, or production HTTP listener. CI hardening gaps are tracked under [MEDIUM-001]. |
+| A03:2025 Software Supply Chain Failures | Ran `npm audit --omit=dev --json`, `npm run pack:repro`, `npm pack --dry-run --ignore-scripts --json`, `git verify-commit cbec5cf`, `git verify-tag v3.7.0`, and inspected every workflow `uses:` and permission declaration. | Fail | Audit reported zero vulnerabilities and zero dependency packages. Two exact packs matched SHA-256 `f7885075d59af0d9d8d8af98754610795dc3e3a3acc51ef2dbdf61a6a0cf88dc` across 321 files, and the dry-run manifest contained no `.env`, `.npmrc`, credential, key, or `.git` paths. Mutable action refs and implicit permissions are [MEDIUM-001]. Unsigned release identity and absent npm provenance are [MEDIUM-002]. |
+| A04:2025 Cryptographic Failures | Traced SHA-256 use, random temporary names, provider TLS selection, DNS pinning, and bearer-token flow. Ran private-address and sentinel-token probes and searched serialized output for the token. | Pass | Remote providers require HTTPS and global-unicast addresses; only exact loopback permits HTTP. DNS results are validated and pinned into the request. The token is accepted only from `SCRIVENO_WATERMARKS_SERVICE_TOKEN`, and the sentinel did not appear in JSON or debug output. SHA-256 is used for content and race integrity, not as authentication. There are no passwords, local encryption keys, nonces, or stored credentials. See `lib/provenance-provider.js:182-335` and `lib/provenance-provider.js:828-935`. |
+| A05:2025 Injection | Created a file literally named `draft-$(touch INJECTION_MARKER).txt`, ran the real provenance-check CLI from that directory, then checked for the marker. Directly passed a malformed ZIP to `parseZipContainer`. Ran the focused serializer and archive tests. | Pass | The CLI exited `0`; no marker was created. External tools use argument arrays with no shell. The malformed ZIP was refused as `unsafe_input`. Markdown report fields are context-escaped, JSON and SARIF use JSON serialization, archives are parsed in memory rather than extracted, and provider JSON is schema checked and bounded. See `lib/provenance-audit.js:468-606`, `lib/provenance-audit.js:649-735`, and `lib/provenance-audit.js:1160-1344`. |
+| A06:2025 Insecure Design | Ran `provenance-clean` without `--apply` on a marked file, compared the input hash, checked for a cleaned copy, and passed `--jobs 999`. Reviewed provider opt-in, output collision, ownership, race, and batch safeguards. | Pass | Dry-run exited `1` to report an actionable finding, left the input hash unchanged, and wrote no cleaned copy. Invalid concurrency exited `64`. Local processing, dry-run, bounded concurrency, file and expansion limits, explicit provider selection, no-clobber copies, and explicit in-place confirmation are secure defaults. Rate limits and step-up controls for accounts are not applicable because there is no authentication or hosted operation. |
+| A07:2025 Authentication Failures | Confirmed there is no inbound authentication surface, then probed the only token boundary by providing a sentinel provider bearer token and reviewing argv parsing and serialized reports. | Justified Not Applicable | Scriveno has no user accounts, login, session, MFA, recovery, or token-issuing endpoint. The outbound optional-provider token is environment-only, not accepted as a CLI argument, and was absent from reports. Its transport and logging handling is covered under A02 and A04. |
+| A08:2025 Software or Data Integrity Failures | Ran all 139 focused provenance tests, including tampered provider output, protected prose and media mutations, provider-added findings, source replacement races, archive traversal, duplicate entries, CRC conflicts, and packed-consumer installation. Also directly injected a malformed ZIP. | Pass | All 139 focused tests passed. Provider cleaning must equal the exact locally proven result and may add no finding. Inputs and provider uploads are size, digest, identity, ownership, and no-follow bound. ZIP entries enforce names, sizes, expansion ratios, methods, ranges, duplicate aliases, and CRC values. Pack reproducibility passed. Distribution authenticity gaps are tracked under [MEDIUM-002]. |
+| A09:2025 Security Logging and Alerting Failures | Triggered a controlled SSRF-like provider event through the real CLI with `SCRIVENO_WATERMARKS_SERVICE_URL=https://127.0.0.1:8765` and inspected JSON, exit status, provider attempts, and token exposure. | Pass for CLI boundary | The event produced exit `2`, status `degraded`, and a structured `providerAttempts` record with code `provider_address_refused`; the token was absent. Required-provider cleaning produced exit `70` and no output. For this local CLI, the report plus nonzero exit is the operator-visible alert. Central alert delivery and acknowledgment are not applicable because Scriveno runs no service or operations plane. |
+| A10:2025 Mishandling of Exceptional Conditions | Ran timeout, oversized response, malformed response, required-provider, archive exhaustion, collision, rollback, and stalled-tool paths in the 139 focused tests. Separately killed a child process immediately after the first rename in a two-file confirmed in-place commit. | Fail | Bounded dependency and parser failures failed closed, and required-provider failure wrote no output. The forced exit `93` left `first.txt` cleaned, `second.txt` original, both backups present, and the second staged temporary file orphaned. There was no automatic restart reconciliation or report because the process terminated outside the catch path. See [MEDIUM-003]. |
+
+## Manual Walkthrough Details
+
+### A01, A04, and A09 provider boundary probe
+
+Procedure:
+
+1. Call `validateServiceUrl` with `http://169.254.169.254/latest/meta-data`, `https://127.0.0.1:8765`, `https://10.0.0.1:8765`, and `http://2130706433:8765`.
+2. Run `SCRIVENO_WATERMARKS_SERVICE_URL=https://127.0.0.1:8765 SCRIVENO_WATERMARKS_SERVICE_TOKEN=audit-token-7d34 node bin/install.js provenance-check <owned-temp-file> --provider watermarks-remover --format json`.
+3. Run the same destination through `provenance-clean <owned-temp-file> --apply --provider watermarks-remover --require-provider --format json`.
+4. Search each serialized report for `audit-token-7d34` and inspect output paths.
+
+Observed result:
+
+- Metadata HTTP: `provider_https_required`.
+- Loopback HTTPS and private HTTPS: `provider_address_refused`.
+- Alternate numeric loopback: accepted only after WHATWG URL canonicalization to exact loopback, consistent with the documented local HTTP exception.
+- Optional audit: exit `2`, visible fallback, token absent.
+- Required cleaning: exit `70`, `outputs: []`, cleaned file absent, token absent.
+
+### A03 package and release identity probe
+
+Procedure:
+
+```text
+npm audit --omit=dev --json
+npm run pack:repro
+npm pack --dry-run --ignore-scripts --json
+rg -n "uses:" .github/workflows
+rg -n "^permissions:|persist-credentials" .github/workflows
+git verify-commit cbec5cf
+git verify-tag v3.7.0
+```
+
+Observed result:
+
+- Zero production dependency vulnerabilities and no dependency packages.
+- Two packs matched exact SHA-256 `f7885075d59af0d9d8d8af98754610795dc3e3a3acc51ef2dbdf61a6a0cf88dc` and normalized 321-file manifests.
+- npm reported package integrity `sha512-562+BzxxD7ervPGeQb/ANBP12HpB17oNJitiz0Ct8ZeFoyhS26OQhLpAZOBiqwUHQ6m33r9xhWHrpc6yCmXuXQ==`.
+- `actions/checkout@v4` and `actions/setup-node@v4` are mutable major tags.
+- No explicit workflow `permissions:` or checkout credential-persistence setting exists.
+- Commit and prior release tag verification each exited `1` because there is no cryptographic signature.
+
+### A05 interpreter-boundary probe
+
+Procedure:
+
+1. Create an owned temporary file whose literal name is `draft-$(touch INJECTION_MARKER).txt`.
+2. Run `node bin/install.js provenance-check 'draft-$(touch INJECTION_MARKER).txt' --provider local --format json` from that directory.
+3. Check for a file named `INJECTION_MARKER`.
+4. Call `parseZipContainer(Buffer.from('504b0304', 'hex'))`.
+
+Observed result:
+
+- Audit exited `0` and no marker was created.
+- The malformed archive was refused with `unsafe_input: Malformed ZIP container: end record is missing.`
+
+### A06 secure-default probe
+
+Procedure:
+
+1. Write `A U+200B B` to an owned temporary text file and hash it.
+2. Run `provenance-clean` without `--apply`.
+3. Rehash the input, check for `*.cleaned.txt`, and run `provenance-check --jobs 999`.
+
+Observed result:
+
+- Dry-run exit `1`, unchanged input hash, no cleaned file.
+- Invalid jobs exit `64` with the documented `1` to `8` bound.
+
+### A08 integrity and parser fault injection
+
+Procedure:
+
+```text
+node --test test/provenance-audit.test.js test/provenance-provider.test.js test/provenance-clean.test.js test/provenance-consumer.test.js test/provenance-hygiene.test.js
+```
+
+Observed result: 139 tests passed, 0 failed. This run exercised protected provider-output mutations, stable-handle races, unsafe archives, output aliases, report races, no-clobber publication, provider timeouts, malformed and excessive responses, deterministic formats, and packed installation.
+
+### A10 process-termination fault injection
+
+Procedure:
+
+1. In an isolated temporary directory, create `first.txt` as `A U+200B B` and `second.txt` as `C U+200B D`.
+2. Start a child Node process that monkeypatches `fs.renameSync`, delegates the rename, and calls `process.exit(93)` immediately after the first staged temporary file is renamed onto either source.
+3. Call `cleanTargets([first, second], { apply: true, inPlace: true, confirmInPlace: true })` inside that child.
+4. After exit, inspect both sources, backups, and temporary siblings.
+
+Observed result:
+
+```json
+{
+  "childExit": 93,
+  "first": "AB",
+  "second": "C U+200B D",
+  "backupCount": 2,
+  "temporaryFileCount": 1,
+  "partialPublication": true
+}
+```
+
+Both original-byte backups survived, so the probe did not show data loss. It did show an interrupted batch with mixed publication state and no automatic restart recovery.
+
+## Findings
+
+### [MEDIUM-001] CI dependencies use mutable tags and implicit token permissions
+
+- **Category**: OWASP A03:2025 Software Supply Chain Failures
+- **Location**: `.github/workflows/ci.yml:1`, `.github/workflows/ci.yml:29`, `.github/workflows/ci.yml:32`
+- **Description**: CI resolves `actions/checkout@v4` and `actions/setup-node@v4` through mutable major-version tags. The workflow also omits an explicit least-privilege `permissions:` block and does not explicitly disable checkout credential persistence. Actual token capability therefore depends on repository defaults.
+- **Impact**: Compromise or unexpected movement of a referenced action tag can execute different code in CI, influence release-gate results, and access whatever `GITHUB_TOKEN` permissions the repository default grants. This workflow does not publish npm directly, which limits immediate package-release impact.
+- **Reproduction**: Run `rg -n "uses:" .github/workflows` and `rg -n "^permissions:|persist-credentials" .github/workflows`.
+- **Observed Result**: The only action refs are `actions/checkout@v4` and `actions/setup-node@v4`; no explicit permissions or checkout credential-persistence setting is present.
+- **Evidence**: `.github/workflows/ci.yml:1-37`; manual probe at 2026-08-17T19:55:46Z.
+- **Reviewed At**: 2026-08-17T19:55:46Z
+- **Owner**: Scriveno release maintainer
+- **Deadline**: 2026-08-31
+- **Remediation Options**:
+  - **Option A**: Pin both actions to reviewed full commit SHAs, add `permissions: { contents: read }`, and set checkout `persist-credentials: false`. Estimated: 1 hour.
+  - **Option B**: Add an automated policy test that rejects non-SHA action refs and missing least-privilege permissions, then pin the current workflow. Estimated: 3 hours.
+- **Status**: Open
+
+### [MEDIUM-002] Reproducible package bytes are not bound to a signed release identity
+
+- **Category**: OWASP A03:2025 Software Supply Chain Failures
+- **Location**: `docs/release-checklist.md:65`, `docs/release-checklist.md:82`, `scripts/check-pack-reproducibility.js:75-140`
+- **Description**: The release checks prove repeatable package bytes and npm supplies a registry integrity digest, but the source commit and release tag are unsigned and the local `npm publish` path produces no npm trusted-publishing provenance attestation. A digest proves equality only after a trusted party distributes the expected digest; it does not identify the publisher or bind the tarball to the reviewed commit.
+- **Impact**: A compromised npm publishing credential or release workstation could publish substituted bytes under the valid package name without a consumer-verifiable link to the reviewed GitHub source revision.
+- **Reproduction**: Run `npm run pack:repro`, `git verify-commit cbec5cf`, and `git verify-tag v3.7.0`; inspect the release checklist for provenance or signature steps.
+- **Observed Result**: Pack reproducibility passed with SHA-256 `f7885075d59af0d9d8d8af98754610795dc3e3a3acc51ef2dbdf61a6a0cf88dc`. Commit and prior tag signature verification each exited `1`. The documented release path uses local `npm publish --access public` and records no attestation step.
+- **Evidence**: Build ledger command `npm run release:check`; manual pack and signature probes at 2026-08-17T19:55:46Z.
+- **Reviewed At**: 2026-08-17T19:55:46Z
+- **Owner**: Scriveno release maintainer
+- **Deadline**: 2026-08-31
+- **Remediation Options**:
+  - **Option A**: Sign the release commit and annotated tag, publish the tarball SHA-256 in the GitHub release, and verify all three before `npm publish`. Estimated: 3 hours plus key setup.
+  - **Option B**: Move publishing to npm trusted publishing with GitHub OIDC provenance, environment protection, immutable action SHAs, and same-artifact promotion from the checked tarball. Estimated: 1 to 2 days.
+- **Status**: Open
+
+### [MEDIUM-003] Abrupt termination can leave an in-place batch partially published
+
+- **Category**: OWASP A10:2025 Mishandling of Exceptional Conditions
+- **Location**: `lib/provenance-clean.js:1263-1355`, `docs/provenance-hygiene.md:49`
+- **Description**: The in-process transaction catches ordinary commit failures and rolls them back, but it has no durable journal or startup reconciliation. A process kill, host crash, or power loss after one rename but before the next rename bypasses the catch path.
+- **Impact**: A confirmed multi-file in-place cleaning operation can return after restart with a mixture of cleaned and original files. Original-byte backups survive, so recovery is possible, but no report identifies the interrupted transaction and downstream tooling may consume the mixed state before manual inspection.
+- **Reproduction**: In an isolated temporary directory, create two marked files. In a child process, wrap `fs.renameSync` so it performs the first staged rename and immediately exits `93`, then call `cleanTargets` with `apply`, `inPlace`, and `confirmInPlace` all true. Inspect sources, backups, and temporary siblings after the child exits.
+- **Observed Result**: `first.txt` contained cleaned `AB`; `second.txt` retained its original marked bytes; two backups remained; one staged temporary remained; the child emitted no recovery report.
+- **Evidence**: Manual termination probe at 2026-08-17T19:55:46Z; synchronous rollback tests passed in `test/provenance-clean.test.js`, which confirms the gap is specific to termination outside JavaScript error handling.
+- **Reviewed At**: 2026-08-17T19:55:46Z
+- **Owner**: Scriveno provenance maintainer
+- **Deadline**: 2026-08-31
+- **Remediation Options**:
+  - **Option A**: Write and fsync a transaction journal before the first in-place rename, update it after every rename, and reconcile or report unfinished transactions on the next provenance-clean start. Estimated: 1 to 2 days.
+  - **Option B**: Disallow multi-file in-place mode and require verified cleaned-copy publication followed by a separate explicit promotion step. Estimated: 4 to 6 hours.
+- **Status**: Open
+
+## Positive Security Evidence
+
+- Full recorded build gate: `npm run release:check`, 2,302 tests passed, policy scan passed, reproducible pack passed, and package dry-run passed.
+- Focused adversarial run: 139 provenance tests passed, 0 failed.
+- Production dependency audit: zero vulnerabilities and no dependency packages.
+- Provider requests have absolute DNS and response deadlines, bounded responses, refused redirects, global-unicast checks, pinned DNS results, environment-only credentials, and generic errors.
+- Provider uploads use one no-follow stable file handle with current-user ownership, identity, size, and SHA-256 binding.
+- Cleaned copies use no-clobber publication. In-place writes require explicit confirmation, stable source identity, and exclusive backups.
+- Parser limits cover total input, files, directories, depth, jobs, data URIs, archive entries, expanded bytes, compression ratio, JSON bytes, JSON depth, JSON nodes, and external-tool time.
+- Provider output must match the exact locally proven safe result. Protected prose, pixels, frames, ICC data, Exif orientation, TIFF strips, archive structure, relationships, styles, media, navigation, and accessibility data are exercised by fault-injection tests.
+
+## Have-Nots Checklist
+
+- [x] Manual adversarial review performed in addition to scanner and test output.
+- [x] Applicable authority boundaries actively tested; inbound user, tenant, role, and admin authentication is explicitly not applicable to this local CLI.
+- [x] Input validation audited across CLI arguments, filesystem paths, archive members, media signatures, data URIs, provider URLs, provider JSON, and report serialization.
+- [x] Auth endpoint rate limiting is explicitly not applicable because the product has no auth endpoint; provider and local concurrency and byte limits were exercised instead.
+- [x] All OWASP Web Top 10:2025 categories have reproducible manual evidence or product-specific Not Applicable justification.
+- [x] Every finding has a severity, owner, deadline, reproduction, observed result, and remediation options.
+- [x] No Critical finding exists.

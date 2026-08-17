@@ -13,7 +13,7 @@ This document is the public-facing summary of what changed between package relea
 - **Reproducible release proof.** Release checks pack twice with lifecycle scripts disabled and network access blocked, compare exact tarball digests plus normalized path, size, and mode manifests, then install the tarball into an empty consumer and exercise the public provenance flows.
 - **Conservative boundaries.** Soft-bound and pixel-domain watermarks remain unsupported removal channels. Stylometry is never authoritative, and Scriveno does not request pixel removal, rewrite prose for detectors, or alter creation history and disclosure duties.
 
-The optional adapter is tested against Guillaume Meyer's MIT-licensed watermarks-remover `v0.5.0` at commit `c2ac8eeef3ff1a17aaab0cdb86889c7ad21675a7`.
+The optional adapter is tested against Guillaume Meyer's MIT-licensed watermarks-remover at upstream `main` commit `c2ac8eeef3ff1a17aaab0cdb86889c7ad21675a7`. Its latest published release is `v0.5.0`, whose peeled tag points to `dc0ff78f39bedfe0a1986eef54efb297645372ba`; Scriveno negotiates provider capabilities so it does not assume that the release tag contains later `main` additions.
 
 ### Why it matters
 

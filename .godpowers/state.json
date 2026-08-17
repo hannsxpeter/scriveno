@@ -67,11 +67,39 @@
         "status": "pending"
       },
       "build": {
-        "status": "imported",
+        "status": "done",
         "artifact": "prep/IMPORTED-BUILD-STATE.mdx",
         "artifact-hash": "sha256:5973f05222e7eb994f983b7cc6ae64615b1166b184c5df61f5d954ed3d973ada",
-        "updated": "2026-08-14T12:43:59.319Z",
-        "notes": "Imported from detected planning-system context."
+        "updated": "2026-08-17T19:49:56.048Z",
+        "notes": "Imported from detected planning-system context.",
+        "verification": {
+          "commands": [
+            {
+              "command": "npm run release:check",
+              "status": "pass",
+              "exitCode": 0,
+              "ranAt": "2026-08-17T19:49:39.627Z",
+              "durationMs": 49515,
+              "diagnostics": ""
+            },
+            {
+              "command": "node bin/install.js routes --json",
+              "status": "pass",
+              "exitCode": 0,
+              "ranAt": "2026-08-17T19:49:44.270Z",
+              "durationMs": 32,
+              "diagnostics": ""
+            },
+            {
+              "command": "node bin/install.js sync --check --json",
+              "status": "pass",
+              "exitCode": 0,
+              "ranAt": "2026-08-17T19:49:48.394Z",
+              "durationMs": 36,
+              "diagnostics": ""
+            }
+          ]
+        }
       }
     },
     "tier-3": {
@@ -85,7 +113,20 @@
         "status": "pending"
       },
       "harden": {
-        "status": "pending"
+        "status": "done",
+        "verification": {
+          "commands": [
+            {
+              "command": "npm audit --omit=dev",
+              "status": "pass",
+              "exitCode": 0,
+              "ranAt": "2026-08-17T19:50:38.344Z",
+              "durationMs": 133,
+              "diagnostics": ""
+            }
+          ]
+        },
+        "updated": "2026-08-17T20:00:04.066Z"
       }
     }
   },

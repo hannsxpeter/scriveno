@@ -75,7 +75,7 @@ If a tool is missing, the report records the skipped evidence class. Scriveno do
 
 ## Optional Watermarks-Remover Service
 
-Scriveno's optional adapter is tested against watermarks-remover release `v0.5.0` at commit `c2ac8eeef3ff1a17aaab0cdb86889c7ad21675a7`. The executable adapter stays dependency-free and speaks the upstream JSON contract for `GET /health`, `GET /capabilities`, `POST /inspect`, and `POST /clean`.
+Scriveno's optional adapter is tested against watermarks-remover commit `c2ac8eeef3ff1a17aaab0cdb86889c7ad21675a7` on upstream `main`. The latest published upstream release at that commit is `v0.5.0`, whose peeled tag points to `dc0ff78f39bedfe0a1986eef54efb297645372ba`; Scriveno negotiates advertised capabilities instead of assuming that the release tag includes later `main` additions. The executable adapter stays dependency-free and speaks the upstream JSON contract for `GET /health`, `GET /capabilities`, `POST /inspect`, and `POST /clean`.
 
 Configuration is environment-only:
 

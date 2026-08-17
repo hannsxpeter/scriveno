@@ -2,7 +2,7 @@
 
 # Provenance Provider Contract Proof
 
-The fixture in this directory reproduces the core HTTP response shapes from Guillaume Meyer's watermarks-remover service release `v0.5.0`, commit `c2ac8eeef3ff1a17aaab0cdb86889c7ad21675a7`:
+The fixture in this directory reproduces the core HTTP response shapes from Guillaume Meyer's watermarks-remover service at upstream `main` commit `c2ac8eeef3ff1a17aaab0cdb86889c7ad21675a7`. The latest published upstream release at that commit is `v0.5.0`, whose peeled tag points to `dc0ff78f39bedfe0a1986eef54efb297645372ba`. Scriveno negotiates advertised capabilities instead of treating later `main` additions as part of that tag:
 
 - `GET /health` returns `ok` and `version`.
 - `GET /capabilities` returns `version`, `tools`, `pixel_backends`, `scorers`, and `harnesses`.

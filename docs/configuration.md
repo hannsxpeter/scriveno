@@ -1,6 +1,6 @@
 # Configuration
 
-This guide covers the configuration surfaces Scriveno actually ships today: package-level installer metadata, shared constraint data, runtime install targets, and per-project `.manuscript/config.json`.
+This guide covers the configuration surfaces Scriveno actually ships today: package-level installer metadata, shared constraint data, runtime install targets, per-project `.manuscript/config.json`, and the opt-in provenance-provider environment.
 
 ## What is configurable
 
@@ -10,8 +10,15 @@ Scriveno is intentionally narrow in where configuration lives:
 - `data/CONSTRAINTS.json` is the central registry for work types, command availability, adaptive terminology, and export rules
 - `bin/install.js` defines installer targets and where Scriveno writes commands, skills, agents, or guided setup assets
 - `.manuscript/config.json` stores project-specific writing settings after `/scr:new-work`
+- `SCRIVENO_WATERMARKS_SERVICE_URL` and `SCRIVENO_WATERMARKS_SERVICE_TOKEN` configure the optional provenance provider only when a writer selects it
 
-There is no compiled app config, no environment-variable matrix for the core workflow, and no runtime dependency graph beyond Node.js for the installer.
+There is no compiled app config or broad environment-variable matrix for the core writing workflow. The provenance provider is a narrow opt-in exception, and the package keeps no npm runtime dependency graph.
+
+## Optional Provenance Provider
+
+Local provenance processing is the default and requires no provider configuration. To opt into the watermarks-remover adapter, set `SCRIVENO_WATERMARKS_SERVICE_URL`; set `SCRIVENO_WATERMARKS_SERVICE_TOKEN` only when the selected service requires a bearer token. The CLI does not accept either value as an argument and does not persist them in project config or reports.
+
+Use `--provider auto` to select the configured provider when available, `--provider watermarks-remover` to request it explicitly, or `--provider local` to prohibit provider use. Add `--require-provider` only when local fallback is unacceptable. Endpoint, capability, size, deadline, redirect, address, response-schema, and secret-redaction checks are documented in [Provenance Hygiene](provenance-hygiene.md).
 
 ## Installer baseline
 

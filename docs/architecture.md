@@ -4,7 +4,7 @@ How Scriveno works under the hood -- for developers who want to understand the s
 
 ## Overview
 
-Scriveno is a markdown-first skill system with a small Node.js support layer. AI coding agents (Claude Code, Cursor, Gemini CLI, and others) read markdown command files and follow their instructions using their built-in tools (Read, Write, Bash). Node.js handles installation, packaging, runtime synchronization, and the shared read-only status engine.
+Scriveno is a markdown-first skill system with a small Node.js support layer. AI coding agents (Claude Code, Cursor, Gemini CLI, and others) read markdown command files and follow their instructions using their built-in tools (Read, Write, Bash). Node.js handles installation, packaging, runtime synchronization, the shared read-only status engine, and the executable provenance audit and cleaning helpers.
 
 The entire system is a collection of files:
 
@@ -202,6 +202,10 @@ scriveno/
       THEOLOGICAL-ARC.md     Replaces PLOT-GRAPH.md for sacred works
   bin/
     install.js             Multi-platform installer (Node.js)
+  lib/
+    provenance-audit.js    Local provenance classification and report engine
+    provenance-provider.js Opt-in watermarks-remover HTTP adapter
+    provenance-clean.js    Dry-run-first verified cleaning engine
   docs/
     proof-artifacts.md     Canonical proof layer and artifact index
     quick-proof.md         Executable first-run proof path and command shapes
@@ -442,7 +446,7 @@ Writers can refine their voice profile over time with `/scr:voice-test` (test th
 
 ### Zero dependencies
 
-Scriveno's `package.json` has no runtime dependencies. The installer is pure Node.js. Commands are markdown. This means no version conflicts, no supply-chain attacks, no broken builds. External tools (Pandoc, Typst) are optional prerequisites for export features -- the core writing workflow needs nothing beyond the AI agent itself.
+Scriveno's `package.json` has no runtime dependencies. The installer and support helpers use Node.js built-ins, and commands remain markdown. This reduces dependency version conflicts and third-party package exposure, but it does not eliminate CI, release-identity, registry, or host-tool supply-chain risk. External tools (Pandoc, Typst) are optional prerequisites for export features. The core writing workflow needs nothing beyond the AI agent itself, while executable status and provenance CLI paths require Node.js.
 
 ### Plan is canonical
 

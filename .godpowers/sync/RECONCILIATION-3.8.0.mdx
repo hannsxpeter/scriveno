@@ -1,0 +1,148 @@
+# Scriveno 3.8.0 Release Truth Reconciliation
+
+Date: 2026-08-17
+Intent: release Scriveno 3.8.0 with executable provenance auditing, an opt-in watermarks-remover provider, verified cleaning, updated documentation, a merged clean repository, npm publication, and a GitHub release.
+
+## Summary
+
+The 3.8.0 candidate is internally coherent and the safe-sync gate is clear. Package, code, tests, public release notes, shipped assets, version metadata, and hardening evidence agree after correcting the upstream commit attribution and the public description of Scriveno's Node.js support layer. No Critical or High security finding blocks launch. External release state is correctly still pending: npm latest is 3.7.0, `v3.8.0` does not exist locally or remotely, the feature branch is not on the remote, and the GitHub 3.8.0 release does not exist yet.
+
+## Tier 1 Planning
+
+| Artifact | Status | Evidence | Action |
+|----------|--------|----------|--------|
+| PRD | ambiguous | `.godpowers/prd/PRD.mdx` is an imported seed. `.godpowers/features/provenance-hygiene/PRD.mdx` covers the base provenance requirements, while `.godpowers/build/PLAN.mdx` captures the executable provider and 3.8.0 increment. | Refresh the feature PRD after release so the provider and executable CLI requirements are canonical outside the build plan. |
+| Architecture | needs-delta | The feature architecture delta predates the executable provider client. The current build plan and public `docs/architecture.md` now describe the dependency-free Node.js support layer and external provider boundary accurately. | Sync the feature architecture delta after release. No new hosted service, npm dependency, compiled artifact, or Voice DNA boundary was introduced. |
+| Roadmap | enhancement | The imported roadmap seed has no current Now list. The user authorized the increment and `.godpowers/build/PLAN.mdx` records all four completed delivery waves. | Record 3.8.0 in the maintained roadmap or leave the imported seed as historical evidence. |
+| Stack | covered | Node.js built-ins implement the helpers, `package.json` has no dependencies or devDependencies, the engine remains `>=20.0.0`, and no build or compile step was added. | None for launch. |
+
+## Tier 2 Building
+
+| Artifact | Status | Evidence | Action |
+|----------|--------|----------|--------|
+| Repo | not-yet-created | `.godpowers/repo/AUDIT.mdx` does not exist. The live repository already has the required `bin`, `lib`, `commands`, `data`, `docs`, `scripts`, and `test` surfaces. | Optional later repository audit. |
+| Build | done | `.godpowers/state.json` records `tier-2.build` done. `npm run release:check`, routes, and sync checks are recorded as passing. The reconciliation reran the complete suite after doc corrections: 2,302 passed, 0 failed. | Commit the reconciliation doc fixes before tagging. |
+
+## Tier 3 Shipping
+
+| Artifact | Status | Evidence | Action |
+|----------|--------|----------|--------|
+| Deploy | needs-extension | This is an npm package, not a hosted service. The local candidate is 3.8.0, while npm latest remains 3.7.0 and origin main remains at 3.7.0. | Merge the candidate, push main and `v3.8.0`, then publish the checked tarball to npm. |
+| Observe | covered | The release checklist requires post-publish `npm view`, a fresh installed-package verification, GitHub release inspection, and clean Git state. No service SLO or alert is applicable. | Run those checks after publication and record the results. |
+| Harden | covered | `.godpowers/harden/FINDINGS.mdx` reports 0 Critical, 0 High, 3 Medium, and `Launch gate: PASSED`. `npm audit --omit=dev` reports zero vulnerabilities and zero dependency packages. | Carry the three Medium findings into the next hardening sprint. |
+| Launch | ready | Changelog, release notes, README, package metadata, runtime docs, configuration, architecture, contributor guidance, testing, shipped assets, and provenance guidance now match the candidate. The GitHub release and npm publication are not yet present, as expected before launch. | Execute the approved release sequence and verify the same artifact after publication. |
+
+## Hardening Findings
+
+No Critical or High launch blocker exists.
+
+1. `MEDIUM-001`: CI uses mutable action tags and implicit token permissions.
+2. `MEDIUM-002`: reproducible package bytes are not bound to a signed release identity or npm provenance attestation.
+3. `MEDIUM-003`: abrupt termination can leave a confirmed multi-file in-place batch partially published, although original-byte backups survive.
+
+These findings are documented with owners, deadlines, reproduction, and remediation options. They remain follow-up work under the hardening launch-pass decision.
+
+## Capture Artifacts
+
+| Artifact | Status | Action |
+|----------|--------|--------|
+| Backlog | not-yet-created | Capture the Medium hardening work after launch if the project begins using the Godpowers backlog. |
+| Seeds | not-yet-created | None. |
+| Todos | not-yet-created | Capture the Medium hardening work after launch if the project begins using Godpowers todos. |
+| Threads | not-yet-created | None. |
+
+## Runtime And Repository Surfaces
+
+| Surface | Status | Evidence | Action |
+|---------|--------|----------|--------|
+| Repo docs | fresh | Public docs now distinguish markdown commands from the executable Node.js support layer, document provider environment configuration, avoid an absolute supply-chain safety claim, and identify the tested upstream commit and peeled release tag correctly. | Commit before tag. |
+| Repo surface | fresh | The package dry-run contains 321 files, including all three provenance helpers, both command contracts, the provider proof fixture, provenance guide, and reproducibility checker. `node bin/install.js sync --check --json` is recorded as passing. | None. |
+| Feature awareness | needs-awareness-refresh | Runtime package surfaces, constraints, commands, and public docs are current. The older feature PRD and architecture delta still describe the 3.7.0 command-first phase and do not fully capture the 3.8.0 executable provider increment. | Refresh the Godpowers feature artifacts after release. |
+| Source-system sync-back | needs-sync-back | BMAD-owned public docs are updated. Legacy `.planning/ROADMAP.md`, `.planning/STATE.md`, `.planning/PROJECT.md`, and `.planning/codebase/` still describe older release and integration state. Godpowers explicitly classifies these imports as historical evidence rather than current source of truth. | Run managed legacy planning sync-back after launch. This drift is nonblocking because it does not control the current package or Tier 3 claims. |
+| Sibling plan | not-applicable | No `.godplans/PLAN.mdx` or pinned validator exists. | None. |
+| Sibling audit | not-applicable | No `.godaudits/AUDIT.json` or legacy audit exists. | None. |
+| Host capability | full | Codex fresh-context execution, shell, file edits, Node v22.23.1, Git 2.50.1, npm 10.9.8, GitHub CLI 2.87.0, authenticated GitHub access, and authenticated npm identity `aihxp_` are available. Extension authoring and multi-repo suite dry-run are absent but irrelevant to this single-package release. | None. |
+
+## Public Claim Verification
+
+- Version `3.8.0` agrees across `package.json`, `package-lock.json`, `data/CONSTRAINTS.json`, `templates/config.json`, `/scr:new-work`, README, changelog, and release notes.
+- The Node compatibility floor remains `>=20.0.0`, with a current supported LTS recommended for new installs.
+- `package.json` remains dependency-free.
+- The public CLI exposes `provenance-check` and `provenance-clean` with local, auto, and watermarks-remover provider choices, Markdown, JSON, and SARIF output, bounded jobs, dry-run cleaning, and explicit in-place confirmation.
+- The provider adapter uses environment-only URL and token configuration, validates health and capabilities, refuses redirects and unsafe destinations, negotiates limits, redacts secrets, and falls back visibly unless the provider is required.
+- Provider attribution now distinguishes upstream `main` commit `c2ac8eeef3ff1a17aaab0cdb86889c7ad21675a7` from the peeled `v0.5.0` tag commit `dc0ff78f39bedfe0a1986eef54efb297645372ba`.
+- Stylometry remains non-authoritative, pixel removal is not requested, and provenance cleaning does not rewrite prose or change creation history and disclosure duties.
+- The package dry-run identifies `scriveno@3.8.0`, 321 files, and all release-critical provenance assets.
+- Full verification after the reconciliation edits: 2,302 tests passed, writing policy passed, and `git diff --check` passed.
+
+## Git, npm, And GitHub State
+
+- Current branch: `codex/provenance-provider-3.8.0`.
+- Candidate commits: `36cdbd6`, `6d0f33d`, `f777c5b`, and `cbec5cf` on top of tagged 3.7.0 commit `24f9bb5`.
+- Origin main: `24f9bb5` at the time of reconciliation.
+- Feature branch on origin: absent at the time of reconciliation.
+- Local and remote `v3.8.0` tag: absent at the time of reconciliation.
+- npm latest: 3.7.0; `scriveno@3.8.0` is not published at the time of reconciliation.
+- GitHub release `v3.8.0`: absent at the time of reconciliation.
+
+These are pending launch actions, not truth conflicts.
+
+## Safe-Sync Gate
+
+Status: clear.
+
+The reconciliation found one launch-blocking public-truth cluster and resolved it before this verdict:
+
+1. The docs conflated an upstream `main` commit with the peeled `v0.5.0` tag commit.
+2. Public architecture and contributor docs omitted the executable provenance support layer.
+3. Public architecture claimed dependency-free packaging eliminated supply-chain attacks despite the recorded CI and release-identity Medium findings.
+4. Configuration and runtime docs omitted the narrow provider environment and Node requirement for executable provenance paths.
+
+The corrected docs pass the complete test suite and repository writing policy. No unresolved contradiction now makes a Tier 3 claim false. No `.godpowers/sync/SAFE-SYNC-PLAN.mdx` is required, because there is no remaining blocking conflict.
+
+## Recommended Sequence
+
+1. Commit the reconciliation documentation corrections and this report.
+2. Re-run the release and prepublication gates against the final commit.
+3. Push the feature branch, merge it cleanly to main, and push main.
+4. Create and push `v3.8.0` from the exact release commit.
+5. Publish the checked 3.8.0 package to npm without retrying an uncertain write until registry state is inspected.
+6. Create the GitHub 3.8.0 release with the checked tarball and public notes.
+7. Verify npm latest, the GitHub release, the tag, a fresh installed consumer, and a clean main worktree.
+8. After launch, sync the legacy planning source and refresh the feature PRD and architecture delta.
+
+## Structured Verdict
+
+```json
+{
+  "intent": "Release Scriveno 3.8.0 with executable provenance audit, optional provider, verified cleaning, documentation, merge, npm publication, and GitHub release",
+  "summary": "The candidate and public surfaces are coherent after attribution and architecture corrections; safe sync is clear and external publication remains the expected launch action.",
+  "prd": { "status": "ambiguous", "action": "refresh the feature PRD after release" },
+  "arch": { "status": "needs-delta", "action": "sync the executable provider trust boundary into the feature architecture delta" },
+  "roadmap": { "status": "enhancement", "match": "provenance provider and 3.8.0 hardening build increment", "action": "record after launch" },
+  "stack": { "status": "covered" },
+  "repo": { "status": "not-yet-created", "action": "optional repository audit later" },
+  "build": { "status": "done" },
+  "deploy": { "status": "needs-extension", "action": "publish npm and push the exact release commit and tag" },
+  "observe": { "status": "covered", "action": "verify registry, GitHub release, fresh consumer, and clean Git state after publish" },
+  "harden": { "status": "covered", "action": "carry three Medium findings into the next hardening sprint" },
+  "launch": { "status": "ready", "action": "execute the approved release sequence" },
+  "backlog": { "status": "not-yet-created" },
+  "seeds": { "status": "not-yet-created" },
+  "todos": { "status": "not-yet-created" },
+  "threads": { "status": "not-yet-created" },
+  "repo_docs": { "status": "fresh" },
+  "repo_surface": { "status": "fresh" },
+  "feature_awareness": { "status": "needs-awareness-refresh", "action": "refresh feature PRD and architecture delta after release" },
+  "source_sync_back": { "status": "needs-sync-back", "action": "managed legacy planning sync after launch" },
+  "sibling_plan": { "status": "not-applicable" },
+  "sibling_audit": { "status": "not-applicable" },
+  "host_capability": { "status": "full" },
+  "safe_sync": { "status": "clear" },
+  "recommendation": {
+    "primary-action": "commit final docs, rerun gates, merge, tag, publish npm, create GitHub release, verify",
+    "preflight": ["run release and prepublication gates on the final commit"],
+    "post-work": ["verify external release state", "sync legacy planning", "refresh feature planning artifacts"]
+  }
+}
+```
