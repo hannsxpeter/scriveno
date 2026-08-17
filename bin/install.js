@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-// Implements: P-MUST-01, P-MUST-02, P-MUST-03, P-MUST-04, P-MUST-05, P-MUST-06, P-MUST-07, P-MUST-12, P-MUST-14, P-MUST-15, P-MUST-18
+// Implements: P-MUST-01, P-MUST-07, P-MUST-15
 
 const fs = require('fs');
 const path = require('path');
@@ -877,7 +877,8 @@ function printHelp() {
   scriveno smoke --json
   scriveno agents --json
   scriveno routes --json
-  scriveno provenance-check <target...> [--jobs <1-8>] [--format <markdown|json|sarif>]
+  scriveno provenance-check <target...> [--provider <local|auto|watermarks-remover>] [--require-provider]
+                              [--jobs <1-8>] [--format <markdown|json|sarif>]
   scriveno surface list
   scriveno surface status
   scriveno surface profile core --runtimes codex --project
@@ -947,6 +948,7 @@ function parseArgs(argv) {
     provenanceOutput: null,
     provenanceStrict: false,
     provenanceProvider: 'local',
+    provenanceRequireProvider: false,
     provenanceScope: 'all',
   };
 
@@ -973,8 +975,8 @@ function parseArgs(argv) {
       return value;
     }
     function parseProvider(value) {
-      if (value !== 'local') {
-        throw new provenanceAudit.ProvenanceInputError('Only the reserved local provider is available in this release slice.', 'invalid_argument');
+      if (!['local', 'auto', 'watermarks-remover'].includes(value)) {
+        throw new provenanceAudit.ProvenanceInputError('--provider must be local, auto, or watermarks-remover.', 'invalid_argument');
       }
       return value;
     }
@@ -992,6 +994,8 @@ function parseArgs(argv) {
         options.showVersion = true;
       } else if (arg === '--strict') {
         options.provenanceStrict = true;
+      } else if (arg === '--require-provider') {
+        options.provenanceRequireProvider = true;
       } else if (arg === '--jobs') {
         options.provenanceJobs = parseJobs(valueAfter(i, '--jobs'));
         i++;
@@ -1023,6 +1027,9 @@ function parseArgs(argv) {
       } else {
         options.provenanceTargets.push(arg);
       }
+    }
+    if (options.provenanceRequireProvider && options.provenanceProvider === 'local') {
+      throw new provenanceAudit.ProvenanceInputError('--require-provider cannot be combined with --provider local.', 'invalid_argument');
     }
     return options;
   }
@@ -1596,6 +1603,8 @@ async function runProvenanceCheck(parsed) {
   const report = await provenanceAudit.auditTargets(targets, {
     jobs: parsed.provenanceJobs,
     strict: parsed.provenanceStrict,
+    provider: parsed.provenanceProvider,
+    requireProvider: parsed.provenanceRequireProvider,
   });
   if (outputPath) {
     validateProvenanceOutput(outputPath, targets);

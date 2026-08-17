@@ -5,6 +5,8 @@ argument-hint: "[target] [--scope <source|build|output|all>] [--apply] [--in-pla
 
 # /scr:provenance-clean - Provenance Cleaning
 
+<!-- Implements: P-MUST-08, P-MUST-10, P-MUST-11, P-MUST-12, P-MUST-13, P-MUST-14, P-MUST-15, P-MUST-17 -->
+
 Prepare cleaned copies of writer-owned text and publishing files after inspecting them for removable Unicode carriers, generator metadata, EXIF or XMP fields, document properties, and hard-bound C2PA evidence.
 
 This command is dry-run by default. It does not rewrite prose, remove disclosure duties, or promise that vendor tools will find no residual signal.
@@ -12,11 +14,15 @@ This command is dry-run by default. It does not rewrite prose, remove disclosure
 ## Usage
 
 ```text
-/scr:provenance-clean [target] [--scope <source|build|output|all>] [--apply] [--in-place]
+/scr:provenance-clean [target] [--scope <source|build|output|all>] [--provider <local|auto|watermarks-remover>] [--require-provider] [--apply] [--in-place]
 ```
 
 - `target`: A local file or directory. Remote targets are not writable and must be audited with `/scr:provenance-check`.
 - `--scope`: Resolve manuscript source, build, output, or all targets when no explicit target is supplied.
+- `--provider local`: Keep all inspection and cleaning local. This is the default.
+- `--provider auto`: Use the optional watermarks-remover service only when its environment configuration is present.
+- `--provider watermarks-remover`: Request the configured service, with a visible local fallback on recoverable failure.
+- `--require-provider`: Stop with exit `70` if service validation or cleaning fails. Do not write a cleaned output.
 - `--apply`: Create cleaned copies and verify them. Without this flag, report proposed actions only.
 - `--in-place`: Replace originals only after `--apply`, explicit writer confirmation, and a recoverable backup.
 
@@ -55,6 +61,10 @@ command -v zip >/dev/null 2>&1
 ```
 
 Use quoted paths. Never expose credentials in arguments or logs. Do not bootstrap model downloads, Python environments, Docker images, CtrlRegen, reverse-SynthID, or another external repository.
+
+The optional service URL and bearer token come only from `SCRIVENO_WATERMARKS_SERVICE_URL` and `SCRIVENO_WATERMARKS_SERVICE_TOKEN`. Apply the same global-unicast endpoint policy, redirect refusal, absolute wall-clock deadlines, separate request and response caps, strict schema validation, stable-handle ownership and digest binding, capability checks, format checks, and bounded concurrency as `/scr:provenance-check` before sending bytes.
+
+When the provider is selected, request only its conservative deterministic cleaning path. Send exactly `keep_non_ai_metadata: true` and `also_layer_a_text: true`. Build residual summary findings only from explicit `still_has_c2pa` and `still_has_ai_metadata` booleans. Ignore every untyped upstream `post_findings` string. Never request pixel removal, NFKC rewriting, aggressive homoglyph replacement, Layer B rewriting, detector optimization, or humanizing. Missing, malformed, or incompatible capabilities make the provider degraded and must never authorize a clean.
 
 ### STEP 3: BUILD THE ACTION PLAN
 

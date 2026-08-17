@@ -1,4 +1,4 @@
-<!-- Implements: P-MUST-01, P-MUST-02, P-MUST-03, P-MUST-04, P-MUST-05, P-MUST-06, P-MUST-07, P-MUST-12, P-MUST-14, P-MUST-15, P-MUST-18 -->
+<!-- Implements: P-MUST-01, P-MUST-02, P-MUST-04, P-MUST-05, P-MUST-06, P-MUST-07, P-MUST-08, P-MUST-10, P-MUST-11, P-MUST-12, P-MUST-13, P-MUST-14, P-MUST-15, P-MUST-17 -->
 
 # Provenance Hygiene
 
@@ -16,9 +16,10 @@ The packaged executable accepts one or more local targets:
 scriveno provenance-check manuscript.md assets/ --jobs 4 --format markdown --provider local
 scriveno provenance-check release/ --format json --output audit.json --provider local
 scriveno provenance-check release/ --format sarif --output audit.sarif --strict --provider local
+SCRIVENO_WATERMARKS_SERVICE_URL=http://127.0.0.1:8765 scriveno provenance-check release/ --provider watermarks-remover
 ```
 
-`--jobs` accepts 1 through 8. `--format` accepts `markdown`, `json`, or `sarif`. `--output` writes a report without changing audited files. `--provider local` is the only accepted provider value until optional provider transport ships.
+`--jobs` accepts 1 through 8. `--format` accepts `markdown`, `json`, or `sarif`. `--output` writes a report without changing audited files. `--provider local` is the default and makes no provider request. `--provider auto` uses the optional provider only when configured. `--provider watermarks-remover` explicitly requests it. Add `--require-provider` when local fallback is unacceptable; provider failure then exits `70`.
 
 `/scr:provenance-clean [scope]` plans cleanup without changing files. Add `--apply` to write cleaned copies. Add `--apply --in-place` only when you intentionally want a confirmed replacement with a recoverable backup.
 
@@ -56,6 +57,32 @@ Scriveno stays dependency-free. It detects external tools and explains any degra
 - `unzip` and `zip` inspect and rebuild DOCX, ODT, and EPUB containers.
 
 If a tool is missing, the report records the skipped evidence class. Scriveno does not download models or add package dependencies.
+
+## Optional Watermarks-Remover Service
+
+Scriveno's optional adapter is tested against watermarks-remover release `v0.5.0` at commit `c2ac8eeef3ff1a17aaab0cdb86889c7ad21675a7`. The executable adapter stays dependency-free and speaks the upstream JSON contract for `GET /health`, `GET /capabilities`, `POST /inspect`, and `POST /clean`.
+
+Configuration is environment-only:
+
+```bash
+export SCRIVENO_WATERMARKS_SERVICE_URL=http://127.0.0.1:8765
+export SCRIVENO_WATERMARKS_SERVICE_TOKEN='replace-with-local-secret'
+scriveno provenance-check manuscript.md --provider watermarks-remover
+```
+
+The token is optional when the service does not require authentication. Scriveno never accepts the URL or token as command arguments. Provider JSON passes through bounded iterative complexity validation with explicit depth and node limits. That validation does not rewrite protocol keys, enum values, counts, versions, capabilities, or cleaned base64. The token is redacted only from schema-approved public evidence and error text while the normalized result is built, so provider-supplied secrets do not appear in reports, errors, logs, Markdown, JSON, or SARIF.
+
+Health and capabilities are validated before any upload. The adapter records the service version, checks operations and formats, and clamps concurrency to the lowest Scriveno, user, and advertised limit. It opens each input once through a non-symlink stable handle, establishes ownership and file identity, reads and hashes from that handle, compares the expected validated digest, and uploads those exact bytes. Every provider attempt is accounted for before a batch failure returns, so work cannot continue unreported after fallback begins.
+
+The loopback service may use HTTP. Remote providers require HTTPS and a global-unicast address. DNS resolution rejects private, loopback, link-local, shared, multicast, unspecified, cloud metadata, and all other special-purpose ranges. The DNS deadline and continuously streaming HTTP response deadline are directly tested. The same absolute request deadline covers connection establishment and the TLS handshake. Redirects are refused.
+
+Input bytes and the base64 request envelope have independent caps. Small health, capability, and inspect reports use a report response cap. Clean responses use a separate bounded clean response cap sized for the base64 representation of every accepted input. Provider responses must match a strict kind-specific schema before normalization; empty, malformed, cross-kind, or contradictory payloads trigger visible local fallback.
+
+Provider output is mapped into Scriveno's normalized findings. Only typed text `hits`, typed container `layer_a_hits`, and explicit C2PA or AI-metadata summary booleans are authoritative deterministic fields. True summary booleans create their own normalized summary findings. Every untyped upstream `report.findings` and `post_findings` string is ignored, even when it sounds like C2PA or metadata evidence and a report-wide boolean is true. The upstream service includes a Layer B stylometry score for text and can use it in its aggregate `suspicious` flag. Stylometry is ignored as authoritative evidence, and Scriveno does not turn that aggregate flag into a finding. This categorical exclusion covers the v0.5.0 phrases `AI phrase marker`, `AI cadence phrase`, `unnaturally uniform sentence cadence`, `elevated AI formulaic transition density`, `n-gram density`, `burstiness`, and `lexical diversity` without relying on a vocabulary denylist.
+
+Provider cleaning uses only `keep_non_ai_metadata: true` and `also_layer_a_text: true`. The response is mapped into the `scriveno.provenance.clean/v1` schema with normalized changes, byte counts, and residual summary findings synthesized from explicit booleans instead of exposing the raw provider report. Scriveno never requests pixel removal, statistical rewriting, aggressive homoglyph replacement, or humanizing. A missing, malformed, or incompatible capability response cannot authorize cleaning.
+
+If an optional provider attempt fails, the audit records the reason and falls back to the same local lanes. The report contains both attempts and is degraded rather than silently clear. Batch execution waits for and records every started provider attempt before fallback. `--require-provider` disables fallback, returns exit `70`, and writes no cleaned output.
 
 ## Safety and Residual Risk
 

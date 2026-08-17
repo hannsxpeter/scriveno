@@ -3,7 +3,7 @@ description: Inspect writer-owned text and publishing files for invisible Unicod
 argument-hint: "[target] [--scope <source|build|output|all>] [--strict]"
 ---
 
-<!-- Implements: P-MUST-01, P-MUST-02, P-MUST-03, P-MUST-04, P-MUST-05, P-MUST-06, P-MUST-07, P-MUST-12, P-MUST-14, P-MUST-15, P-MUST-18 -->
+<!-- Implements: P-MUST-01, P-MUST-02, P-MUST-04, P-MUST-05, P-MUST-06, P-MUST-07, P-MUST-12, P-MUST-13, P-MUST-14, P-MUST-15, P-MUST-17 -->
 
 # /scr:provenance-check - Provenance Audit
 
@@ -14,7 +14,7 @@ This is a privacy and publishing-hygiene tool for content the writer owns or is 
 ## Usage
 
 ```text
-/scr:provenance-check [target...] [--scope <source|build|output|all>] [--jobs <1-8>] [--format <markdown|json|sarif>] [--output <path>] [--strict] [--provider local]
+/scr:provenance-check [target...] [--scope <source|build|output|all>] [--jobs <1-8>] [--format <markdown|json|sarif>] [--output <path>] [--strict] [--provider <local|auto|watermarks-remover>] [--require-provider]
 ```
 
 - `target...`: One or more local files or directories, or an HTTP or HTTPS URL for the agent-guided read-only lane. Supplied targets override manuscript scope discovery. The packaged local CLI reports remote URLs as degraded rather than uploading or mutating content.
@@ -26,13 +26,17 @@ This is a privacy and publishing-hygiene tool for content the writer owns or is 
 - `--format <markdown|json|sarif>`: Render the same normalized findings as writer-facing Markdown, schema-versioned JSON, or SARIF 2.1.0.
 - `--output <path>`: Write the selected report format to a local non-symlink path that is not an audited input.
 - `--strict`: Treat unsupported or degraded inspection lanes as unresolved findings instead of informational limitations.
-- `--provider local`: Select the dependency-free local provider. Other provider values are reserved for a later integration and are invalid in this command version.
+- `--provider local`: Use only the dependency-free local provider. This is the default and never uploads files.
+- `--provider auto`: Use the watermarks-remover service only when `SCRIVENO_WATERMARKS_SERVICE_URL` is configured. Otherwise remain local without a network request.
+- `--provider watermarks-remover`: Request the optional service. A recoverable service failure is reported and falls back to the local lanes.
+- `--require-provider`: Refuse local fallback. A provider negotiation or inspection failure exits `70` and produces no cleaned output.
 
 The installed CLI uses the same contract:
 
 ```bash
 scriveno provenance-check ./drafts ./assets --jobs 4 --format json --provider local
 scriveno provenance-check ./release --format sarif --output provenance.sarif --provider local
+SCRIVENO_WATERMARKS_SERVICE_URL=http://127.0.0.1:8765 scriveno provenance-check ./release --provider watermarks-remover
 ```
 
 ## Instruction
@@ -88,6 +92,16 @@ Use:
 - `unzip` only for read-only container listing or extraction into a temporary directory
 
 Do not pass credentials on a command line. Quote every path.
+
+### OPTIONAL WATERMARKS-REMOVER PROVIDER
+
+The optional provider is an explicit transport, not an implicit upload lane. Read its base URL only from `SCRIVENO_WATERMARKS_SERVICE_URL` and its bearer token only from `SCRIVENO_WATERMARKS_SERVICE_TOKEN`. Never accept either value as a command argument, print the token, or include it in Markdown, JSON, SARIF, errors, or logs.
+
+Before uploading any file bytes, validate `GET /health` and `GET /capabilities`, record the service version, confirm the requested operation and format, and clamp concurrency to the lowest advertised or local limit. Open the writer-owned input once through a non-symlink stable handle, then verify its identity, ownership, size, and expected digest before uploading the bytes read from that handle. Refuse redirects. Plain HTTP is allowed only for the documented loopback service. A remote endpoint must use HTTPS, and every resolved address must be global-unicast. Reject private, loopback, link-local, shared, multicast, unspecified, cloud metadata, and every other special-purpose range.
+
+Send base64 file bodies to `POST /inspect` only after those checks. Bound input bytes and the encoded request envelope independently. Use a small report response cap, a separate bounded clean response cap, and absolute wall-clock deadlines for DNS, connect, TLS, and the full response stream. Validate complexity without rewriting protocol fields or cleaned base64, then redact the token only from approved public evidence and errors during normalization. Normalize only typed structured hits and explicit summary booleans into the Scriveno finding schema. True summary booleans create normalized summary findings. Ignore every untyped upstream `report.findings` and `post_findings` string regardless of its wording or agreement with a summary boolean. This categorical rule excludes Layer B stylometry, its phrase-marker, cadence, density, burstiness, lexical-diversity, and aggregate strings. Do not claim that a high or low stylometry score establishes authorship.
+
+In `auto` mode, no configured URL means local-only operation. In explicit `watermarks-remover` mode, a recoverable provider failure must record the failed provider attempt and the successful local fallback. With `--require-provider`, stop with exit `70` instead of silently using local results.
 
 ### STEP 3: CLASSIFY BEFORE READING
 

@@ -1,4 +1,4 @@
-// Implements: P-MUST-01, P-MUST-02, P-MUST-03, P-MUST-04, P-MUST-05, P-MUST-06, P-MUST-07, P-MUST-12, P-MUST-14, P-MUST-15, P-MUST-18
+// Implements: P-MUST-01, P-MUST-04, P-MUST-05, P-MUST-07, P-MUST-08, P-MUST-10, P-MUST-11, P-MUST-12, P-MUST-13, P-MUST-14, P-MUST-15, P-MUST-17, P-MUST-18
 const { describe, it } = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
@@ -112,6 +112,44 @@ describe('provenance hygiene command surface', () => {
     assert.match(publishing, /\/scr:provenance-check/);
     assert.match(publishing, /\/scr:provenance-clean/);
     assert.match(publishing, /does not change.*disclosure/is);
+  });
+
+  it('documents the opt-in provider contract, safe fallback, and upstream proof', () => {
+    const guide = read('docs/provenance-hygiene.md');
+    const proof = read('data/proof/provenance/README.md');
+    const combinedCommands = audit + clean;
+
+    for (const mode of ['--provider local', '--provider auto', '--provider watermarks-remover', '--require-provider']) {
+      assert.ok(combinedCommands.includes(mode), `${mode} is not documented`);
+    }
+    for (const variable of ['SCRIVENO_WATERMARKS_SERVICE_URL', 'SCRIVENO_WATERMARKS_SERVICE_TOKEN']) {
+      assert.ok((guide + combinedCommands).includes(variable), `${variable} is not documented`);
+    }
+    assert.match(guide + proof, /c2ac8eeef3ff1a17aaab0cdb86889c7ad21675a7/);
+    assert.match(guide + proof, /v?0\.5\.0/);
+    assert.match(guide, /health.*capabilit.*before.*upload/is);
+    assert.match(guide, /redirects?.*refus/is);
+    assert.match(guide, /loopback.*HTTP.*HTTPS/is);
+    assert.match(guide, /private.*link-local.*multicast.*metadata/is);
+    assert.match(guide + proof, /global-unicast/i);
+    assert.match(guide + proof, /DNS.*continuously streaming HTTP.*directly tested/is);
+    assert.match(guide + proof, /absolute request deadline.*connect.*TLS/is);
+    assert.match(guide + proof, /stable.*handle.*digest/is);
+    assert.match(guide + proof, /bounded iterative.*complexity/is);
+    assert.match(guide + proof, /separate.*report.*clean.*response.*cap/is);
+    assert.match(guide + proof, /strict.*kind-specific.*schema/is);
+    assert.match(guide + proof, /every.*provider attempt/is);
+    assert.match(proof, /protocol.*unchanged.*public textual evidence.*redact/is);
+    assert.match(proof, /AI phrase marker.*AI cadence phrase.*uniform sentence cadence/is);
+    assert.match(proof, /formulaic transition density.*n-gram density.*burstiness.*lexical diversity/is);
+    assert.match(proof, /authoritative deterministic fields/i);
+    assert.match(guide + proof, /untyped.*report\.findings.*post_findings.*ignored/is);
+    assert.match(guide + proof, /summary booleans.*normalized summary findings/is);
+    assert.match(guide, /stylometry.*ignored.*authoritative/is);
+    assert.match(guide + combinedCommands, /fallback.*local/is);
+    assert.match(clean, /never.*pixel removal/is);
+    assert.match(clean, /keep_non_ai_metadata.*true/is);
+    assert.match(clean, /also_layer_a_text.*true/is);
   });
 
   it('documents provenance hygiene and preserves the detector policy', () => {
