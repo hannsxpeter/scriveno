@@ -2,6 +2,18 @@
 
 All notable package-level changes to `scriveno` are documented here.
 
+## 3.8.0 - 2026-08-17
+
+Executable provenance auditing, optional provider integration, verified cleaning, and reproducible package proof.
+
+- Added the dependency-free `scriveno provenance-check` CLI for bounded batch audits across text, web, raster, PDF, Office, ODT, and EPUB formats, with one normalized schema rendered as Markdown, JSON, or SARIF 2.1.0.
+- Added explicit opt-in support for the watermarks-remover `v0.5.0` service contract. Local processing remains the default, provider upload has strict privacy and network boundaries, and optional failures fall back locally with visible degraded status.
+- Added dry-run-first `scriveno provenance-clean` behavior for verified cleaned copies, with protected-content checks, archive safety, output collision guards, and explicit confirmation plus backup for in-place work.
+- Preserved Voice DNA, visible prose, script joiners, emoji sequences, pixels, frames, loop data, ICC data, navigation, accessibility data, and disclosure history. Layer B stylometry and pixel removal remain unsupported as authoritative or mutation channels.
+- Added an installed-package consumer test that packs with lifecycle scripts disabled, installs offline into an empty temporary project, and exercises provider success, provider failure, fallback, dry-run, copy output, invalid input, JSON, SARIF, and exit codes `0`, `1`, `2`, `64`, and `70`.
+- Added a deterministic two-pack release gate that compares SHA-256 tarball digests and normalized path, size, and mode manifests without network access.
+- Updated package, template, constraint, configuration, README, testing, shipped-assets, runtime, and release metadata to `3.8.0` while keeping the dependency-free `Node.js >=20.0.0` compatibility floor.
+
 ## 3.7.0 - 2026-08-15
 
 Provenance hygiene for text, documents, archives, and publishing assets.

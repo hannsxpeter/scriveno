@@ -10,8 +10,9 @@ The root `package.json` defines:
 "scripts": {
   "test": "node --test test/*.test.js",
   "pack:check": "npm pack --dry-run",
+  "pack:repro": "node scripts/check-pack-reproducibility.js",
   "policy:check": "node scripts/check-writing-policy.js",
-  "release:check": "npm test && npm run policy:check && npm run pack:check",
+  "release:check": "npm test && npm run policy:check && npm run pack:repro && npm run pack:check",
   "prepublishOnly": "npm run release:check"
 }
 ```
@@ -20,6 +21,7 @@ That means:
 
 - `npm test` runs the whole test suite
 - `npm run pack:check` verifies the package contents that would ship
+- `npm run pack:repro` packs twice with lifecycle scripts disabled and network access blocked, then compares exact digests and normalized manifests
 - `npm run policy:check` scans tracked text files for the repo writing policy
 - `npm run release:check` runs tests, policy checks, and package checks
 - publishing is guarded by `release:check` through `prepublishOnly`
@@ -53,6 +55,7 @@ The `test/` directory currently includes coverage for:
 - installer behavior and runtime-target setup
 - demo and baseline product surfaces
 - milestone-specific trust, publishing, translation, illustration, and collaboration regressions
+- installed-package provenance audit, provider fallback, cleaning, serialization, and exit behavior in `test/provenance-consumer.test.js`
 
 Representative files:
 
@@ -64,6 +67,7 @@ Representative files:
 - `test/phase14-runtime-credibility.test.js`
 - `test/phase18-technical-writing-domain-modeling.test.js`
 - `test/phase19-verification-trust-surface-updates.test.js`
+- `test/provenance-consumer.test.js`
 
 ## High-signal test categories
 
@@ -72,6 +76,8 @@ Representative files:
 Use these when changing package metadata, release docs, or shipped-file expectations:
 
 - `test/package.test.js`
+- `test/provenance-consumer.test.js`
+- `node scripts/check-pack-reproducibility.js`
 - `npm run release:check`
 
 These catch drift around Node baseline, packed files, and release-facing package claims.

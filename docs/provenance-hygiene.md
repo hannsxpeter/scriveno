@@ -6,6 +6,8 @@ Scriveno provides a conservative audit and cleanup workflow for invisible Unicod
 
 The feature is for files you own or are authorized to process. It does not promise anonymity, detector evasion, or proof that a file has no remaining provenance signal.
 
+Provider use is opt-in. Its privacy default is local-only processing, and it sends file bytes only after endpoint and capability validation. Every provider attempt is reported. A recoverable provider failure falls back to the local lanes with degraded status unless `--require-provider` is set.
+
 ## Commands
 
 `/scr:provenance-check [scope]` runs a read-only audit and writes `.manuscript/reviews/PROVENANCE-AUDIT.md`. The scope can be a file, directory, HTTP or HTTPS URL, or one of `source`, `build`, `output`, and `all`. Remote URLs are read-only inputs.
@@ -58,6 +60,8 @@ Exit codes are:
 - `64`: invalid or unsafe input
 - `70`: unrecovered internal failure
 
+The installed-package consumer proof exercises all five exit codes, provider success, provider failure with local fallback, dry-run behavior, cleaned-copy publication, invalid input, JSON, and SARIF without reading source-checkout internals.
+
 ## Optional Tools
 
 Scriveno stays dependency-free. It detects external tools and explains any degraded lane instead of installing software automatically.
@@ -92,6 +96,8 @@ Input bytes and the base64 request envelope have independent caps. Small health,
 Provider output is mapped into Scriveno's normalized findings. Only typed text `hits`, typed container `layer_a_hits`, and explicit C2PA or AI-metadata summary booleans are authoritative deterministic fields. True summary booleans create their own normalized summary findings. Every untyped upstream `report.findings` and `post_findings` string is ignored, even when it sounds like C2PA or metadata evidence and a report-wide boolean is true. The upstream service includes a Layer B stylometry score for text and can use it in its aggregate `suspicious` flag. Stylometry is ignored as authoritative evidence, and Scriveno does not turn that aggregate flag into a finding. This categorical exclusion covers the v0.5.0 phrases `AI phrase marker`, `AI cadence phrase`, `unnaturally uniform sentence cadence`, `elevated AI formulaic transition density`, `n-gram density`, `burstiness`, and `lexical diversity` without relying on a vocabulary denylist.
 
 Provider cleaning uses only `keep_non_ai_metadata: true` and `also_layer_a_text: true`. Before publication, every provider result must equal the exact locally proven safe cleaned result, or the original when no safe local change is proven, and it may add no finding. This direct protected-content invariant is applied before any destructive canonicalization. It protects visible prose, pixels, frames, loop data, ICC data, mixed metadata structures, archive structure, relationships, styles, media, navigation, and accessibility content. An invariant failure writes nothing in every provider mode. Required-provider transport failure exits `70`; optional transport failure records the failed attempt before local fallback. The response is mapped into the `scriveno.provenance.clean/v1` schema with normalized changes, byte counts, and residual summary findings synthesized from explicit booleans instead of exposing the raw provider report. Scriveno never requests pixel removal, statistical rewriting, aggressive homoglyph replacement, or humanizing. A missing, malformed, incompatible, or invariant-breaking response cannot authorize cleaning.
+
+Soft-bound signals, pixel-domain watermarks, vendor-keyed statistical marks, and unrecognized container channels remain unsupported for removal. They are reported as residual or degraded coverage instead of being treated as clear.
 
 If an optional provider attempt fails, the audit records the reason and falls back to the same local lanes. The report contains both attempts and is degraded rather than silently clear. Batch execution waits for and records every started provider attempt before fallback. `--require-provider` disables fallback, returns exit `70`, and writes no cleaned output.
 

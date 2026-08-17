@@ -10,6 +10,7 @@ const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
 describe('package.json fields', () => {
   it('has correct name', () => {
     assert.equal(pkg.name, 'scriveno');
+    assert.equal(pkg.version, '3.8.0');
   });
 
   it('has bin entry pointing to install.js', () => {
@@ -42,8 +43,9 @@ describe('package.json fields', () => {
 
   it('has prepublishOnly script', () => {
     assert.equal(pkg.scripts.prepublishOnly, 'npm run release:check');
-    assert.equal(pkg.scripts['release:check'], 'npm test && npm run policy:check && npm run pack:check');
+    assert.equal(pkg.scripts['release:check'], 'npm test && npm run policy:check && npm run pack:repro && npm run pack:check');
     assert.equal(pkg.scripts['policy:check'], 'node scripts/check-writing-policy.js');
+    assert.equal(pkg.scripts['pack:repro'], 'node scripts/check-pack-reproducibility.js');
     assert.equal(pkg.scripts['pack:check'], 'npm pack --dry-run');
   });
 });
@@ -73,9 +75,18 @@ describe('npm pack dry-run', () => {
     const expectedEntries = [
       'bin/install.js',
       'lib/auto-invoke-engine.js',
+      'lib/provenance-audit.js',
+      'lib/provenance-provider.js',
+      'lib/provenance-clean.js',
       'data/CONSTRAINTS.json',
+      'data/proof/provenance/provider-fixture.js',
+      'data/proof/provenance/README.md',
       'scripts/check-writing-policy.js',
+      'scripts/check-pack-reproducibility.js',
       'commands/scr/demo.md',
+      'commands/scr/provenance-check.md',
+      'commands/scr/provenance-clean.md',
+      'docs/provenance-hygiene.md',
       'templates/STYLE-GUIDE.md',
       'templates/technical/DOC-BRIEF.md',
     ];

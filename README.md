@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/hannsxpeter/scriveno/actions/workflows/ci.yml/badge.svg)](https://github.com/hannsxpeter/scriveno/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-3.7.0-blue)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-3.8.0-blue)](CHANGELOG.md)
 [![npm](https://img.shields.io/npm/v/scriveno.svg)](https://www.npmjs.com/package/scriveno)
 [![Downloads](https://img.shields.io/npm/dm/scriveno.svg)](https://www.npmjs.com/package/scriveno)
 [![Status CLI](https://img.shields.io/badge/status%20CLI-scriveno%20status-blue)](docs/runtime-support.md#shared-auto-invoke-engine)
@@ -266,11 +266,11 @@ Scriveno currently ships installer targets for these AI tooling environments:
 
 ## Status
 
-**Version:** 3.7.0
+**Version:** 3.8.0
 
 Scriveno's core command surface is stable across 127 commands, 50 work types, and 11 installer targets. The current repo baseline includes shipped planning milestones through `v2.0 Publishing Cover Packaging`, plus the creative-context, record-store, neutral research layer, world/place/geography layers, prepublish editorial review, branching-next, runtime-sync, adaptive concierge, human-first writing-safeguard, authenticity-diagnostic, provenance hygiene, domain-grilling, installer-marker cleanup, cross-runtime agent metadata, bounded subagent spawning protocol, model adaptation guide, visible automation status, the shared `npx scriveno@latest status --project .` auto-invoke engine, route-intelligence lanes, safe apply reporting, runtime smoke checks, agent availability checks, route graph audits, workflow-reference guards, the full audit repair pass through `2.0.11`, the first-run proof surface in `2.5.0`, the executable `/scr:first-run` path, command profiles, context-health checks, `/scr:proof-unit`, hub-first command families, and interactive install profile selection. See [Quick Proof](docs/quick-proof.md) for the fastest proof path, [Shipped Assets](docs/shipped-assets.md) for the canonical asset inventory, and [Runtime Support](docs/runtime-support.md) for the runtime compatibility matrix.
 
-Version `3.7.0` publishes Scriveno under the package name `scriveno`, so the current install command is `npx scriveno@latest`. The older `scriveno-cli` package name is historical and was unpublished during the rename, so npm cannot attach a deprecation notice to it while it has no active registry record. The older `scriven-cli` package remains on npm only as a deprecated legacy name that points users to `scriveno`. Do not treat either legacy package name as active unless a deliberate compatibility shim is republished. See [CHANGELOG](CHANGELOG.md) for the full list and [docs/release-notes.md](docs/release-notes.md) for the public-facing summary.
+Version `3.8.0` publishes Scriveno under the package name `scriveno`, so the current install command is `npx scriveno@latest`. This release makes provenance audit and verified cleaning executable from the installed package, adds the opt-in watermarks-remover provider with local fallback, and release-checks the packed consumer without network access. The older `scriveno-cli` package name is historical and was unpublished during the rename, so npm cannot attach a deprecation notice to it while it has no active registry record. The older `scriven-cli` package remains on npm only as a deprecated legacy name that points users to `scriveno`. Do not treat either legacy package name as active unless a deliberate compatibility shim is republished. See [CHANGELOG](CHANGELOG.md) for the full list and [docs/release-notes.md](docs/release-notes.md) for the public-facing summary.
 
 Package history is tracked in [CHANGELOG.md](CHANGELOG.md), and the public-facing summary for this release is in [docs/release-notes.md](docs/release-notes.md).
 

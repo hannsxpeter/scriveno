@@ -210,6 +210,44 @@ describe('provenance hygiene command surface', () => {
     assert.match(changelog, /provenance-clean/);
   });
 
+  it('documents the 3.8.0 installed-package and release contract', () => {
+    const guide = read('docs/provenance-hygiene.md');
+    const readme = read('README.md');
+    const releaseNotes = read('docs/release-notes.md');
+    const releaseChecklist = read('docs/release-checklist.md');
+    const runtime = read('docs/runtime-support.md');
+    const shipped = read('docs/shipped-assets.md');
+    const testing = read('docs/testing.md');
+    const combined = `${guide}\n${readme}\n${releaseNotes}`;
+
+    assert.match(readme, /version-3\.8\.0/);
+    for (const token of ['opt-in', 'privacy', 'fallback', 'Markdown', 'JSON', 'SARIF 2.1.0']) {
+      assert.ok(combined.includes(token), `${token} is missing from release documentation`);
+    }
+    assert.match(combined, /exit codes?/i);
+    for (const code of ['`0`', '`1`', '`2`', '`64`', '`70`']) {
+      assert.ok(combined.includes(code), `Exit code ${code} is missing from release documentation`);
+    }
+    for (const format of ['WebP', 'AVIF', 'HEIC', 'BMP', 'GIF', 'TIFF', 'BigTIFF', 'XLSX', 'PPTX']) {
+      assert.ok(combined.includes(format), `${format} is missing from release documentation`);
+    }
+    for (const boundary of ['Soft-bound', 'pixel-domain', 'unsupported']) {
+      assert.match(combined, new RegExp(boundary, 'i'));
+    }
+    assert.ok(combined.includes('v0.5.0'));
+    assert.ok(combined.includes('c2ac8eeef3ff1a17aaab0cdb86889c7ad21675a7'));
+    assert.match(releaseChecklist, /pack:repro/);
+    assert.match(releaseChecklist, /ignore-scripts.*offline/is);
+    for (const runtimeToken of ['Node 20', 'Node 24', 'Release checks']) {
+      assert.ok(runtime.includes(runtimeToken), `${runtimeToken} is missing from runtime documentation`);
+    }
+    for (const helper of ['provenance-audit.js', 'provenance-provider.js', 'provenance-clean.js']) {
+      assert.ok(shipped.includes(helper), `${helper} is missing from the shipped asset inventory`);
+    }
+    assert.match(testing, /provenance-consumer\.test\.js/);
+    assert.match(testing, /check-pack-reproducibility\.js/);
+  });
+
   it('keeps repair safety fixtures explicit', () => {
     const fixtures = JSON.parse(read('test/fixtures/provenance/cases.json'));
     assert.deepStrictEqual(fixtures.protectedUnicodeCodePoints, ['U+180E', 'U+E0100']);

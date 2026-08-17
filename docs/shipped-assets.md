@@ -25,6 +25,18 @@ Conflict resolution is top-down: `STYLE-GUIDE.md` beats `WRITING-RULES.md` beats
 
 A contributor adding `templates/pitfalls/<work_type>.md` is automatically picked up by `lib/architectural-profiles.js#listPitfallPacks` with no edits to library code or `CONSTRAINTS.json`.
 
+## Provenance Runtime Shipped Today
+
+The dependency-free package includes the complete executable provenance surface:
+
+- `lib/provenance-audit.js` classifies supported files, runs bounded local or provider audits, normalizes findings, and serializes Markdown, JSON, and SARIF 2.1.0.
+- `lib/provenance-provider.js` implements the opt-in watermarks-remover `v0.5.0` transport, endpoint validation, privacy limits, capability negotiation, redaction, and local fallback contract.
+- `lib/provenance-clean.js` plans or applies verified cleaning to isolated copies and enforces provider protected-content invariants.
+- `commands/scr/provenance-check.md` and `commands/scr/provenance-clean.md` define the agent-facing workflow contracts.
+- `docs/provenance-hygiene.md` documents formats, concurrency, schemas, exit codes, safe defaults, provider boundaries, and unsupported channels.
+- `data/proof/provenance/provider-fixture.js` and its README provide the faithful local service proof used by installed-package tests without a live provider or network access.
+- `scripts/check-pack-reproducibility.js` proves two lifecycle-disabled packs have the same SHA-256 digest and normalized path, size, and mode manifest.
+
 ## Context Integrity Assets Shipped Since 2.0.0
 
 These files ship in `templates/` and `docs/` and provide the context-integrity set for session-aware AI work:

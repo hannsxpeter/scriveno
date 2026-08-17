@@ -16,6 +16,8 @@ Node is required for:
 - executing the shared auto-invoke status engine at `lib/auto-invoke-engine.js`
 - running the repo's JavaScript test suite
 
+Release checks run on Node 20 and Node 24 in CI. They cover the dependency-free test suite, policy scan, installed-package provenance consumer, deterministic two-pack comparison, and package contents. This is release check evidence for the supported Node floor and recommended LTS, not host-runtime parity evidence.
+
 Node is not a runtime dependency for Scriveno's markdown command system itself. Once installed, Scriveno's command files, agent prompts, templates, constraints, and shared auto-invoke engine are read by the host AI coding agent. Runtimes that can run local shell commands can call the engine directly; runtimes that cannot should use the same command text as a fallback contract.
 
 ## Evidence Levels

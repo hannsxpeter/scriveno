@@ -2,6 +2,23 @@
 
 This document is the public-facing summary of what changed between package releases. For package history, see the root [CHANGELOG](../CHANGELOG.md).
 
+## 3.8.0 - 2026-08-17
+
+### What changed
+
+- **Executable provenance checks.** The installed CLI now audits one file or a bounded batch across Markdown, text, HTML, SVG, PNG, JPEG, PDF, DOCX, ODT, EPUB, WebP, AVIF, HEIC, BMP, GIF, TIFF, BigTIFF, XLSX, and PPTX. The same normalized findings are available as Markdown, JSON, or SARIF 2.1.0.
+- **Private by default provider choice.** Local processing remains the default. The optional watermarks-remover provider is opt-in through environment-only configuration, validates health and capabilities before upload, refuses redirects and unsafe destinations, and visibly falls back to local processing unless the provider is required.
+- **Verified cleaning.** Cleaning is a dry-run by default. Apply mode writes a checked `*.cleaned.*` copy unless the writer explicitly confirms in-place replacement and backup. Protected content and archive structure are verified before publication.
+- **Clear automation outcomes.** Exit codes are `0` for clear, `1` for findings, `2` for degraded coverage or fallback, `64` for invalid or unsafe input, and `70` for an unrecovered provider or internal failure. Batch concurrency stays bounded by Scriveno and provider limits.
+- **Reproducible release proof.** Release checks pack twice with lifecycle scripts disabled and network access blocked, compare exact tarball digests plus normalized path, size, and mode manifests, then install the tarball into an empty consumer and exercise the public provenance flows.
+- **Conservative boundaries.** Soft-bound and pixel-domain watermarks remain unsupported removal channels. Stylometry is never authoritative, and Scriveno does not request pixel removal, rewrite prose for detectors, or alter creation history and disclosure duties.
+
+The optional adapter is tested against Guillaume Meyer's MIT-licensed watermarks-remover `v0.5.0` at commit `c2ac8eeef3ff1a17aaab0cdb86889c7ad21675a7`.
+
+### Why it matters
+
+Writers can now run the provenance workflow from the package they actually install, keep files local unless they explicitly choose a provider, and receive machine-readable results that distinguish findings, degraded coverage, unsafe input, and provider failure. The release artifact itself is checked for reproducibility before publication.
+
 ## 3.7.0 - 2026-08-15
 
 ### What changed

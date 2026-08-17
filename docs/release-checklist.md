@@ -15,6 +15,7 @@ Choose the next package version from npm, not from memory.
 
 ```bash
 npm run release:check
+npm run pack:repro
 npm audit --omit=dev --json
 node bin/install.js routes --json
 node bin/install.js agents --json
@@ -31,36 +32,37 @@ node scripts/check-writing-policy.js
 
 If that script does not exist in a checkout yet, run the equivalent local policy scan used by the release operator.
 
-## 3. Clear Previous Local Installs
+## 3. Create An Isolated Consumer
 
-Before validating a release candidate, clear Scriveno-owned install surfaces so stale files cannot hide installer defects.
+Validate the release candidate in a new temporary prefix so stale global files cannot hide installer defects. Do not delete existing user installs.
+
+This path intentionally does not run `npm cache clean --force`. A release proof should not delete the user's shared npm cache when an isolated, offline consumer provides stronger evidence.
 
 ```bash
-rm -rf "$HOME/.scriveno"
-rm -rf "$HOME/.codex/commands/scr"
-rm -rf "$HOME/.cursor/commands/scr"
-rm -rf "$HOME/.gemini/commands/scr"
-rm -rf "$HOME/.gemini/antigravity/commands/scr"
-rm -rf "$HOME/.config/opencode/commands/scr"
-rm -rf "$HOME/.github/commands/scr"
-rm -rf "$HOME/.windsurf/commands/scr"
-rm -rf "$HOME/.manus/skills/scriveno"
-npm cache clean --force
+release_candidate_root="$(mktemp -d)"
+mkdir -p "$release_candidate_root/dist" "$release_candidate_root/consumer"
+npm pack --ignore-scripts --pack-destination "$release_candidate_root/dist"
+npm install --prefix "$release_candidate_root/consumer" --ignore-scripts --offline --no-audit --no-fund "$release_candidate_root/dist/scriveno-X.Y.Z.tgz"
+node "$release_candidate_root/consumer/node_modules/scriveno/bin/install.js" --version
 ```
 
-Then reinstall from the checkout:
+The repository's `test/provenance-consumer.test.js` performs the same lifecycle-disabled, offline install and exercises provenance audit, cleaning, provider fallback, formats, and exit behavior using only installed package contents.
+
+To inspect project install surfaces without changing a global runtime, create a project inside the temporary root:
 
 ```bash
-npm install -g .
-scriveno --runtimes claude-code,cursor,gemini-cli,codex,opencode,copilot,windsurf,antigravity,manus,perplexity-desktop,generic --global --developer --silent
-scriveno smoke --json
+mkdir -p "$release_candidate_root/project"
+cd "$release_candidate_root/project"
+node "$release_candidate_root/consumer/node_modules/scriveno/bin/install.js" --runtimes codex,generic --project --developer --silent
+node "$release_candidate_root/consumer/node_modules/scriveno/bin/install.js" smoke --json
 ```
 
 ## 4. Pack The Candidate
 
 ```bash
 mkdir -p dist
-npm pack --pack-destination dist
+npm run pack:repro
+npm pack --ignore-scripts --pack-destination dist
 ```
 
 Inspect the tarball name and confirm the version matches `package.json`.

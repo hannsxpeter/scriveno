@@ -215,14 +215,14 @@ describe('authenticity-check diagnostic discipline', () => {
     assert.match(drafter, /never to move an AI-slop score or an external detector score/);
   });
 
-  it('release metadata is aligned on 3.7.0', () => {
+  it('release metadata is aligned on 3.8.0', () => {
     const pkg = JSON.parse(read('package.json'));
     const cfg = JSON.parse(read('templates/config.json'));
     const constraints = JSON.parse(read('data/CONSTRAINTS.json'));
 
-    assert.equal(pkg.version, '3.7.0');
-    assert.equal(cfg.scriveno_version, '3.7.0');
-    assert.equal(constraints.version, '3.7.0');
+    assert.equal(pkg.version, '3.8.0');
+    assert.equal(cfg.scriveno_version, '3.8.0');
+    assert.equal(constraints.version, '3.8.0');
     assert.match(read('CHANGELOG.md'), /## 3\.2\.3 - /);
     assert.match(read('docs/release-notes.md'), /## 3\.2\.3 - /);
   });
