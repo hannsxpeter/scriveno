@@ -3,7 +3,7 @@
 Date: 2026-08-17
 Owner: Scriveno release maintainer
 Scope: npm package publication and GitHub release activation
-State: local-ready; public activation pending
+State: published; verification complete
 
 ## Gate Evidence
 
@@ -117,5 +117,12 @@ Rollback trigger: deprecate `scriveno@3.8.0` and direct users to `3.7.0` if the 
 ## Activation Boundary
 
 - [DECISION] No hosted application or staging origin exists for this npm package release. Live verification means npm registry state, GitHub release state, and a fresh installed consumer.
-- [DECISION] Public activation remains pending until the prepublication gate passes immediately before the external write.
+- [DECISION] The hash-bound prepublication gate passed before the first external write.
 - [DECISION] This artifact does not authorize a stale gate, a guessed URL, an automatic retry after an uncertain publish, or mutation of the user's existing global runtime installs.
+
+## Post-Publication Evidence
+
+- [DECISION] npm published `scriveno@3.8.0` and reports it as the latest version.
+- [DECISION] GitHub published `v3.8.0` from release commit `648d2ccc2353be5c7ecf9b5f0430bcf5495cdea4`.
+- [DECISION] The GitHub asset digest is `sha256:1ccf5b59208a2382e78ee7c2bf0fc762a8c5679dcfaa6ba963e01f4d54d34c29`, identical to the local two-pack proof and the explicitly published npm tarball.
+- [DECISION] A fresh temporary consumer installed `scriveno@3.8.0` from npm and passed version, routes, JSON audit, SARIF audit, and dry-run clean checks.

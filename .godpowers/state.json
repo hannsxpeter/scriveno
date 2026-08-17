@@ -110,7 +110,8 @@
         "status": "pending"
       },
       "launch": {
-        "status": "pending"
+        "status": "done",
+        "updated": "2026-08-17T20:23:41.266Z"
       },
       "harden": {
         "status": "done",
