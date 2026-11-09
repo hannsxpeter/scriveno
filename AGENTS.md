@@ -2,7 +2,7 @@
 
 **Scriveno**
 
-Scriveno is a spec-driven writing, publishing, and translation pipeline that runs inside AI coding agents (Codex, Cursor, Gemini CLI). It covers the full lifecycle from blank page to publication-ready manuscript or technical document set -- including voice profiling, adaptive work types, autonomous drafting, illustration, translation, and multi-format export. Supports 50 work types with tradition-native vocabulary (novels use chapters, screenplays use acts, runbooks use procedures, Quran commentaries use surahs).
+Scriveno is a spec-driven writing, publishing, and translation pipeline that runs inside AI coding agents (Claude Code, Codex, Cursor, Gemini CLI). It covers the full lifecycle from blank page to publication-ready manuscript or technical document set -- including voice profiling, adaptive work types, autonomous drafting, illustration, translation, and multi-format export. Supports 50 work types with tradition-native vocabulary (novels use chapters, screenplays use acts, runbooks use procedures, Quran commentaries use surahs).
 
 **Core Value:** **Drafted prose sounds like the writer, not like AI.** The Voice DNA system profiles the writer across 15+ dimensions and loads that profile into every drafter agent invocation. If voice fidelity breaks, trust breaks, and no other feature matters.
 
@@ -71,7 +71,7 @@ Scriveno is a spec-driven writing, publishing, and translation pipeline that run
 |------------|---------|-----|------------|
 | **DeepL API Pro** | Primary translation engine for European languages | Higher quality than Google for EN/FR/DE/ES/IT/PT/NL/PL/JA/ZH/KO. GDPR-compliant, content not stored or used for training. $5.49/mo + $25/M chars. | HIGH |
 | **Google Cloud Translation (v3)** | Broad language coverage, RTL/CJK | 130+ languages vs DeepL's 33. Required for Arabic, Hebrew, Hindi, Swahili, and other languages DeepL doesn't cover. NMT at $20/M chars, LLM mode at $10+$10/M chars. | HIGH |
-| **AI Agent (Codex/GPT)** | Cultural adaptation, sacred text translation | Machine translation APIs don't handle literary nuance, sacred registers, or cultural adaptation. The AI agent itself is the best tool for these -- it can apply voice profiles, maintain glossaries, and do formal/dynamic equivalence translation. | HIGH |
+| **AI Agent (Claude/Codex/GPT)** | Cultural adaptation, sacred text translation | Machine translation APIs don't handle literary nuance, sacred registers, or cultural adaptation. The AI agent itself is the best tool for these -- it can apply voice profiles, maintain glossaries, and do formal/dynamic equivalence translation. | HIGH |
 ### Translation Strategy
 ### Translation Memory
 - Sacred texts (canonical terms must be consistent)
