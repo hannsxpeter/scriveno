@@ -10,7 +10,7 @@ You are guiding a writer through Scriveno's first 10 minutes. This command is th
 Use the shared CLI guide first when local command execution is available:
 
 ```bash
-npx scriveno@latest first-run --project "$PWD"
+npx @hxp-tools/scriveno@latest first-run --project "$PWD"
 node bin/install.js first-run --project "$PWD"
 ```
 
@@ -18,7 +18,7 @@ If the CLI is unavailable, follow the same steps manually from this command file
 
 ## What to do
 
-1. **Run the first-run guide.** Prefer `npx scriveno@latest first-run --project "$PWD"` unless a global `scriveno` binary is installed. It reports project status, runtime command shapes, demo steps, proof artifacts, and installed-surface checks.
+1. **Run the first-run guide.** Prefer `npx @hxp-tools/scriveno@latest first-run --project "$PWD"` unless a global `scriveno` binary is installed. It reports project status, runtime command shapes, demo steps, proof artifacts, and installed-surface checks.
 2. **Show the runtime-specific command shape.**
    - Claude Code: `/scr-first-run`, `/scr-demo`, `/scr-next`
    - Standard slash-command runtimes: `/scr:first-run`, `/scr:demo`, `/scr:next`
@@ -97,9 +97,9 @@ Local operations:
 - first-run guide: read-only
 - status sweep: read-only when the CLI is available
 Candidate local helpers:
-- npx scriveno@latest smoke --json
-- npx scriveno@latest routes --json
-- npx scriveno@latest surface status
+- npx @hxp-tools/scriveno@latest smoke --json
+- npx @hxp-tools/scriveno@latest routes --json
+- npx @hxp-tools/scriveno@latest surface status
 Manual gates:
 - writer chooses whether to create the demo or start a real project
 - writer confirmation before changing the installed command profile

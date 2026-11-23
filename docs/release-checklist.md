@@ -6,7 +6,7 @@ This checklist is the package-release path for Scriveno maintainers. It is desig
 
 ```bash
 git status --short --branch
-npm view scriveno version
+npm view @hxp-tools/scriveno version
 ```
 
 Choose the next package version from npm, not from memory.
@@ -42,8 +42,8 @@ This path intentionally does not run `npm cache clean --force`. A release proof 
 release_candidate_root="$(mktemp -d)"
 mkdir -p "$release_candidate_root/dist" "$release_candidate_root/consumer"
 npm pack --ignore-scripts --pack-destination "$release_candidate_root/dist"
-npm install --prefix "$release_candidate_root/consumer" --ignore-scripts --offline --no-audit --no-fund "$release_candidate_root/dist/scriveno-X.Y.Z.tgz"
-node "$release_candidate_root/consumer/node_modules/scriveno/bin/install.js" --version
+npm install --prefix "$release_candidate_root/consumer" --ignore-scripts --offline --no-audit --no-fund "$release_candidate_root/dist/hxp-tools-scriveno-X.Y.Z.tgz"
+node "$release_candidate_root/consumer/node_modules/@hxp-tools/scriveno/bin/install.js" --version
 ```
 
 The repository's `test/provenance-consumer.test.js` performs the same lifecycle-disabled, offline install and exercises provenance audit, cleaning, provider fallback, formats, and exit behavior using only installed package contents.
@@ -53,8 +53,8 @@ To inspect project install surfaces without changing a global runtime, create a 
 ```bash
 mkdir -p "$release_candidate_root/project"
 cd "$release_candidate_root/project"
-node "$release_candidate_root/consumer/node_modules/scriveno/bin/install.js" --runtimes codex,generic --project --developer --silent
-node "$release_candidate_root/consumer/node_modules/scriveno/bin/install.js" smoke --json
+node "$release_candidate_root/consumer/node_modules/@hxp-tools/scriveno/bin/install.js" --runtimes codex,generic --project --developer --silent
+node "$release_candidate_root/consumer/node_modules/@hxp-tools/scriveno/bin/install.js" smoke --json
 ```
 
 ## 4. Pack The Candidate
@@ -71,7 +71,7 @@ Inspect the tarball name and confirm the version matches `package.json`.
 
 ```bash
 git status --short
-git add README.md CHANGELOG.md docs package.json package-lock.json data templates commands .planning test
+git add README.md CHANGELOG.md docs package.json package-lock.json data templates commands test
 git commit -m "Release scriveno X.Y.Z"
 git tag vX.Y.Z
 ```
@@ -82,7 +82,7 @@ Keep the commit message plain and version-specific.
 
 ```bash
 npm publish --access public
-npm view scriveno version
+npm view @hxp-tools/scriveno version
 ```
 
 The published version must match `package.json` and the tag.
@@ -92,7 +92,7 @@ The published version must match `package.json` and the tag.
 ```bash
 git push origin main
 git push origin vX.Y.Z
-gh release create vX.Y.Z dist/scriveno-X.Y.Z.tgz --title "Scriveno X.Y.Z" --notes-file /tmp/scriveno-release-notes.md
+gh release create vX.Y.Z dist/hxp-tools-scriveno-X.Y.Z.tgz --title "Scriveno X.Y.Z" --notes-file /tmp/scriveno-release-notes.md
 ```
 
 The release notes should summarize the user-facing change, docs updated, tests run, and npm verification.
@@ -100,7 +100,7 @@ The release notes should summarize the user-facing change, docs updated, tests r
 ## 8. Verify From Published npm
 
 ```bash
-npm install -g scriveno@latest
+npm install -g @hxp-tools/scriveno@latest
 scriveno --version
 scriveno --runtimes claude-code,cursor,gemini-cli,codex,opencode,copilot,windsurf,antigravity,manus,perplexity-desktop,generic --global --developer --silent
 scriveno smoke --json
@@ -113,7 +113,7 @@ This is the final proof that a fresh user can install the same package that was 
 ```bash
 git status --short --branch
 gh release view vX.Y.Z
-npm view scriveno version
+npm view @hxp-tools/scriveno version
 ```
 
 The final state should show a clean worktree, a visible GitHub release, and npm latest aligned to the new version.

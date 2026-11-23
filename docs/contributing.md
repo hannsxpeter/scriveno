@@ -346,6 +346,34 @@ The export command (`commands/scr/export.md`) needs to know about your format. A
 
 If your export format is only available for certain work types, add an entry to the `"exports"` section of CONSTRAINTS.json with an `available` array specifying which work type groups can use it (or `["all"]` for universal formats).
 
+## Local Setup and Maintenance
+
+Local requirements are intentionally small: Node.js >=20.0.0 (use a currently supported LTS such as Node.js 24 for new work), npm for package scripts, and git. There is no compiled app, frontend bundle, or service to boot. `npm install` only creates lockfile context because the package stays dependency-free at runtime.
+
+Working principles:
+
+- keep the system markdown-first and dependency-light
+- preserve the Voice DNA pipeline
+- keep `>=20.0.0` as the installer compatibility floor unless the product plan changes
+- treat `docs/runtime-support.md` and `docs/shipped-assets.md` as trust-critical docs
+- avoid overstating runtime parity or shipped assets
+- if a command file and the plan disagree, the plan is canonical and the command should be corrected
+
+Useful commands:
+
+```bash
+npm test                                   # full suite
+node --test test/package.test.js test/constraints.test.js   # targeted subset
+npm run policy:check                       # writing-policy gate for docs, prompts, and commands
+npm run release:check                      # release gate before publishing
+npm start                                  # start the installer locally
+node bin/install.js --runtime codex --global --developer --silent   # refresh one installed runtime from this checkout
+```
+
+For a full cross-runtime refresh from this checkout, pass every runtime id to `--runtimes` (for example `claude-code,cursor,gemini-cli,codex,opencode,copilot,windsurf,antigravity,manus,perplexity-desktop,generic`) with `--global --developer --silent`. The writer-facing form of this maintenance operation is `/scr:sync`. Afterwards the shared audit commands should pass: `scriveno sync --check`, `scriveno smoke --json`, `scriveno agents --json`, and `scriveno routes --json`.
+
+Docs are part of the shipped product. If you change visible behavior, update every affected documentation surface in the same pass: root docs, files under `docs/`, proof READMEs, template READMEs, and command markdown that exposes user-facing contracts.
+
 ## Testing Your Changes
 
 Scriveno has a test suite that validates the constraint system and command structure.
@@ -389,7 +417,6 @@ When a package release changes the public story, update the release docs alongsi
 - `docs/runtime-support.md` -- runtime matrix, install-surface checks, and agent availability claims
 - `docs/route-graph.md` -- route graph, automation lanes, and priority fixtures when route logic changes
 - `templates/*/README.md` and `data/proof/*/README.md` -- shipped profile and proof documentation when those assets change
-- `.planning/` milestone summary files -- only when the release closes out milestone work or changes the archive story
 
 ### Minimum release checklist
 

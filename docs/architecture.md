@@ -219,7 +219,6 @@ scriveno/
     contributing.md        How to extend Scriveno (commands, agents, etc.)
     model-adaptation.md    Runtime and model-tier adaptation contract
     configuration.md       Package, installer, constraints, and project config surfaces
-    development.md         Contributor workflow for changing Scriveno itself
     testing.md             Test suite coverage and release-safety checks
     shipped-assets.md      Canonical shipped-template and trust-file inventory
     runtime-support.md     Canonical runtime matrix and Node baseline
@@ -400,7 +399,7 @@ The user chooses during installation. Guided local-MCP targets still write their
 
 ### Runtime credibility
 
-Scriveno's installer compatibility floor is `Node.js >=20.0.0`. For new installs, prefer a currently supported LTS such as Node.js 24. The compatibility floor applies to `npx scriveno@latest`, `bin/install.js`, `scriveno status --project .`, the proactive audit commands, the shared status engine, and the repo's JavaScript test suite, not to the markdown command system once files are installed.
+Scriveno's installer compatibility floor is `Node.js >=20.0.0`. For new installs, prefer a currently supported LTS such as Node.js 24. The compatibility floor applies to `npx @hxp-tools/scriveno@latest`, `bin/install.js`, `scriveno status --project .`, the proactive audit commands, the shared status engine, and the repo's JavaScript test suite, not to the markdown command system once files are installed.
 
 This architecture doc is intentionally about mechanics: detection rules, install path shapes, `commands` versus `skills` versus `guided-mcp`, and global versus project scope. For the authoritative runtime matrix, support levels, and verification status, see [`docs/runtime-support.md`](runtime-support.md).
 

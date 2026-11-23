@@ -6,14 +6,16 @@ Scriveno's runtime claims should be grounded in what the repo can actually prove
 
 Scriveno's installer compatibility floor is `Node.js >=20.0.0`. For new installs, prefer a currently supported LTS release such as Node.js 24. Node.js 20 reached end of life on 2026-04-30, so it remains a compatibility floor, not the recommended fresh-install target.
 
+Scriveno is published as `@hxp-tools/scriveno`. The earlier unscoped `scriveno` package was unpublished on 2026-11-23, so use the scoped name in every `npx` and `npm` command.
+
 Node is required for:
 
-- running `npx scriveno@latest`
+- running `npx @hxp-tools/scriveno@latest`
 - executing `bin/install.js`
-- running `npx scriveno@latest status --project .`
-- running `npx scriveno@latest status --project . --apply-safe`
-- running `npx scriveno@latest sync --check`, `npx scriveno@latest smoke`, `npx scriveno@latest agents`, and `npx scriveno@latest routes`
-- running `npx scriveno@latest provenance-check` and `npx scriveno@latest provenance-clean`
+- running `npx @hxp-tools/scriveno@latest status --project .`
+- running `npx @hxp-tools/scriveno@latest status --project . --apply-safe`
+- running `npx @hxp-tools/scriveno@latest sync --check`, `npx @hxp-tools/scriveno@latest smoke`, `npx @hxp-tools/scriveno@latest agents`, and `npx @hxp-tools/scriveno@latest routes`
+- running `npx @hxp-tools/scriveno@latest provenance-check` and `npx @hxp-tools/scriveno@latest provenance-clean`
 - executing the shared auto-invoke status engine at `lib/auto-invoke-engine.js`
 - executing the provenance helpers under `lib/provenance-*.js`
 - running the repo's JavaScript test suite
@@ -104,12 +106,12 @@ The engine computes proactive state from disk evidence: missing or stale context
 The public CLI entrypoint is:
 
 ```bash
-npx scriveno@latest status --project .
-npx scriveno@latest status . --json
-npx scriveno@latest status --project . --apply-safe
+npx @hxp-tools/scriveno@latest status --project .
+npx @hxp-tools/scriveno@latest status . --json
+npx @hxp-tools/scriveno@latest status --project . --apply-safe
 ```
 
-After `npm i -g scriveno`, you may use the shorter `scriveno status --project .` form. If you only ran `npx scriveno@latest`, keep using `npx scriveno@latest <command>` for terminal checks.
+After `npm i -g @hxp-tools/scriveno`, you may use the shorter `scriveno status --project .` form. If you only ran `npx @hxp-tools/scriveno@latest`, keep using `npx @hxp-tools/scriveno@latest <command>` for terminal checks.
 
 The JSON form is intended for CI, host adapters, and future runtime smoke tests.
 
@@ -120,17 +122,17 @@ Status output uses the same route-intelligence shape across runtimes: `Candidate
 The package now exposes cross-runtime checks through the public CLI:
 
 ```bash
-npx scriveno@latest sync --check
-npx scriveno@latest smoke --json
-npx scriveno@latest agents --json
-npx scriveno@latest routes --json
+npx @hxp-tools/scriveno@latest sync --check
+npx @hxp-tools/scriveno@latest smoke --json
+npx @hxp-tools/scriveno@latest agents --json
+npx @hxp-tools/scriveno@latest routes --json
 ```
 
-`npx scriveno@latest smoke` checks the runtimes recorded in the active installer settings (`.scriveno/settings.json` for project installs or `~/.scriveno/settings.json` for global installs). It checks installed command surfaces, Codex skill directories, bundled skill manifests, agent prompt counts, Codex `.toml` metadata, guided Perplexity setup assets, the active shared engine path, and the shared model adaptation docs. It does not grade every supported runtime unless those runtimes were actually installed or explicitly requested by test options.
+`npx @hxp-tools/scriveno@latest smoke` checks the runtimes recorded in the active installer settings (`.scriveno/settings.json` for project installs or `~/.scriveno/settings.json` for global installs). It checks installed command surfaces, Codex skill directories, bundled skill manifests, agent prompt counts, Codex `.toml` metadata, guided Perplexity setup assets, the active shared engine path, and the shared model adaptation docs. It does not grade every supported runtime unless those runtimes were actually installed or explicitly requested by test options.
 
-`npx scriveno@latest agents` checks whether each installed runtime has the expected Scriveno agent prompts and reports the correct fallback: prompt-run fallback for Claude Code and standard command runtimes, metadata-ready for Codex when `.toml` files are present, guided setup for Perplexity Desktop, and bundled skill prompts for Manus or generic skill installs. The report also includes the shared model policy: host-owned model, Scriveno-owned prompts, context boundaries, fallback behavior, and merge rules.
+`npx @hxp-tools/scriveno@latest agents` checks whether each installed runtime has the expected Scriveno agent prompts and reports the correct fallback: prompt-run fallback for Claude Code and standard command runtimes, metadata-ready for Codex when `.toml` files are present, guided setup for Perplexity Desktop, and bundled skill prompts for Manus or generic skill installs. The report also includes the shared model policy: host-owned model, Scriveno-owned prompts, context boundaries, fallback behavior, and merge rules.
 
-`npx scriveno@latest routes` audits the command graph and automation lanes from `data/CONSTRAINTS.json`. It is useful when adding commands because it surfaces whether a route is read-only, local-helper, agent-ready, agent-or-local, mixed, or manual-gated.
+`npx @hxp-tools/scriveno@latest routes` audits the command graph and automation lanes from `data/CONSTRAINTS.json`. It is useful when adding commands because it surfaces whether a route is read-only, local-helper, agent-ready, agent-or-local, mixed, or manual-gated.
 
 ## What Scriveno Proves Today
 

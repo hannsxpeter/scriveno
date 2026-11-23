@@ -9,7 +9,7 @@ You are synchronizing Scriveno's installed agent surfaces with the current Scriv
 
 This command is for local runtime drift: Codex skills, Codex command mirrors, Claude Code command files, command-directory runtimes, skills runtimes, guided setup assets, and agent prompts that no longer match the source files in the Scriveno package or repo.
 
-This is not a package upgrade command. Do not fetch a newer Scriveno release, do not change npm dependencies, and do not modify manuscript content. If the writer wants a newer published package version, suggest reinstalling from npm with `npx scriveno@latest --detected --global --writer --silent`.
+This is not a package upgrade command. Do not fetch a newer Scriveno release, do not change npm dependencies, and do not modify manuscript content. If the writer wants a newer published package version, suggest reinstalling from npm with `npx @hxp-tools/scriveno@latest --detected --global --writer --silent`.
 
 The auto-invoke status engine is a shared runtime asset. It is copied for every install target and can be checked with one of these paths:
 
@@ -30,7 +30,7 @@ Use `scriveno sync --check` for the full read-only sync audit: project status, s
 - A Scriveno source root with `package.json`, `bin/install.js`, `commands/scr/`, and `agents/`
 - At least one target runtime directory, or an explicit `--runtime` / `--detected` choice
 
-If you cannot find a Scriveno source root, stop and explain that `/scr:sync` needs to run from the Scriveno package or repo checkout. Suggest reinstalling with `npx scriveno@latest --detected --global --writer --silent` only when the writer wants the latest published package instead of local source sync.
+If you cannot find a Scriveno source root, stop and explain that `/scr:sync` needs to run from the Scriveno package or repo checkout. Suggest reinstalling with `npx @hxp-tools/scriveno@latest --detected --global --writer --silent` only when the writer wants the latest published package instead of local source sync.
 
 ## Usage
 
@@ -44,7 +44,7 @@ If you cannot find a Scriveno source root, stop and explain that `/scr:sync` nee
 ## What To Do
 
 1. Locate the Scriveno source root:
-   - First, check the current working directory and its parents for `package.json` with `"name": "scriveno"` or legacy `"name": "scriveno-cli"` plus `bin/install.js`.
+   - First, check the current working directory and its parents for `package.json` with `"name": "@hxp-tools/scriveno"` (or the earlier unscoped `"name": "scriveno"` or legacy `"name": "scriveno-cli"`) plus `bin/install.js`.
    - If running from an installed command copy that contains a `scriveno-installed-command` marker, derive the source root from that marker's `source:` path. Older `scriveno-cli-installed-command` markers are accepted as legacy input only.
    - If neither works, stop with the prerequisite message above.
 2. Read `package.json` from the source root and report the source version.

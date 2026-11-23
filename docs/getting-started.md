@@ -17,7 +17,7 @@ Before choosing a runtime, check [Runtime Support](runtime-support.md) for the c
 Run the installer in your terminal:
 
 ```
-npx scriveno@latest
+npx @hxp-tools/scriveno@latest
 ```
 
 This installs Scriveno into the runtime you choose. Command-directory and skills targets place files where the runtime expects them. Guided targets like Perplexity Desktop instead write setup assets and show the exact connector steps you need. Takes about 30 seconds.
@@ -27,20 +27,20 @@ Once installed, Claude Code uses flat `/scr-*` commands such as `/scr-help`, `/s
 You can also ask Scriveno for a read-only project status from any terminal:
 
 ```
-npx scriveno@latest status --project .
-npx scriveno@latest first-run --project .
-npx scriveno@latest status . --json
-npx scriveno@latest status --project . --apply-safe
-npx scriveno@latest sync --check
+npx @hxp-tools/scriveno@latest status --project .
+npx @hxp-tools/scriveno@latest first-run --project .
+npx @hxp-tools/scriveno@latest status . --json
+npx @hxp-tools/scriveno@latest status --project . --apply-safe
+npx @hxp-tools/scriveno@latest sync --check
 ```
 
-If you installed globally with `npm i -g scriveno`, the shorter `scriveno status --project .` form works too. If you only ran `npx scriveno@latest`, keep using `npx scriveno@latest <command>` for terminal checks.
+If you installed globally with `npm i -g @hxp-tools/scriveno`, the shorter `scriveno status --project .` form works too. If you only ran `npx @hxp-tools/scriveno@latest`, keep using `npx @hxp-tools/scriveno@latest <command>` for terminal checks.
 
 That status command is the same shared auto-invoke engine used by `/scr-next`, `/scr:next`, `/scr:progress`, `/scr:session-report`, and `/scr:sync` when local command execution is available. It recommends the next safest command, but does not mutate files or spawn agents by itself. Current status output separates candidate agents, candidate local helpers, and manual gates so you can tell whether Scriveno is pointing at a specialist route, a deterministic file helper, or a writer-owned decision.
 
 Use `--apply-safe` when you want Scriveno to run the read-only checks and show which helpers are safe, skipped, or agent-ready. Use `sync --check` when you want the installed runtime surfaces checked too.
 
-If you want one guided proof path instead of separate checks, start with `npx scriveno@latest first-run --project .`. Follow only the first-run path at first: demo, next, draft, review, save. Start a real project after that proof loop makes sense.
+If you want one guided proof path instead of separate checks, start with `npx @hxp-tools/scriveno@latest first-run --project .`. Follow only the first-run path at first: demo, next, draft, review, save. Start a real project after that proof loop makes sense.
 
 ## Step 2: Explore the Demo First
 
@@ -223,7 +223,7 @@ $scr-next
 
 `/scr-next` reads your project state and runs the right next step automatically. A writer who only ever types `/scr-next` in Claude Code can complete an entire manuscript from start to finish.
 
-For a terminal-readable version of the same project-state reasoning, run `npx scriveno@latest status --project .`.
+For a terminal-readable version of the same project-state reasoning, run `npx @hxp-tools/scriveno@latest status --project .`.
 
 Beyond the core workflow, Scriveno offers:
 

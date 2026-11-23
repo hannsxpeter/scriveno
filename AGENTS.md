@@ -84,7 +84,7 @@ Scriveno is a spec-driven writing, publishing, and translation pipeline that run
 | **Publishing method** | `npm publish` with 2FA from local machine | CI runs release checks, but publishing is still manual. Trusted publishing belongs in a future release workflow, not the current local-publish path. | HIGH |
 | **Prepublish check** | `npm pack --dry-run` before every publish | Verify no secrets, no unnecessary files leaked. The `"files"` field in package.json already scopes what's included. | HIGH |
 | **Versioning** | `npm version patch/minor/major` with git tags | Auto-creates git tag, bumps version. Pair with GitHub releases for changelog. | HIGH |
-| **npx support** | Already configured (`"bin": {"scriveno": "bin/install.js"}`) | `npx scriveno@latest` downloads and runs the installer from the active npm package. Legacy names are historical only. | HIGH |
+| **npx support** | Already configured (`"bin": {"scriveno": "bin/install.js"}`) | `npx @hxp-tools/scriveno@latest` downloads and runs the installer from the active npm package. Legacy names are historical only. | HIGH |
 | **Lockfile** | Commit `package-lock.json` but since there are zero dependencies, it's effectively empty | Standard practice. Will matter when/if dev dependencies are added for testing. | HIGH |
 | **Node version** | `"engines": {"node": ">=20.0.0"}` | Scriveno's installer compatibility floor is `>=20.0.0`; new installs should use a currently supported LTS such as Node.js 24. This keeps package metadata, installer guidance, and runtime docs aligned on one minimum without presenting Node 20 as the fresh-install target. | HIGH |
 See `docs/runtime-support.md` for the canonical runtime matrix, support levels, and host-runtime parity status.

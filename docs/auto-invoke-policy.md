@@ -2,7 +2,7 @@
 
 Scriveno can be proactive, but it must be proactive from disk evidence. Commands should inspect `.manuscript/`, reports, timestamps, config, and installed runtime surfaces before choosing an automatic helper.
 
-The executable policy lives in `lib/auto-invoke-engine.js` and is exposed through `npx scriveno@latest status --project .` or the shorter `scriveno status --project .` form after a global install. The installer copies it to `.scriveno/lib/auto-invoke-engine.js` for project installs and `~/.scriveno/lib/auto-invoke-engine.js` for global installs, so every runtime can use the same read-only status logic.
+The executable policy lives in `lib/auto-invoke-engine.js` and is exposed through `npx @hxp-tools/scriveno@latest status --project .` or the shorter `scriveno status --project .` form after a global install. The installer copies it to `.scriveno/lib/auto-invoke-engine.js` for project installs and `~/.scriveno/lib/auto-invoke-engine.js` for global installs, so every runtime can use the same read-only status logic.
 
 The engine reports candidates instead of silently acting. It can identify planned-but-undrafted work, drafts without review coverage, unresolved note files, revision proposals, translation follow-ups, publishing prerequisite gaps, stale exports, and stale session context. It then separates what could spawn an agent, what could run as a local helper, and what must stay behind a manual gate.
 
@@ -13,11 +13,11 @@ The same file exports `getCommandAutomationPolicy()`, which classifies every com
 Scriveno now exposes the proactive layer as executable checks instead of documentation-only guidance:
 
 ```bash
-npx scriveno@latest status --project . --apply-safe
-npx scriveno@latest sync --check
-npx scriveno@latest smoke --json
-npx scriveno@latest agents --json
-npx scriveno@latest routes --json
+npx @hxp-tools/scriveno@latest status --project . --apply-safe
+npx @hxp-tools/scriveno@latest sync --check
+npx @hxp-tools/scriveno@latest smoke --json
+npx @hxp-tools/scriveno@latest agents --json
+npx @hxp-tools/scriveno@latest routes --json
 ```
 
 `--apply-safe` runs the read-only status sweep, reports safe local helpers that are ready, lists agent candidates, and marks writer-owned or write-gated helpers as skipped instead of mutating files. It is intentionally conservative: `/scr:save`, `/scr:scan`, `/scr:sync --apply`, publish packaging, export overwrites, track merges, and undo remain explicit actions.

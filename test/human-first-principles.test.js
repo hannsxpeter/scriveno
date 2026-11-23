@@ -131,17 +131,15 @@ describe('human-first prose principles', () => {
     assert.match(doc, /Do not ask Scriveno to "beat" a detector/);
   });
 
-  it('workflow optimization audit includes the detector-aware authenticity follow-up', () => {
-    const audit = read('docs/workflow-optimization-audit.md');
+  it('detector guidance carries the detector-aware authenticity follow-up', () => {
+    const doc = read('docs/authenticity-and-detectors.md');
     const releaseNotes = read('docs/release-notes.md');
-    const readme = read('README.md');
 
-    assert.match(audit, /### 6\. Detector-Aware Authenticity Flow/);
-    assert.match(audit, /outside AI-detector reports become context, process evidence, and craft review/);
-    assert.match(audit, /\[Authenticity And AI Detectors\]\(authenticity-and-detectors\.md\)/);
-    assert.match(audit, /without turning Scriveno into a detector-gaming tool/);
+    assert.match(read('README.md'), /\(docs\/authenticity-and-detectors\.md\)/);
+    assert.match(doc, /## The Writer Path/);
+    assert.match(doc, /outside AI-detector reports become context, process evidence, and craft review/i);
+    assert.match(doc, /without turning Scriveno into a detector-gaming tool/);
     assert.match(releaseNotes, /Detector anxiety stays inside the authenticity workflow/);
-    assert.match(readme, /Consolidation, redundancy, authenticity, and journey-surface findings/);
   });
 });
 
@@ -215,14 +213,14 @@ describe('authenticity-check diagnostic discipline', () => {
     assert.match(drafter, /never to move an AI-slop score or an external detector score/);
   });
 
-  it('release metadata is aligned on 3.8.0', () => {
+  it('release metadata is aligned on 4.0.0', () => {
     const pkg = JSON.parse(read('package.json'));
     const cfg = JSON.parse(read('templates/config.json'));
     const constraints = JSON.parse(read('data/CONSTRAINTS.json'));
 
-    assert.equal(pkg.version, '3.8.0');
-    assert.equal(cfg.scriveno_version, '3.8.0');
-    assert.equal(constraints.version, '3.8.0');
+    assert.equal(pkg.version, '4.0.0');
+    assert.equal(cfg.scriveno_version, '4.0.0');
+    assert.equal(constraints.version, '4.0.0');
     assert.match(read('CHANGELOG.md'), /## 3\.2\.3 - /);
     assert.match(read('docs/release-notes.md'), /## 3\.2\.3 - /);
   });

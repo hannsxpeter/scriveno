@@ -2,6 +2,24 @@
 
 This document is the public-facing summary of what changed between package releases. For package history, see the root [CHANGELOG](../CHANGELOG.md).
 
+## 4.0.0 - 2026-11-23
+
+### What changed
+
+- **New package name.** Scriveno now publishes as `@hxp-tools/scriveno`. The install command is `npx @hxp-tools/scriveno@latest`, and the `scriveno` command installed by the package is unchanged. The earlier unscoped `scriveno` package was unpublished on 2026-11-23, so every install and `npx` reference now uses the scoped name.
+- **Removed legacy planning and stub files.** The superseded `.planning/` milestone archive, the unused project-context stub agents under `agents/`, and `agents/catalog.yaml` are gone. History remains in git. The six executable agents (`drafter`, `voice-checker`, `continuity-checker`, `plan-checker`, `researcher`, `translator`) are unchanged.
+- **Docs consolidation.** `docs/development.md` is folded into [Contributing](contributing.md), and the dated workflow optimization audit is retired. Its detector-aware authenticity follow-up lives in [Authenticity And AI Detectors](authenticity-and-detectors.md).
+- **Refreshed README.** The README is rewritten with graphics and the scoped install command.
+- **Test hardening.** The root-instruction alignment tests now resolve a `CLAUDE.md` that is the single-line `@AGENTS.md` include.
+
+### Why it matters
+
+Writers get one stable, scoped package name to install from, and contributors get a smaller repository with a single contributor guide and no stale planning archive. There are no command, work-type, or Voice DNA changes.
+
+### Upgrading
+
+Use `npx @hxp-tools/scriveno@latest` in place of `npx scriveno@latest`. If you installed globally, first remove the old unscoped install with `npm uninstall -g scriveno`, then run `npm install -g @hxp-tools/scriveno`. Both packages provide the `scriveno` command, so install the scoped package only after the old one is gone. Existing `.scriveno/` project data and installed command files keep working.
+
 ## 3.8.0 - 2026-08-17
 
 ### What changed

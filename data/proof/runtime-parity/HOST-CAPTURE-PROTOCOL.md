@@ -16,7 +16,7 @@ For each runtime, create a directory under `data/proof/runtime-parity/<runtime>/
 
 ## Standard Scenario
 
-1. Install `scriveno@latest`.
+1. Install `@hxp-tools/scriveno@latest`.
 2. Run the host-native first-run command.
 3. Run the host-native demo command.
 4. Enter the generated demo project.

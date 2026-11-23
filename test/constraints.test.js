@@ -28,24 +28,24 @@ describe('CONSTRAINTS.json schema integrity', () => {
     assert.equal(constraints.version, pkg.version);
   });
 
-  it('aligns every 3.8.0 release surface and preserves the Node 20 floor', () => {
+  it('aligns every 4.0.0 release surface and preserves the Node 20 floor', () => {
     const packageMetadata = JSON.parse(read('package.json'));
     const lock = JSON.parse(read('package-lock.json'));
     const template = JSON.parse(read('templates/config.json'));
     const constraintsMetadata = JSON.parse(read('data/CONSTRAINTS.json'));
 
-    assert.equal(packageMetadata.version, '3.8.0');
+    assert.equal(packageMetadata.version, '4.0.0');
     assert.equal(packageMetadata.engines.node, '>=20.0.0');
     assert.equal(packageMetadata.dependencies, undefined);
-    assert.equal(lock.version, '3.8.0');
-    assert.equal(lock.packages[''].version, '3.8.0');
-    assert.equal(template.scriveno_version, '3.8.0');
-    assert.equal(constraintsMetadata.version, '3.8.0');
-    assert.match(read('commands/scr/new-work.md'), /"scriveno_version": "3\.8\.0"/);
-    assert.match(read('docs/configuration.md'), /"scriveno_version": "3\.8\.0"/);
-    assert.match(read('README.md'), /Version:\*\* 3\.8\.0/);
-    assert.match(read('CHANGELOG.md'), /^## 3\.8\.0 - 2026-08-17/m);
-    assert.match(read('docs/release-notes.md'), /^## 3\.8\.0 - 2026-08-17/m);
+    assert.equal(lock.version, '4.0.0');
+    assert.equal(lock.packages[''].version, '4.0.0');
+    assert.equal(template.scriveno_version, '4.0.0');
+    assert.equal(constraintsMetadata.version, '4.0.0');
+    assert.match(read('commands/scr/new-work.md'), /"scriveno_version": "4\.0\.0"/);
+    assert.match(read('docs/configuration.md'), /"scriveno_version": "4\.0\.0"/);
+    assert.match(read('README.md'), /Version:\*\* 4\.0\.0/);
+    assert.match(read('CHANGELOG.md'), /^## 4\.0\.0 - 2026-11-23/m);
+    assert.match(read('docs/release-notes.md'), /^## 4\.0\.0 - 2026-11-23/m);
   });
 
   it('has required top-level keys', () => {

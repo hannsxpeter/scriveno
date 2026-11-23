@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 540" width="1200" height="540" role="img" aria-labelledby="t d">
+  <title id="t">Scriveno achievements</title>
+  <desc id="d">Eight milestones and the command that earns each. Voice Captured: profile-writer. First Draft: draft. Voice Held: voice-check. Continuity Clean: continuity-check. Autopilot Run: autopilot. Polyglot: back-translate. Clean Provenance: provenance-check. Package Built: publish.</desc>
+  <style>
+    .sans{font-family:"Avenir Next","Helvetica Neue",Helvetica,Arial,sans-serif}
+    .mono{font-family:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace}
+  </style>
+  <rect x="0.5" y="0.5" width="1199" height="539" rx="10" fill="#1B1916" stroke="#34312B"/>
+  <path d="M1 44H1199V11a10 10 0 0 0-10-10H11A10 10 0 0 0 1 11Z" fill="#23211D"/>
+  <line x1="1" y1="44" x2="1199" y2="44" stroke="#34312B"/>
+  <text x="32" y="28" class="mono" font-size="13" font-weight="700" fill="#F2F65A" letter-spacing="1.5">ACHIEVEMENTS</text>
+  <text x="1168" y="28" class="mono" font-size="13" fill="#A5A397" text-anchor="end">8 MILESTONES, EACH TIED TO A COMMAND</text>
+  <g transform="translate(36 84)">
+    <rect width="264" height="190" rx="4" fill="#23211D" stroke="#34312B"/>
+    <circle cx="48" cy="52" r="28" fill="#1B1916" stroke="#F2F65A" stroke-width="2"/>
+    <g transform="translate(48 52)"><g stroke="#F2F65A" stroke-width="3" stroke-linecap="round"><line x1="-14" y1="-4" x2="-14" y2="4"/><line x1="-7" y1="-10" x2="-7" y2="10"/><line x1="0" y1="-16" x2="0" y2="16"/><line x1="7" y1="-8" x2="7" y2="8"/><line x1="14" y1="-3" x2="14" y2="3"/></g></g>
+    <text x="244" y="30" class="mono" font-size="11" font-weight="700" fill="#A5A397" text-anchor="end" letter-spacing="1.5">UNLOCK 01</text>
+    <text x="20" y="116" class="sans" font-size="22" font-weight="700" fill="#EDEDE6">Voice Captured</text>
+    <text x="20" y="144" class="mono" font-size="13" font-weight="700" fill="#F2F65A">/scr:profile-writer</text>
+    <text x="20" y="168" class="sans" font-size="13" fill="#A5A397">Writes STYLE-GUIDE.md</text>
+  </g>
+  <g transform="translate(324 84)">
+    <rect width="264" height="190" rx="4" fill="#23211D" stroke="#34312B"/>
+    <circle cx="48" cy="52" r="28" fill="#1B1916" stroke="#F2F65A" stroke-width="2"/>
+    <g transform="translate(48 52)"><path d="M-11 -15H5L12 -8V15H-11Z" fill="none" stroke="#F2F65A" stroke-width="3" stroke-linejoin="round"/><path d="M-5 0H6M-5 6H6" stroke="#F2F65A" stroke-width="3" stroke-linecap="round"/></g>
+    <text x="244" y="30" class="mono" font-size="11" font-weight="700" fill="#A5A397" text-anchor="end" letter-spacing="1.5">UNLOCK 02</text>
+    <text x="20" y="116" class="sans" font-size="22" font-weight="700" fill="#EDEDE6">First Draft</text>
+    <text x="20" y="144" class="mono" font-size="13" font-weight="700" fill="#F2F65A">/scr:draft 1</text>
+    <text x="20" y="168" class="sans" font-size="13" fill="#A5A397">One unit, fresh context</text>
+  </g>
+  <g transform="translate(612 84)">
+    <rect width="264" height="190" rx="4" fill="#23211D" stroke="#34312B"/>
+    <circle cx="48" cy="52" r="28" fill="#1B1916" stroke="#F2F65A" stroke-width="2"/>
+    <g transform="translate(48 52)"><path d="M-13 1L-4 10L14 -9" fill="none" stroke="#F2F65A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <text x="244" y="30" class="mono" font-size="11" font-weight="700" fill="#A5A397" text-anchor="end" letter-spacing="1.5">UNLOCK 03</text>
+    <text x="20" y="116" class="sans" font-size="22" font-weight="700" fill="#EDEDE6">Voice Held</text>
+    <text x="20" y="144" class="mono" font-size="13" font-weight="700" fill="#F2F65A">/scr:voice-check</text>
+    <text x="20" y="168" class="sans" font-size="13" fill="#A5A397">Draft compared to the guide</text>
+  </g>
+  <g transform="translate(900 84)">
+    <rect width="264" height="190" rx="4" fill="#23211D" stroke="#34312B"/>
+    <circle cx="48" cy="52" r="28" fill="#1B1916" stroke="#F2F65A" stroke-width="2"/>
+    <g transform="translate(48 52)"><rect x="-17" y="-8" width="20" height="16" rx="8" fill="none" stroke="#F2F65A" stroke-width="3"/><rect x="-3" y="-8" width="20" height="16" rx="8" fill="none" stroke="#F2F65A" stroke-width="3"/></g>
+    <text x="244" y="30" class="mono" font-size="11" font-weight="700" fill="#A5A397" text-anchor="end" letter-spacing="1.5">UNLOCK 04</text>
+    <text x="20" y="116" class="sans" font-size="22" font-weight="700" fill="#EDEDE6">Continuity Clean</text>
+    <text x="20" y="144" class="mono" font-size="13" font-weight="700" fill="#F2F65A">/scr:continuity-check</text>
+    <text x="20" y="168" class="sans" font-size="13" fill="#A5A397">Contradiction scan, no hits</text>
+  </g>
+  <g transform="translate(36 298)">
+    <rect width="264" height="190" rx="4" fill="#23211D" stroke="#34312B"/>
+    <circle cx="48" cy="52" r="28" fill="#1B1916" stroke="#F2F65A" stroke-width="2"/>
+    <g transform="translate(48 52)"><path d="M-8 -13L14 0L-8 13Z" fill="#F2F65A"/></g>
+    <text x="244" y="30" class="mono" font-size="11" font-weight="700" fill="#A5A397" text-anchor="end" letter-spacing="1.5">UNLOCK 05</text>
+    <text x="20" y="116" class="sans" font-size="22" font-weight="700" fill="#EDEDE6">Autopilot Run</text>
+    <text x="20" y="144" class="mono" font-size="13" font-weight="700" fill="#F2F65A">/scr:autopilot</text>
+    <text x="20" y="168" class="sans" font-size="13" fill="#A5A397">Guided, supervised, full-auto</text>
+  </g>
+  <g transform="translate(324 298)">
+    <rect width="264" height="190" rx="4" fill="#23211D" stroke="#34312B"/>
+    <circle cx="48" cy="52" r="28" fill="#1B1916" stroke="#F2F65A" stroke-width="2"/>
+    <g transform="translate(48 52)"><path d="M-16 -14H4V2H-8L-14 8V2H-16Z" fill="none" stroke="#F2F65A" stroke-width="3" stroke-linejoin="round"/><path d="M0 -2H16V12H14V18L8 12H0Z" fill="#23211D" stroke="#F2F65A" stroke-width="3" stroke-linejoin="round"/></g>
+    <text x="244" y="30" class="mono" font-size="11" font-weight="700" fill="#A5A397" text-anchor="end" letter-spacing="1.5">UNLOCK 06</text>
+    <text x="20" y="116" class="sans" font-size="22" font-weight="700" fill="#EDEDE6">Polyglot</text>
+    <text x="20" y="144" class="mono" font-size="13" font-weight="700" fill="#F2F65A">/scr:back-translate</text>
+    <text x="20" y="168" class="sans" font-size="13" fill="#A5A397">Translation checked back</text>
+  </g>
+  <g transform="translate(612 298)">
+    <rect width="264" height="190" rx="4" fill="#23211D" stroke="#34312B"/>
+    <circle cx="48" cy="52" r="28" fill="#1B1916" stroke="#F2F65A" stroke-width="2"/>
+    <g transform="translate(48 52)"><circle cx="-3" cy="-3" r="10" fill="none" stroke="#F2F65A" stroke-width="3"/><line x1="5" y1="5" x2="15" y2="15" stroke="#F2F65A" stroke-width="4" stroke-linecap="round"/></g>
+    <text x="244" y="30" class="mono" font-size="11" font-weight="700" fill="#A5A397" text-anchor="end" letter-spacing="1.5">UNLOCK 07</text>
+    <text x="20" y="116" class="sans" font-size="22" font-weight="700" fill="#EDEDE6">Clean Provenance</text>
+    <text x="20" y="144" class="mono" font-size="13" font-weight="700" fill="#F2F65A">/scr:provenance-check</text>
+    <text x="20" y="168" class="sans" font-size="13" fill="#A5A397">Read-only hidden-mark audit</text>
+  </g>
+  <g transform="translate(900 298)">
+    <rect width="264" height="190" rx="4" fill="#23211D" stroke="#34312B"/>
+    <circle cx="48" cy="52" r="28" fill="#1B1916" stroke="#F2F65A" stroke-width="2"/>
+    <g transform="translate(48 52)"><path d="M-14 -8L0 -15L14 -8V8L0 15L-14 8Z" fill="none" stroke="#F2F65A" stroke-width="3" stroke-linejoin="round"/><path d="M-14 -8L0 0L14 -8M0 0V15" fill="none" stroke="#F2F65A" stroke-width="3" stroke-linejoin="round"/></g>
+    <text x="244" y="30" class="mono" font-size="11" font-weight="700" fill="#A5A397" text-anchor="end" letter-spacing="1.5">UNLOCK 08</text>
+    <text x="20" y="116" class="sans" font-size="22" font-weight="700" fill="#EDEDE6">Package Built</text>
+    <text x="20" y="144" class="mono" font-size="13" font-weight="700" fill="#F2F65A">/scr:publish</text>
+    <text x="20" y="168" class="sans" font-size="13" fill="#A5A397">Retail package, ready to upload</text>
+  </g>
+  <text x="600" y="520" class="sans" font-size="12" fill="#A5A397" text-anchor="middle">Milestones for orientation. Scriveno does not track points or score; the files and check reports are the proof.</text>
+</svg>

@@ -59,7 +59,9 @@ describe('phase 14 runtime credibility wiring', () => {
   const gettingStarted = read('docs/getting-started.md');
   const troubleshootDoc = read('commands/scr/troubleshoot.md');
   const agentsDoc = read('AGENTS.md');
-  const claudeDoc = read('CLAUDE.md');
+  const claudeRaw = read('CLAUDE.md');
+  // CLAUDE.md may be the single-line include `@AGENTS.md`; resolve it to AGENTS.md content so coverage is kept.
+  const claudeDoc = claudeRaw.trim() === '@AGENTS.md' ? agentsDoc : claudeRaw;
 
   it('keeps architecture and trust inventory pointed at the canonical matrix', () => {
     assert.match(architectureDoc, /\[`docs\/runtime-support\.md`\]\(runtime-support\.md\)/);

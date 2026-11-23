@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 500" width="1200" height="500" role="img" aria-labelledby="t d">
+  <title id="t">Voice DNA in Scriveno</title>
+  <desc id="d">Nine parts of the writer profile, from narrative architecture to always, never, consider, are saved as STYLE-GUIDE.md. It sits on top of WRITING-RULES.md and a per work type pitfall pack, and all three are loaded into the drafter, which writes each unit in a fresh context with the style guide loaded first. voice-test calibrates before drafting and voice-check compares the draft afterwards.</desc>
+  <style>
+    .sans{font-family:"Avenir Next","Helvetica Neue",Helvetica,Arial,sans-serif}
+    .mono{font-family:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace}
+  </style>
+  <rect x="0.5" y="0.5" width="1199" height="499" rx="10" fill="#1B1916" stroke="#34312B"/>
+  <path d="M1 44H1199V11a10 10 0 0 0-10-10H11A10 10 0 0 0 1 11Z" fill="#23211D"/>
+  <line x1="1" y1="44" x2="1199" y2="44" stroke="#34312B"/>
+  <text x="32" y="28" class="mono" font-size="13" font-weight="700" fill="#F2F65A" letter-spacing="1.5">VOICE DNA</text>
+  <text x="1168" y="28" class="mono" font-size="13" fill="#A5A397" text-anchor="end">15+ DIMENSIONS, 9 PARTS</text>
+  <text x="36" y="84" class="mono" font-size="11" fill="#A5A397" letter-spacing="2">THE WRITER PROFILE</text>
+  <g transform="translate(36 96)">
+    <rect width="136" height="72" rx="4" fill="#23211D" stroke="#34312B"/>
+    <text x="12" y="23" class="mono" font-size="12" font-weight="700" fill="#F2F65A">P1</text>
+    <text x="12" y="44" class="sans" font-size="13" font-weight="600" fill="#EDEDE6">Narrative</text>
+    <text x="12" y="60" class="sans" font-size="13" font-weight="600" fill="#EDEDE6">architecture</text>
+  </g>
+  <g transform="translate(184 96)">
+    <rect width="136" height="72" rx="4" fill="#23211D" stroke="#34312B"/>
+    <text x="12" y="23" class="mono" font-size="12" font-weight="700" fill="#F2F65A">P2</text>
+    <text x="12" y="44" class="sans" font-size="13" font-weight="600" fill="#EDEDE6">Sentences and</text>
+    <text x="12" y="60" class="sans" font-size="13" font-weight="600" fill="#EDEDE6">paragraphs</text>
+  </g>
+  <g transform="translate(332 96)">
+    <rect width="136" height="72" rx="4" fill="#23211D" stroke="#34312B"/>
+    <text x="12" y="23" class="mono" font-size="12" font-weight="700" fill="#F2F65A">P3</text>
+    <text x="12" y="44" class="sans" font-size="13" font-weight="600" fill="#EDEDE6">Vocabulary</text>
+    <text x="12" y="60" class="sans" font-size="13" font-weight="600" fill="#EDEDE6">and diction</text>
+  </g>
+  <g transform="translate(36 180)">
+    <rect width="136" height="72" rx="4" fill="#23211D" stroke="#34312B"/>
+    <text x="12" y="23" class="mono" font-size="12" font-weight="700" fill="#F2F65A">P4</text>
+    <text x="12" y="44" class="sans" font-size="13" font-weight="600" fill="#EDEDE6">Figurative</text>
+    <text x="12" y="60" class="sans" font-size="13" font-weight="600" fill="#EDEDE6">language</text>
+  </g>
+  <g transform="translate(184 180)">
+    <rect width="136" height="72" rx="4" fill="#23211D" stroke="#34312B"/>
+    <text x="12" y="23" class="mono" font-size="12" font-weight="700" fill="#F2F65A">P5</text>
+    <text x="12" y="49" class="sans" font-size="13" font-weight="600" fill="#EDEDE6">Dialogue</text>
+    
+  </g>
+  <g transform="translate(332 180)">
+    <rect width="136" height="72" rx="4" fill="#23211D" stroke="#34312B"/>
+    <text x="12" y="23" class="mono" font-size="12" font-weight="700" fill="#F2F65A">P6</text>
+    <text x="12" y="44" class="sans" font-size="13" font-weight="600" fill="#EDEDE6">Description and</text>
+    <text x="12" y="60" class="sans" font-size="13" font-weight="600" fill="#EDEDE6">sensory detail</text>
+  </g>
+  <g transform="translate(36 264)">
+    <rect width="136" height="72" rx="4" fill="#23211D" stroke="#34312B"/>
+    <text x="12" y="23" class="mono" font-size="12" font-weight="700" fill="#F2F65A">P7</text>
+    <text x="12" y="44" class="sans" font-size="13" font-weight="600" fill="#EDEDE6">Pacing</text>
+    <text x="12" y="60" class="sans" font-size="13" font-weight="600" fill="#EDEDE6">and rhythm</text>
+  </g>
+  <g transform="translate(184 264)">
+    <rect width="136" height="72" rx="4" fill="#23211D" stroke="#34312B"/>
+    <text x="12" y="23" class="mono" font-size="12" font-weight="700" fill="#F2F65A">P8</text>
+    <text x="12" y="44" class="sans" font-size="13" font-weight="600" fill="#EDEDE6">Reference</text>
+    <text x="12" y="60" class="sans" font-size="13" font-weight="600" fill="#EDEDE6">influences</text>
+  </g>
+  <g transform="translate(332 264)">
+    <rect width="136" height="72" rx="4" fill="#23211D" stroke="#34312B"/>
+    <text x="12" y="23" class="mono" font-size="12" font-weight="700" fill="#F2F65A">P9</text>
+    <text x="12" y="44" class="sans" font-size="13" font-weight="600" fill="#EDEDE6">Always, never,</text>
+    <text x="12" y="60" class="sans" font-size="13" font-weight="600" fill="#EDEDE6">consider</text>
+  </g>
+  <path d="M484 216H540" stroke="#F2F65A" stroke-width="2"/><path d="M532 210L540 216L532 222" fill="none" stroke="#F2F65A" stroke-width="2"/>
+  <text x="540" y="84" class="mono" font-size="11" fill="#A5A397" letter-spacing="2">RULE LAYERS, TOP WINS</text>
+  <g transform="translate(540 96)">
+    <rect width="224" height="72" rx="4" fill="#F2F65A"/>
+    <text x="14" y="30" class="mono" font-size="12" font-weight="700" fill="#1B1916">1</text>
+    <text x="14" y="53" class="mono" font-size="15" font-weight="700" fill="#1B1916">STYLE-GUIDE.md</text>
+  </g>
+  <g transform="translate(540 180)">
+    <rect width="224" height="72" rx="4" fill="#23211D" stroke="#34312B"/>
+    <text x="14" y="30" class="mono" font-size="12" font-weight="700" fill="#F2F65A">2</text>
+    <text x="14" y="53" class="mono" font-size="15" font-weight="700" fill="#EDEDE6">WRITING-RULES.md</text>
+  </g>
+  <g transform="translate(540 264)">
+    <rect width="224" height="72" rx="4" fill="#23211D" stroke="#34312B"/>
+    <text x="14" y="30" class="mono" font-size="12" font-weight="700" fill="#F2F65A">3</text>
+    <text x="14" y="50" class="mono" font-size="13" font-weight="700" fill="#EDEDE6">pitfalls/&lt;work_type&gt;.md</text>
+    <text x="14" y="65" class="sans" font-size="11" fill="#A5A397">per work type pitfall pack</text>
+  </g>
+  <path d="M776 216H832" stroke="#F2F65A" stroke-width="2"/><path d="M824 210L832 216L824 222" fill="none" stroke="#F2F65A" stroke-width="2"/>
+  <text x="832" y="84" class="mono" font-size="11" fill="#A5A397" letter-spacing="2">THE DRAFTER, ONE UNIT AT A TIME</text>
+  <g transform="translate(832 96)">
+    <rect width="332" height="72" rx="4" fill="#23211D" stroke="#34312B"/>
+    <text x="14" y="30" class="mono" font-size="14" font-weight="700" fill="#EDEDE6">unit 1</text>
+    <text x="14" y="52" class="sans" font-size="13" fill="#A5A397">fresh context, STYLE-GUIDE.md loaded first</text>
+    <rect x="262" y="14" width="56" height="20" rx="3" fill="none" stroke="#F2F65A"/>
+    <text x="290" y="28" class="mono" font-size="11" font-weight="700" fill="#F2F65A" text-anchor="middle">DRAFT</text>
+  </g>
+  <g transform="translate(832 180)">
+    <rect width="332" height="72" rx="4" fill="#23211D" stroke="#34312B"/>
+    <text x="14" y="30" class="mono" font-size="14" font-weight="700" fill="#EDEDE6">unit 2</text>
+    <text x="14" y="52" class="sans" font-size="13" fill="#A5A397">fresh context, STYLE-GUIDE.md loaded first</text>
+    <rect x="262" y="14" width="56" height="20" rx="3" fill="none" stroke="#F2F65A"/>
+    <text x="290" y="28" class="mono" font-size="11" font-weight="700" fill="#F2F65A" text-anchor="middle">DRAFT</text>
+  </g>
+  <g transform="translate(832 264)">
+    <rect width="332" height="72" rx="4" fill="#23211D" stroke="#34312B"/>
+    <text x="14" y="30" class="mono" font-size="14" font-weight="700" fill="#EDEDE6">unit N</text>
+    <text x="14" y="52" class="sans" font-size="13" fill="#A5A397">fresh context, STYLE-GUIDE.md loaded first</text>
+    <rect x="262" y="14" width="56" height="20" rx="3" fill="none" stroke="#F2F65A"/>
+    <text x="290" y="28" class="mono" font-size="11" font-weight="700" fill="#F2F65A" text-anchor="middle">DRAFT</text>
+  </g>
+  <g transform="translate(36 372)">
+    <rect width="548" height="96" rx="4" fill="#23211D" stroke="#34312B"/>
+    <text x="20" y="30" class="mono" font-size="11" fill="#A5A397" letter-spacing="2">BEFORE DRAFTING</text>
+    <text x="20" y="60" class="mono" font-size="16" font-weight="700" fill="#F2F65A">/scr:voice-test</text>
+    <text x="20" y="82" class="sans" font-size="14" fill="#EDEDE6">A sample in your voice. Does this sound like you?</text>
+  </g>
+  <g transform="translate(616 372)">
+    <rect width="548" height="96" rx="4" fill="#23211D" stroke="#34312B"/>
+    <text x="20" y="30" class="mono" font-size="11" fill="#A5A397" letter-spacing="2">AFTER DRAFTING</text>
+    <text x="20" y="60" class="mono" font-size="16" font-weight="700" fill="#F2F65A">/scr:voice-check</text>
+    <text x="20" y="82" class="sans" font-size="14" fill="#EDEDE6">Compares the prose to STYLE-GUIDE.md and flags drift.</text>
+  </g>
+</svg>

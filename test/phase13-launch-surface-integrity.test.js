@@ -107,7 +107,9 @@ describe('phase 13 contributor and root-doc alignment', () => {
   const contributingDoc = read('docs/contributing.md');
   const readme = read('README.md');
   const agentsDoc = read('AGENTS.md');
-  const claudeDoc = read('CLAUDE.md');
+  const claudeRaw = read('CLAUDE.md');
+  // CLAUDE.md may be the single-line include `@AGENTS.md`; resolve it to AGENTS.md content so coverage is kept.
+  const claudeDoc = claudeRaw.trim() === '@AGENTS.md' ? agentsDoc : claudeRaw;
 
   it('keeps contributor guidance pointed at the canonical inventory', () => {
     assert.match(contributingDoc, /docs\/shipped-assets\.md/);
@@ -125,6 +127,12 @@ describe('phase 13 contributor and root-doc alignment', () => {
     assert.doesNotMatch(readme, /\bfull support\b/i);
   });
 
+  it('keeps CLAUDE.md either a full instruction doc or exactly the @AGENTS.md include', () => {
+    if (claudeRaw.length < 200) {
+      assert.equal(claudeRaw.trim(), '@AGENTS.md', 'a short CLAUDE.md must be exactly the @AGENTS.md include');
+    }
+  });
+
   it('keeps AGENTS.md and CLAUDE.md aligned on shipped-versus-planned templates', () => {
     for (const [name, doc] of [['AGENTS.md', agentsDoc], ['CLAUDE.md', claudeDoc]]) {
       assert.match(doc, /50 work types/, `${name} should keep the 50 work-type count`);
@@ -136,7 +144,7 @@ describe('phase 13 contributor and root-doc alignment', () => {
 
   it('keeps root instruction docs aligned to the active npm package and publish model', () => {
     for (const [name, doc] of [['AGENTS.md', agentsDoc], ['CLAUDE.md', claudeDoc]]) {
-      assert.match(doc, /npx scriveno@latest/, `${name} should use the active npm package name`);
+      assert.match(doc, /npx @hxp-tools\/scriveno@latest/, `${name} should use the active npm package name`);
       assert.match(doc, /CI runs release checks, but publishing is still manual/, `${name} should describe the current publish model`);
       assert.match(doc, /Node 20 is a compatibility floor/, `${name} should not present Node 20 as the fresh-install target`);
       assert.doesNotMatch(doc, /npx scriveno-cli@latest/, `${name} should not use the unpublished legacy package`);

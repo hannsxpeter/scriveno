@@ -7,19 +7,19 @@ This path is intentionally narrow. It proves the flagship promise first: a longf
 ## What This Proves
 
 - Scriveno ships inspectable proof bundles, not only feature claims.
-- Scriveno ships `/scr:first-run` and `npx scriveno@latest first-run --project .` as guided first-run surfaces.
+- Scriveno ships `/scr:first-run` and `npx @hxp-tools/scriveno@latest first-run --project .` as guided first-run surfaces.
 - The watchmaker demo includes real manuscript state, drafts, review notes, and a planned next unit.
 - Voice DNA changes output on the same brief, with guided and unguided samples side by side.
 - The flagship path stays simple before the wider command surface appears.
 - Runtime behavior is explicit: Claude Code is the primary reference runtime, Codex uses generated `$scr-*` skills, standard slash-command targets use `/scr:*`, and guided targets document their local setup path.
-- The public CLI can audit installed surfaces with `npx scriveno@latest smoke --json`.
+- The public CLI can audit installed surfaces with `npx @hxp-tools/scriveno@latest smoke --json`.
 
 ## 10-Minute Route
 
 ### 1. Install
 
 ```bash
-npx scriveno@latest
+npx @hxp-tools/scriveno@latest
 ```
 
 For a source checkout while developing Scriveno itself:
@@ -31,16 +31,16 @@ node bin/install.js --runtimes claude-code,cursor,gemini-cli,codex,opencode,copi
 ### 2. Check The Installed Surface
 
 ```bash
-npx scriveno@latest first-run --project .
-npx scriveno@latest status --project .
-npx scriveno@latest smoke --json
-npx scriveno@latest agents --json
-npx scriveno@latest routes --json
+npx @hxp-tools/scriveno@latest first-run --project .
+npx @hxp-tools/scriveno@latest status --project .
+npx @hxp-tools/scriveno@latest smoke --json
+npx @hxp-tools/scriveno@latest agents --json
+npx @hxp-tools/scriveno@latest routes --json
 ```
 
 Expected result: the commands report the recommended first path, installed surfaces, agent prompt availability, route lanes, and any manual gates. They do not mutate manuscript files.
 
-If you installed globally with `npm i -g scriveno`, the shorter `scriveno first-run --project .` form works too. The `npx scriveno@latest ...` form is the reliable zero-install path after the one-shot installer command.
+If you installed globally with `npm i -g @hxp-tools/scriveno`, the shorter `scriveno first-run --project .` form works too. The `npx @hxp-tools/scriveno@latest ...` form is the reliable zero-install path after the one-shot installer command.
 
 ### 3. Open The Demo
 
@@ -115,7 +115,7 @@ $scr-next
 Terminal:
 
 ```bash
-npx scriveno@latest status --project .
+npx @hxp-tools/scriveno@latest status --project .
 ```
 
 ### 6. Draft, Review, And Save
@@ -157,7 +157,7 @@ Next: inspect STYLE-GUIDE.md, read the first draft, then run /scr-next.
 ```
 
 ```text
-> npx scriveno@latest status --project .
+> npx @hxp-tools/scriveno@latest status --project .
 Recommended next command: /scr:next
 Candidate agents: drafter, voice-checker
 Candidate local helpers: scan, save
@@ -165,7 +165,7 @@ Manual gates: writer approval before publishing or overwriting exports
 ```
 
 ```text
-> npx scriveno@latest first-run --project .
+> npx @hxp-tools/scriveno@latest first-run --project .
 Scriveno first-run guide
 Current recommendation: /scr:new-work
 Recommended first path:

@@ -315,7 +315,7 @@ describe('P-MUST-16: packed provenance consumer proof', { concurrency: 1 }, () =
     });
     assertCommandExit(install, 0);
 
-    packageRoot = path.join(consumerRoot, 'node_modules', 'scriveno');
+    packageRoot = path.join(consumerRoot, 'node_modules', '@hxp-tools', 'scriveno');
     cliPath = path.join(packageRoot, 'bin', 'install.js');
     ({ startProviderFixture } = require(path.join(
       packageRoot, 'data', 'proof', 'provenance', 'provider-fixture.js'
@@ -355,7 +355,7 @@ describe('P-MUST-16: packed provenance consumer proof', { concurrency: 1 }, () =
     assert.equal(typeof installer.runProvenanceCheck, 'function');
     assert.equal(typeof installer.runProvenanceClean, 'function');
     assert.equal(typeof installer.parseArgs, 'function');
-    assert.equal(require(path.join(packageRoot, 'package.json')).version, '3.8.0');
+    assert.equal(require(path.join(packageRoot, 'package.json')).version, '4.0.0');
   });
 
   it('runs provider audit success as normalized JSON', async () => {

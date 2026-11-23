@@ -29,6 +29,10 @@ A high external score may point to real craft problems:
 
 It may also be a false positive. Formal, technical, academic, translated, constrained, sacred, or non-native English prose can be clean and predictable for valid reasons. A correct register is not a flaw.
 
+## The Writer Path
+
+The workflow is a calm path from "a detector flagged me" to "what should I inspect, what evidence do I keep, and what do I edit for craft". Outside AI-detector reports become context, process evidence, and craft review, without turning Scriveno into a detector-gaming tool. The voice and authenticity commands share this stance: `/scr:voice-check`, `/scr:originality-check`, `/scr:line-edit`, and `/scr:polish` read a score as context only.
+
 ## Scriveno Policy
 
 The project config records this policy:

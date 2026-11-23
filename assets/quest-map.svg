@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 708" width="1200" height="708" role="img" aria-labelledby="t d">
+  <title id="t">Scriveno quest map</title>
+  <desc id="d">A seven level map from blank page to publish. Level 1 Blank Page: new-work, profile-writer, voice-test. Level 2 Outline: discuss, outline, plan. Level 3 Draft: draft, autopilot. Level 4 Revise: editor-review, continuity-check, voice-check. Level 5 Polish: polish. Level 6 Translate: translate, translation-glossary, back-translate. Level 7 Publish: prepublish-review, compliance-check, publish. The finish is a package ready to upload.</desc>
+  <style>
+    .sans{font-family:"Avenir Next","Helvetica Neue",Helvetica,Arial,sans-serif}
+    .mono{font-family:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace}
+  </style>
+  <rect x="0.5" y="0.5" width="1199" height="707" rx="10" fill="#1B1916" stroke="#34312B"/>
+  <path d="M1 44H1199V11a10 10 0 0 0-10-10H11A10 10 0 0 0 1 11Z" fill="#23211D"/>
+  <line x1="1" y1="44" x2="1199" y2="44" stroke="#34312B"/>
+  <text x="32" y="28" class="mono" font-size="13" font-weight="700" fill="#F2F65A" letter-spacing="1.5">QUEST MAP</text>
+  <text x="1168" y="28" class="mono" font-size="13" fill="#A5A397" text-anchor="end">BLANK PAGE TO PUBLISH  7 LEVELS</text>
+  <path d="M168 220H1032V532H300" fill="none" stroke="#F2F65A" stroke-width="2" stroke-dasharray="3 7" stroke-linecap="round"/>
+  <g transform="translate(36 84)">
+    <rect width="264" height="272" rx="4" fill="#23211D" stroke="#F2F65A"/>
+    <text x="20" y="54" class="mono" font-size="38" font-weight="700" fill="#F2F65A">01</text>
+    <text x="20" y="92" class="sans" font-size="25" font-weight="700" fill="#EDEDE6">Blank Page</text>
+    <text x="20" y="114" class="sans" font-size="13" fill="#A5A397">Capture your voice first</text>
+    <line x1="20" y1="130" x2="244" y2="130" stroke="#34312B"/>
+    <text x="20" y="152" class="mono" font-size="10" fill="#A5A397" letter-spacing="1.5">CLEAR IT WITH</text>
+    <text x="20" y="176" class="mono" font-size="14" font-weight="700" fill="#EDEDE6">/scr:new-work</text>
+    <text x="20" y="198" class="mono" font-size="14" font-weight="700" fill="#EDEDE6">/scr:profile-writer</text>
+    <text x="20" y="220" class="mono" font-size="14" font-weight="700" fill="#EDEDE6">/scr:voice-test</text>
+    <line x1="20" y1="232" x2="244" y2="232" stroke="#34312B"/>
+    <text x="20" y="254" class="sans" font-size="12" fill="#A5A397">Reward: STYLE-GUIDE.md</text>
+    <rect x="180" y="20" width="64" height="22" rx="3" fill="#F2F65A"/>
+    <text x="212" y="35" class="mono" font-size="12" font-weight="700" fill="#1B1916" text-anchor="middle" letter-spacing="1.5">START</text>
+  </g>
+  <g transform="translate(324 84)">
+    <rect width="264" height="272" rx="4" fill="#23211D" stroke="#34312B"/>
+    <text x="20" y="54" class="mono" font-size="38" font-weight="700" fill="#F2F65A">02</text>
+    <text x="20" y="92" class="sans" font-size="25" font-weight="700" fill="#EDEDE6">Outline</text>
+    <text x="20" y="114" class="sans" font-size="13" fill="#A5A397">Shape the work, unit by unit</text>
+    <line x1="20" y1="130" x2="244" y2="130" stroke="#34312B"/>
+    <text x="20" y="152" class="mono" font-size="10" fill="#A5A397" letter-spacing="1.5">CLEAR IT WITH</text>
+    <text x="20" y="176" class="mono" font-size="14" font-weight="700" fill="#EDEDE6">/scr:discuss</text>
+    <text x="20" y="198" class="mono" font-size="14" font-weight="700" fill="#EDEDE6">/scr:outline</text>
+    <text x="20" y="220" class="mono" font-size="14" font-weight="700" fill="#EDEDE6">/scr:plan</text>
+    <line x1="20" y1="232" x2="244" y2="232" stroke="#34312B"/>
+    <text x="20" y="254" class="sans" font-size="12" fill="#A5A397">Reward: OUTLINE.md, unit plans</text>
+  </g>
+  <g transform="translate(612 84)">
+    <rect width="264" height="272" rx="4" fill="#23211D" stroke="#34312B"/>
+    <text x="20" y="54" class="mono" font-size="38" font-weight="700" fill="#F2F65A">03</text>
+    <text x="20" y="92" class="sans" font-size="25" font-weight="700" fill="#EDEDE6">Draft</text>
+    <text x="20" y="114" class="sans" font-size="13" fill="#A5A397">One fresh context per unit</text>
+    <line x1="20" y1="130" x2="244" y2="130" stroke="#34312B"/>
+    <text x="20" y="152" class="mono" font-size="10" fill="#A5A397" letter-spacing="1.5">CLEAR IT WITH</text>
+    <text x="20" y="176" class="mono" font-size="14" font-weight="700" fill="#EDEDE6">/scr:draft</text>
+    <text x="20" y="198" class="mono" font-size="14" font-weight="700" fill="#EDEDE6">/scr:autopilot</text>
+    <line x1="20" y1="232" x2="244" y2="232" stroke="#34312B"/>
+    <text x="20" y="254" class="sans" font-size="12" fill="#A5A397">Reward: drafts/body/*-DRAFT.md</text>
+  </g>
+  <g transform="translate(900 84)">
+    <rect width="264" height="272" rx="4" fill="#23211D" stroke="#34312B"/>
+    <text x="20" y="54" class="mono" font-size="38" font-weight="700" fill="#F2F65A">04</text>
+    <text x="20" y="92" class="sans" font-size="25" font-weight="700" fill="#EDEDE6">Revise</text>
+    <text x="20" y="114" class="sans" font-size="13" fill="#A5A397">Review before you polish</text>
+    <line x1="20" y1="130" x2="244" y2="130" stroke="#34312B"/>
+    <text x="20" y="152" class="mono" font-size="10" fill="#A5A397" letter-spacing="1.5">CLEAR IT WITH</text>
+    <text x="20" y="176" class="mono" font-size="14" font-weight="700" fill="#EDEDE6">/scr:editor-review</text>
+    <text x="20" y="198" class="mono" font-size="14" font-weight="700" fill="#EDEDE6">/scr:continuity-check</text>
+    <text x="20" y="220" class="mono" font-size="14" font-weight="700" fill="#EDEDE6">/scr:voice-check</text>
+    <line x1="20" y1="232" x2="244" y2="232" stroke="#34312B"/>
+    <text x="20" y="254" class="sans" font-size="12" fill="#A5A397">Reward: review notes, clean checks</text>
+  </g>
+  <g transform="translate(900 396)">
+    <rect width="264" height="272" rx="4" fill="#23211D" stroke="#34312B"/>
+    <text x="20" y="54" class="mono" font-size="38" font-weight="700" fill="#F2F65A">05</text>
+    <text x="20" y="92" class="sans" font-size="25" font-weight="700" fill="#EDEDE6">Polish</text>
+    <text x="20" y="114" class="sans" font-size="13" fill="#A5A397">Line, copy, and voice pass</text>
+    <line x1="20" y1="130" x2="244" y2="130" stroke="#34312B"/>
+    <text x="20" y="152" class="mono" font-size="10" fill="#A5A397" letter-spacing="1.5">CLEAR IT WITH</text>
+    <text x="20" y="176" class="mono" font-size="14" font-weight="700" fill="#EDEDE6">/scr:polish</text>
+    <line x1="20" y1="232" x2="244" y2="232" stroke="#34312B"/>
+    <text x="20" y="254" class="sans" font-size="12" fill="#A5A397">Reward: one chained polish pass</text>
+  </g>
+  <g transform="translate(612 396)">
+    <rect width="264" height="272" rx="4" fill="#23211D" stroke="#34312B"/>
+    <text x="20" y="54" class="mono" font-size="38" font-weight="700" fill="#F2F65A">06</text>
+    <text x="20" y="92" class="sans" font-size="25" font-weight="700" fill="#EDEDE6">Translate</text>
+    <text x="20" y="114" class="sans" font-size="13" fill="#A5A397">Glossary-backed editions</text>
+    <line x1="20" y1="130" x2="244" y2="130" stroke="#34312B"/>
+    <text x="20" y="152" class="mono" font-size="10" fill="#A5A397" letter-spacing="1.5">CLEAR IT WITH</text>
+    <text x="20" y="176" class="mono" font-size="14" font-weight="700" fill="#EDEDE6">/scr:translate</text>
+    <text x="20" y="198" class="mono" font-size="14" font-weight="700" fill="#EDEDE6">/scr:translation-glossary</text>
+    <text x="20" y="220" class="mono" font-size="14" font-weight="700" fill="#EDEDE6">/scr:back-translate</text>
+    <line x1="20" y1="232" x2="244" y2="232" stroke="#34312B"/>
+    <text x="20" y="254" class="sans" font-size="12" fill="#A5A397">Reward: translated units, drift notes</text>
+  </g>
+  <g transform="translate(324 396)">
+    <rect width="264" height="272" rx="4" fill="#23211D" stroke="#34312B"/>
+    <text x="20" y="54" class="mono" font-size="38" font-weight="700" fill="#F2F65A">07</text>
+    <text x="20" y="92" class="sans" font-size="25" font-weight="700" fill="#EDEDE6">Publish</text>
+    <text x="20" y="114" class="sans" font-size="13" fill="#A5A397">Gate it, then package it</text>
+    <line x1="20" y1="130" x2="244" y2="130" stroke="#34312B"/>
+    <text x="20" y="152" class="mono" font-size="10" fill="#A5A397" letter-spacing="1.5">CLEAR IT WITH</text>
+    <text x="20" y="176" class="mono" font-size="14" font-weight="700" fill="#EDEDE6">/scr:prepublish-review</text>
+    <text x="20" y="198" class="mono" font-size="14" font-weight="700" fill="#EDEDE6">/scr:compliance-check</text>
+    <text x="20" y="220" class="mono" font-size="14" font-weight="700" fill="#EDEDE6">/scr:publish</text>
+    <line x1="20" y1="232" x2="244" y2="232" stroke="#34312B"/>
+    <text x="20" y="254" class="sans" font-size="12" fill="#A5A397">Reward: packages in .manuscript/output</text>
+  </g>
+  <g transform="translate(36 396)">
+    <rect width="264" height="272" rx="4" fill="none" stroke="#F2F65A" stroke-width="1.5" stroke-dasharray="6 5"/>
+    <path d="M96 70V176" stroke="#F2F65A" stroke-width="4" stroke-linecap="round"/>
+    <path d="M100 74H172L158 96L172 118H100Z" fill="#F2F65A"/>
+    <text x="132" y="218" class="mono" font-size="15" font-weight="700" fill="#F2F65A" text-anchor="middle" letter-spacing="3">FINISH</text>
+    <text x="132" y="242" class="sans" font-size="13" fill="#A5A397" text-anchor="middle">A package ready for you to upload</text>
+  </g>
+  <text x="600" y="690" class="sans" font-size="12" fill="#A5A397" text-anchor="middle">Claude Code installs the flat /scr-* form of each command. Codex installs $scr-* skills. Other slash-command hosts keep /scr:*.</text>
+</svg>

@@ -187,7 +187,7 @@ node --test test/proof-replay.test.js
 
 That test replays the flagship novel, technical runbook, and publishing-package fixtures from `data/proof/replay/golden-workflows.json`, checks the Voice DNA paired samples through `lib/voice-dna-eval.js`, and verifies the host-capture queue stays honest.
 
-For the full publish path, including clearing local installs, packing, publishing, pushing, creating the GitHub release, and verifying `scriveno@latest`, use [Release Checklist](release-checklist.md).
+For the full publish path, including clearing local installs, packing, publishing, pushing, creating the GitHub release, and verifying `@hxp-tools/scriveno@latest`, use [Release Checklist](release-checklist.md).
 
 ## Practical workflow
 
@@ -202,7 +202,6 @@ For most changes:
 
 ## Related docs
 
-- [Development](development.md)
 - [Configuration](configuration.md)
 - [Contributing](contributing.md)
 - [Authenticity And AI Detectors](authenticity-and-detectors.md)

@@ -2,6 +2,18 @@
 
 All notable package-level changes to `scriveno` are documented here.
 
+## 4.0.0 - 2026-11-23
+
+Relaunch under the scoped package name `@hxp-tools/scriveno`.
+
+- Renamed the npm package to `@hxp-tools/scriveno` (bin command `scriveno` unchanged). The install command is now `npx @hxp-tools/scriveno@latest`. The earlier unscoped `scriveno` package was unpublished on 2026-11-23.
+- Updated every install, `npx`, `npm view`, and global-install reference across docs, commands, proof READMEs, and tests to the scoped name. Historical entries below are unchanged.
+- Removed the superseded `.planning/` milestone archive, the unused project-context stub agents under `agents/`, and `agents/catalog.yaml`. The six executable agents are unchanged.
+- Folded `docs/development.md` into `docs/contributing.md` and retired the dated `docs/workflow-optimization-audit.md`; the detector-aware authenticity follow-up now lives in `docs/authenticity-and-detectors.md`.
+- Refreshed the README with graphics.
+- Updated root-instruction alignment tests to resolve a `CLAUDE.md` that is the single-line `@AGENTS.md` include, and moved release-state pins to `4.0.0`.
+- Updated package, template, constraint, configuration, and release metadata to `4.0.0`. The dependency-free `Node.js >=20.0.0` compatibility floor is unchanged.
+
 ## 3.8.0 - 2026-08-17
 
 Executable provenance auditing, optional provider integration, verified cleaning, and reproducible package proof.

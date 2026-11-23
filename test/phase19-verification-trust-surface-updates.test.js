@@ -19,8 +19,9 @@ describe('phase 19 technical-writing trust surfaces', () => {
   const workTypes = read('docs/work-types.md');
   const architecture = read('docs/architecture.md');
   const agentsDoc = read('AGENTS.md');
-  const claudeDoc = read('CLAUDE.md');
-  const roadmap = read('.planning/ROADMAP.md');
+  const claudeRaw = read('CLAUDE.md');
+  // CLAUDE.md may be the single-line include `@AGENTS.md`; resolve it to AGENTS.md content so coverage is kept.
+  const claudeDoc = claudeRaw.trim() === '@AGENTS.md' ? agentsDoc : claudeRaw;
 
   it('keeps root and onboarding docs aligned on the expanded work-type count', () => {
     for (const [name, doc] of [
@@ -47,24 +48,13 @@ describe('phase 19 technical-writing trust surfaces', () => {
     assert.doesNotMatch(architecture, /consistency across 101 commands/i);
   });
 
-  it('keeps the README status section aligned to the shipped milestone state', () => {
-    const latestShippedMatch = roadmap.match(
-      /Latest shipped milestone:\s+\*\*(.+?)\*\* \(completed [^)]+\)/
-    );
-
-    assert.ok(
-      latestShippedMatch,
-      'ROADMAP.md should declare the latest shipped milestone in Current Status'
-    );
-
-    const latestShipped = latestShippedMatch[1]
-      .replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-
-    assert.match(
-      readme,
-      new RegExp(`shipped planning milestones through \`${latestShipped}\``),
-      'README should match the latest shipped milestone declared in ROADMAP.md'
-    );
+  it('keeps the README status and release docs aligned to the shipped release state', () => {
+    const pkg = JSON.parse(read('package.json'));
+    for (const [name, doc] of [['docs/release-notes.md', read('docs/release-notes.md')], ['CHANGELOG.md', read('CHANGELOG.md')]]) {
+      const firstRelease = doc.match(/^## (\d+\.\d+\.\d+) - /m);
+      assert.ok(firstRelease, `${name} should open with a release section`);
+      assert.equal(firstRelease[1], pkg.version, `${name} latest release should match package.json`);
+    }
     assert.doesNotMatch(readme, /v1\.5 .* in progress/i);
   });
 

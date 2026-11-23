@@ -210,7 +210,7 @@ describe('provenance hygiene command surface', () => {
     assert.match(changelog, /provenance-clean/);
   });
 
-  it('documents the 3.8.0 installed-package and release contract', () => {
+  it('documents the 4.0.0 installed-package and release contract', () => {
     const guide = read('docs/provenance-hygiene.md');
     const readme = read('README.md');
     const releaseNotes = read('docs/release-notes.md');
@@ -220,7 +220,7 @@ describe('provenance hygiene command surface', () => {
     const testing = read('docs/testing.md');
     const combined = `${guide}\n${readme}\n${releaseNotes}`;
 
-    assert.match(readme, /version-3\.8\.0/);
+    assert.match(readme, /version-4\.0\.0/);
     for (const token of ['opt-in', 'privacy', 'fallback', 'Markdown', 'JSON', 'SARIF 2.1.0']) {
       assert.ok(combined.includes(token), `${token} is missing from release documentation`);
     }

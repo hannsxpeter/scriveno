@@ -11,8 +11,10 @@ This bundle is the committed proof artifact for Scriveno's first 10 minutes. It 
 
 ## Transcript: First-Run Guide
 
+The transcripts below were captured with the earlier unscoped package, before the 4.0.0 rename to `@hxp-tools/scriveno`. They are abridged historical excerpts: the command lines now show the scoped name, and 4.0.0 prints additional fields and sections not shown here.
+
 ```text
-> npx scriveno@latest first-run --project .
+> npx @hxp-tools/scriveno@latest first-run --project .
 Scriveno first-run guide
 Project: .
 Current recommendation: /scr:new-work
@@ -41,7 +43,7 @@ Proof artifacts:
 ## Transcript: Runtime Smoke
 
 ```text
-> npx scriveno@latest smoke --json
+> npx @hxp-tools/scriveno@latest smoke --json
 {
   "ok": true,
   "expectedCommands": 127,

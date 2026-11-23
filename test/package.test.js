@@ -9,8 +9,8 @@ const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
 
 describe('package.json fields', () => {
   it('has correct name', () => {
-    assert.equal(pkg.name, 'scriveno');
-    assert.equal(pkg.version, '3.8.0');
+    assert.equal(pkg.name, '@hxp-tools/scriveno');
+    assert.equal(pkg.version, '4.0.0');
   });
 
   it('has bin entry pointing to install.js', () => {

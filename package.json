@@ -1,6 +1,6 @@
 {
-  "name": "scriveno",
-  "version": "3.8.0",
+  "name": "@hxp-tools/scriveno",
+  "version": "4.0.0",
   "description": "Spec-driven creative writing, publishing, and translation pipeline for AI coding agents. From blank page to published book.",
   "bin": {
     "scriveno": "bin/install.js"

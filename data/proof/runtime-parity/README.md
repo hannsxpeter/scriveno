@@ -39,7 +39,7 @@ Use [HOST-CAPTURE-PROTOCOL.md](HOST-CAPTURE-PROTOCOL.md) as the canonical captur
 For each host that supports local commands:
 
 ```text
-1. Install scriveno@latest.
+1. Install @hxp-tools/scriveno@latest.
 2. Run the host-native first-run command.
 3. Run the host-native demo command.
 4. Run the host-native next command inside scriveno-demo.

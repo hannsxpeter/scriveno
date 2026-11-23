@@ -25,7 +25,7 @@ describe('Phase 47: runtime sync command', () => {
 
     assert.match(command, /This is not a package upgrade command/);
     assert.match(command, /Do not fetch a newer Scriveno release/);
-    assert.match(command, /npx scriveno@latest --detected --global --writer --silent/);
+    assert.match(command, /npx @hxp-tools\/scriveno@latest --detected --global --writer --silent/);
     assert.doesNotMatch(command, /\/scr:update/);
     assert.match(command, /do not modify manuscript content/i);
   });
